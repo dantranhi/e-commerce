@@ -23,6 +23,10 @@ const ProductSchema = mongoose.Schema({
     },
     photos: {
         type: [String]
+    },
+    isFeatured: {
+        type: Boolean,
+        default: false
     }
 }, { timestamps: true })
 

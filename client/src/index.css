@@ -35,6 +35,8 @@ h1{
   margin: 0;
 }
 
-body{
+body, #root{
   overflow-x: hidden;
 }
+
+

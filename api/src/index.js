@@ -4,6 +4,7 @@ import cors from 'cors'
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser'
 import passport from 'passport'
+import session from 'express-session'
 
 import initializePassport from './configs/passport.js'
 import router from './routes/index.js'
@@ -17,6 +18,15 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }))
 app.use(cookieParser())
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        secure: false,
+        maxAge: 24 * 3600 * 1000,
+    },
+}))
 initializePassport(passport)
 
 mongoose.connect(process.env.MONGO, { useNewUrlParser: true, useUnifiedTopology: true }, () => {

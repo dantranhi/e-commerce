@@ -11,7 +11,7 @@ const cl = classNames.bind(styles);
 
 function Menu() {
   const [account, setAccount] = useAuth()
-  console.log(account)
+  // console.log(account)
 
   const handleLogout = async () => {
     try {
@@ -29,6 +29,7 @@ function Menu() {
 
   return (
     <ul className={cl('wrapper')}>
+      <li>Hello {account.username}</li>
       {account.isAdmin && <li>
         <Link to='/products/create' className={cl('link')}>
           <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faGear} /></span> Admin {account.username}

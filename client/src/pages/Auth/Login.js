@@ -2,6 +2,7 @@ import React, { useState, useLayoutEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { faFacebook } from '@fortawesome/free-brands-svg-icons'
 
+
 import httpRequest from '../../utils/httpRequest'
 import { LogoIcon } from '../../components/Icons'
 import GoogleIcon from '../../assets/img/google.png'
@@ -15,7 +16,7 @@ const cl = classNames.bind(styles);
 function Login() {
   const navigate = useNavigate()
   const [account, setAccount] = useAuth()
-  console.log(account)
+
   useLayoutEffect(() => {
     if (Object.keys(account).length !== 0) {
       navigate('/')
@@ -44,10 +45,12 @@ function Login() {
     }
   }
 
-  const handleLoginGoogle = async () => {
-    // const res = await axios.get('http://localhost:3006/api/auth/google')
-    // console.log(res)
-    window.open('http://localhost:3006/api/auth/google', '_self')
+  const handleLoginGoogle = () => {
+    window.open('http://localhost:3006/google', '_self')
+  }
+
+  const handleLoginFacebook = () => {
+    window.open('http://localhost:3006/facebook', '_self')
   }
 
   return (
@@ -66,7 +69,7 @@ function Login() {
         </div>
         <div className={cl('socials')}>
           <Button onClick={handleLoginGoogle}><img className={cl('icon')} src={GoogleIcon} alt="google" />Login with Google</Button>
-          <Button onClick={handleLoginGoogle} leftIcon={faFacebook}>Login with Facebook</Button>
+          <Button onClick={handleLoginFacebook} leftIcon={faFacebook}>Login with Facebook</Button>
         </div>
         <div className={cl('bottom')}>
           Don't have an account? <Link to='/register' className={cl('signup')}>Sign up</Link>
