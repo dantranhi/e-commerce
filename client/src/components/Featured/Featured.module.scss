@@ -1,0 +1,39 @@
+.wrapper{
+    margin-top: 40px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.title{
+    font-size: 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.line{
+    display: inline-block;
+    height: 3px;
+    width: 50px;
+    background-color: #333;
+}
+
+.products{
+    margin-top: 32px;
+}
+
+.all{
+    cursor: pointer;
+    margin-inline: auto;
+    background-color: var(--secondary);
+    color: #fff;
+    font-size: 1rem;
+    font-family: 'Nunito', sans-serif;
+    width: fit-content;
+    border-radius: 3px;
+    padding: 6px 12px;
+
+    &:hover{
+        filter: brightness(80%);
+    }
+}

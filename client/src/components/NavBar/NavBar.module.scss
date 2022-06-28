@@ -1,0 +1,177 @@
+.header {
+    height: var(--header-height);
+    display: flex;
+    justify-content: space-between;
+    background-color: transparent;
+    z-index: 1;
+    font-family: 'Nunito', sans-serif;
+    position: relative;
+    
+    &::after{
+        content: "";
+        width: 200vw;
+        height: 100%;
+        position: absolute;
+        left: -100vw;
+        background: #000;
+        z-index: -1;
+
+    }
+}
+
+.nav {
+    display: flex;
+    justify-content: flex-start;
+    gap: 40px;
+    place-items: center start;
+    flex: 1;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.logo {
+    margin-inline: auto;
+    height: 100%;
+    width: min(100%, 170px);
+    display: flex;
+    place-items: center;
+    flex: 1;
+}
+
+.logo-img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.function {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 40px;
+    flex: 1;
+}
+
+.cart {
+    position: relative;
+}
+
+.cart-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    color: #fff;
+    font-weight: 500;
+    border-radius: 50%;
+    background-color: var(--secondary);
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%);
+}
+
+.icon {
+    color: #fff;
+    font-size: 1.5rem;
+}
+
+.user {}
+
+.mobile-bars {
+    display: none;
+}
+
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    display: none;
+}
+
+.mobile-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: min(500px, 100%);
+    background-color: #f1f5f9;
+    padding: 48px 24px;
+    animation: fadeIn 300ms ease-in-out;
+}
+
+@keyframes fadeIn{
+    from {
+        left: calc(-1 * min(500px, 100%));
+    }
+    to{
+        left: 0;
+    }
+}
+
+.mobile-list {}
+
+.mobile-link {
+    font-size: 2.2rem;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: #51a7e6;
+
+    &:hover {
+        color: var(--secondary);
+    }
+}
+
+.close{
+    position: absolute;
+    top: 16px;
+    right: 16px;
+}
+
+.close-btn{
+    color: #122a41;
+    font-size: 2.4rem;
+}
+
+
+#mobile:checked+.mobile-menu {
+    display: block;
+}
+
+@media only screen and (max-width: 1024px) {
+    .nav {
+        display: none;
+    }
+
+    .logo {
+        place-items: center start;
+    }
+
+    .logo-img {
+        height: fit-content;
+        width: fit-content;
+    }
+
+    .mobile-bars {
+        display: flex;
+        align-items: center;
+    }
+
+    .mobile-bars-icon {
+        color: #fff;
+        font-size: 2rem;
+        margin-right: 20px;
+    }
+
+
+}
