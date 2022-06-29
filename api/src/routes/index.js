@@ -46,7 +46,7 @@ const router = (app) => {
             const { password, ...otherDetails } = req.session.user;
             res.cookie("access_token", token, {
                 httpOnly: true,
-                maxAge: 3600 * 24 * 1000
+                maxAge: 3600 * 4 * 1000
             }).json({ details: { ...otherDetails } })
         }
     })

@@ -19,7 +19,7 @@ class AuthController {
             const { password, ...otherDetails } = user._doc;
             res.cookie("access_token", token, {
                 httpOnly: true,
-                maxAge: 3600 * 24 * 1000
+                maxAge: 3600 * 4 * 1000
             }).status(200).json({ details: { ...otherDetails }});
         }
         catch (err) {

@@ -5,6 +5,7 @@ import { productValidator } from '../utils/dataValidator.js';
 
 const router = express.Router();
 
+router.get('/type', ProductController.getAllTypes)
 
 router.get('/', ProductController.getAll)
 router.get('/:id', ProductController.get)

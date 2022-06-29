@@ -122,13 +122,17 @@
 .mobile-list {}
 
 .mobile-link {
+    display: block;
     font-size: 2.2rem;
     font-weight: 600;
     letter-spacing: 4px;
     color: #51a7e6;
+    // transform: translateX(0);
+    transition: transform 200ms ease-in-out;
 
     &:hover {
         color: var(--secondary);
+        transform: translateX(6px);
     }
 }
 

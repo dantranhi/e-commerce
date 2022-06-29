@@ -1,6 +1,7 @@
-import {validationResult} from 'express-validator'
+import { validationResult } from 'express-validator'
 
 import Product from '../models/Product.js'
+import Type from '../models/Type.js'
 
 class ProductController {
     // [GET] /product
@@ -24,6 +25,17 @@ class ProductController {
         }
     }
 
+    // [GET] /product/type
+    async getAllTypes(req, res, next) {
+        try {
+            const types = await Type.find()
+            console.log(types)
+            res.json(types)
+        } catch (error) {
+            res.json({message: error})
+        }
+    }
+
     // [POST] /product/create
     async create(req, res, next) {
         const errors = validationResult(req);
@@ -32,6 +44,11 @@ class ProductController {
         }
         try {
             const savedProduct = new Product(req.body)
+            const typeAlreadyExists = await Type.findOne({ name: req.body.type })
+            if (!typeAlreadyExists) {
+                const newType = new Type({ name: req.body.type })
+                await newType.save()
+            }
             await savedProduct.save()
             res.json(savedProduct)
         } catch (error) {

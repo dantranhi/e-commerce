@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGear, faCartShopping, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faGear, faCartShopping, faUser, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
 
 import { useAuth } from '../../store/UserContext'
@@ -45,11 +45,11 @@ function Menu() {
           <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faUser} /></span> Profile
         </Link>
       </li>
-      <li>
+      {account.username && <li>
         <div onClick={handleLogout} className={cl('link')}>
-          <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faUser} /></span> Logout
+          <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faArrowRightFromBracket} /></span> Logout
         </div>
-      </li>
+      </li>}
     </ul>
   )
 }

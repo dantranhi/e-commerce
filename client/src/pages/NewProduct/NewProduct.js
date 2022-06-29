@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
-import httpRequest from '../../utils/httpRequest'
+import httpRequest, { get } from '../../utils/httpRequest'
 import useValidate from '../../hooks/useValidate'
 
 import classNames from 'classnames/bind';
@@ -10,7 +10,8 @@ const cl = classNames.bind(styles);
 
 function NewProduct() {
     const [errors, setErrors] = useState([])
-    console.log(errors)
+    const [allTypes, setAllTypes] = useState([])
+    const [addType, setAddType] = useState(false)
     const [formFields, setFormFields] = useState({
         name: '',
         desc: '',
@@ -19,6 +20,18 @@ function NewProduct() {
         modelYear: new Date().getFullYear(),
         photos: '',
     })
+
+    useEffect(() => {
+        async function fetchAllTypes() {
+            const res = await get('/product/type')
+            if (!res.message) {
+                setAllTypes(res)
+            }
+            else console.log(res.message)
+        }
+
+        fetchAllTypes()
+    }, [])
 
     const handleChange = ({ name, value, files }) => {
         setFormFields(prev => (
@@ -32,7 +45,6 @@ function NewProduct() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
         try {
             const list = await Promise.all(
                 Object.values(formFields.photos).map(async (file) => {
@@ -41,7 +53,9 @@ function NewProduct() {
                     data.append("upload_preset", "upload");
                     const uploadRes = await axios.post(
                         "https://api.cloudinary.com/v1_1/dauu0vpgc/image/upload",
-                        data
+                        data, {
+                        withCredentials: false
+                    }
                     );
 
                     const { url } = uploadRes.data;
@@ -57,9 +71,15 @@ function NewProduct() {
             if (res.data.errors) {
                 setErrors(res.data.errors)
             }
+            else console.log('Product created')
         } catch (error) {
 
         }
+    }
+
+
+    const handleNewType = () => {
+        setAddType(prev => !prev)
     }
     return (
         <div className="grid wide">
@@ -86,14 +106,23 @@ function NewProduct() {
 
                 <div className={cl('group')}>
                     <label className={cl('label')} htmlFor="type">Type: </label>
-                    <input className={cl('input')} type="text" id="type" name="type" placeholder="Type" value={formFields.type} onChange={(e) => handleChange(e.target)} />
-                    <div className={cl('validate-error')}>{useValidate(errors, 'type')}</div>
+                    <div className={cl('type-wrapper')}>
+                        {addType ?
+                            (<input className={cl('input')} type="text" id="type" name="type" placeholder="Type" value={formFields.type} onChange={(e) => handleChange(e.target)} />)
+                            : (<><select className={cl('input')} name="type" id="type" value={formFields.type} onChange={(e) => handleChange(e.target)} >
+                                {allTypes.map(type => (
+                                    <option key={type._id} value={type.name}>{type.name}</option>
+                                ))}
+                            </select></>)}
+                        <div className={cl('type-btn')} onClick={handleNewType}>{addType ? 'Choose' : 'Add new'}</div>
+                    </div>
+                    {/* <div className={cl('validate-error')}>{useValidate(errors, 'type')}</div> */}
                 </div>
 
 
                 <div className={cl('group')}>
                     <label className={cl('label')} htmlFor="modelYear">Model year: </label>
-                    <input className={cl('input')} type="text" id="modelYear" name="modelYear" placeholder="Model Year" value={formFields.modelYear} onChange={(e) => handleChange(e.target)} />
+                    <input className={cl('input')} type="number" id="modelYear" name="modelYear" placeholder="Model Year" value={formFields.modelYear} onChange={(e) => handleChange(e.target)} />
                     <div className={cl('validate-error')}>{useValidate(errors, 'modelYear')}</div>
                 </div>
 

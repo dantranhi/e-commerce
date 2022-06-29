@@ -28,7 +28,7 @@ function Featured() {
         <div className={cl('products')}>
           <div className="row">
             {products.map(productItem => (
-              <div key={productItem._id} className="col l-4 m-6 c-12">
+              <div key={productItem._id} className="col l-4 m-6 c-12 mt-4">
                 <ProductItem data={productItem}></ProductItem>
               </div>
             ))}
