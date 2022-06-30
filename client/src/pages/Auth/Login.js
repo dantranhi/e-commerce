@@ -2,23 +2,24 @@ import React, { useState, useLayoutEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { faFacebook } from '@fortawesome/free-brands-svg-icons'
 
-
+import {loginStart, loginSuccess, loginFailed} from '../../store/actions'
 import httpRequest from '../../utils/httpRequest'
 import { LogoIcon } from '../../components/Icons'
 import GoogleIcon from '../../assets/img/google.png'
 import LoginHero from '../../assets/img/login-hero.jpg'
 import Button from '../../components/Button'
-import { useAuth } from '../../store/UserContext'
+import { useStore } from '../../store/UserContext'
 import classNames from 'classnames/bind';
 import styles from './Login.module.scss';
 const cl = classNames.bind(styles);
 
 function Login() {
   const navigate = useNavigate()
-  const [account, setAccount] = useAuth()
+  const [state, dispatch] = useStore()
+  console.log(state.user.info)
 
   useLayoutEffect(() => {
-    if (Object.keys(account).length !== 0) {
+    if (Object.keys(state.user.info).length !== 0) {
       navigate('/')
       return
     }
@@ -35,11 +36,12 @@ function Login() {
   }
   const handleSubmit = async (e) => {
     e.preventDefault()
+    dispatch(loginStart())
     const res = await httpRequest.post('/auth/login', user)
-    if (res.data.msg)
-      console.log(res.data.msg)
+    if (res.data.message)
+      dispatch(loginFailed(res.data.message))
     else {
-      setAccount(res.data.details)
+      dispatch(loginSuccess(res.data.details))
       localStorage.setItem('user', JSON.stringify(res.data.details))
       navigate('/')
     }

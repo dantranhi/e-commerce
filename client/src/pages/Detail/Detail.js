@@ -47,7 +47,7 @@ function Detail() {
 
     return (
         <>
-            <MultiLevelNav></MultiLevelNav>
+            <MultiLevelNav list={[{label: 'Home', path: '/'}, {label: 'Product', path:`/products/${product?._id}`} ]}></MultiLevelNav>
             <div className={cl('wrapper')}>
                 <div className='grid wide'>
                     <div className={cl('inner')}>

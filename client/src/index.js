@@ -3,16 +3,16 @@ import ReactDOM from 'react-dom/client';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { AuthProvider } from './store/UserContext';
+import { Provider } from './store/UserContext';
 
 const INIT_ACCOUNT = JSON.parse(localStorage.getItem('user')) ?? {}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <AuthProvider init={INIT_ACCOUNT}>
+    <Provider init={INIT_ACCOUNT}>
       <App />
-    </AuthProvider>
+    </Provider>
   </React.StrictMode>
 );
 

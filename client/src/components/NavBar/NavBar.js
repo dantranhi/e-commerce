@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCartShopping, faUser, faBars, faXmark } from '@fortawesome/free-solid-svg-icons'
 
-import {useAuth} from '../../store/UserContext'
+import { toggleCart } from '../../store/actions'
+import { useStore } from '../../store/UserContext'
 import UserMenu from '../UserMenu'
 import Cart from '../Cart'
 import { LogoIcon } from '../Icons/Icons'
@@ -12,12 +13,12 @@ import styles from './NavBar.module.scss';
 const cl = classNames.bind(styles);
 
 function NavBar() {
-  const [account, setAccount] = useAuth()
-  const [showCart, setShowCart] = useState(false)
-  const handleOpenCart = () => {
-    setShowCart(prev => !prev)
-  }
+  const [state, dispatch] = useStore()
   
+  const handleOpenCart = () => {
+    dispatch(toggleCart())
+  }
+
   return (
     <div className="grid wide">
       <div className={cl('header')}>
@@ -55,7 +56,7 @@ function NavBar() {
           </UserMenu>
         </div>
       </div>
-      {showCart && <Cart onClose={handleOpenCart}></Cart>}
+      {state.cart.isOpen && <Cart onClose={handleOpenCart}></Cart>}
     </div>
   )
 }

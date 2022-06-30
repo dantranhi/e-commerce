@@ -1,9 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Fragment } from 'react'
 import { useEffect } from 'react'
-import {get} from './utils/httpRequest'
+import { get } from './utils/httpRequest'
 
-import { useAuth } from './store/UserContext'
+import { loginStart, loginSuccess, loginFailed } from './store/actions'
+import { useStore } from './store/UserContext'
 import routes from './routes'
 import DefaultLayout from './layouts/DefaultLayout'
 import './grid.css';
@@ -12,14 +13,14 @@ import './index.css';
 
 
 function App() {
-  const [account, setAccount] = useAuth()
+  const [,dispatch] = useStore()
 
   useEffect(() => {
     async function checkLogin() {
+      dispatch(loginStart())
       const res = await get('/login/success')
       if (res.details) {
-        console.log(res)
-        setAccount(res.details)
+        dispatch(loginSuccess(res.details))
         localStorage.setItem('user', JSON.stringify(res.details))
       }
     }

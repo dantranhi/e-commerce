@@ -1,20 +1,26 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useReducer } from 'react';
+import reducer, { INIT_STATE } from './reducer'
 
 
-const AuthContext = createContext();
+const Context = createContext();
 
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => useContext(Context)
+export const useStore = () => useContext(Context)
 
 
 // state only
 export const useAuthState = () => {
-    const [account] = useContext(AuthContext);
+    const [account] = useContext(Context);
     return account;
 };
 
 
-export const AuthProvider = ({children, init}) => {
-    const AuthContextValue = useState(init); // [myCtxState, setMyCtxState]
-    return <AuthContext.Provider value={AuthContextValue}>{children}</AuthContext.Provider>;
+// export const Provider = ({children, init}) => {
+//     const ContextValue = useState(init); // [myCtxState, setMyCtxState]
+//     return <Context.Provider value={ContextValue}>{children}</Context.Provider>;
+// };
+export const Provider = ({ children }) => {
+    const [state, dispatch] = useReducer(reducer, INIT_STATE); // [myCtxState, setMyCtxState]
+    return <Context.Provider value={[state, dispatch]}>{children}</Context.Provider>;
 };

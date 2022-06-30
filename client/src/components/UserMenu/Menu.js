@@ -4,23 +4,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear, faCartShopping, faUser, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
 
-import { useAuth } from '../../store/UserContext'
+import {logout} from '../../store/actions'
+import { useStore} from '../../store/UserContext'
 import classNames from 'classnames/bind';
 import styles from './UserMenu.module.scss';
 const cl = classNames.bind(styles);
 
 function Menu() {
-  const [account, setAccount] = useAuth()
+  const [state, dispatch] = useStore()
   const navigate = useNavigate()
 
   const handleLogout = async () => {
     try {
       const res = await axios.post('http://localhost:3006/api/auth/logout', {}, { withCredentials: true })
-      if (res.msg)
-        console.log(res.msg)
+      if (res.message)
+        console.log(res.message)
       else {
+        dispatch(logout())
         localStorage.removeItem('user')
-        setAccount({})
         navigate('/')
       }
     } catch (error) {
@@ -30,10 +31,10 @@ function Menu() {
 
   return (
     <ul className={cl('wrapper')}>
-      <li>Hello {account.username}</li>
-      {account.isAdmin && <li>
+      <li>Hello {state.user.info.username}</li>
+      {state.user.info.isAdmin && <li>
         <Link to='/products/create' className={cl('link')}>
-          <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faGear} /></span> Admin {account.username}
+          <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faGear} /></span> Admin {state.user.info.username}
         </Link>
       </li>}
       <li>
@@ -46,7 +47,7 @@ function Menu() {
           <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faUser} /></span> Profile
         </Link>
       </li>
-      {account.username && <li>
+      {state.user.info.username && <li>
         <div onClick={handleLogout} className={cl('link')}>
           <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faArrowRightFromBracket} /></span> Logout
         </div>
