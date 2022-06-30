@@ -5,8 +5,8 @@ import {
     LOGIN_FAILED,
     LOGOUT,
     ADD_TO_CART,
-    ADD_AMOUNT,
-    SUB_AMOUNT,
+    ADD_ONE,
+    SUB_ONE,
     SET_AMOUNT,
     REMOVE_FROM_CART,
     DELETE_CART,
@@ -59,6 +59,27 @@ export const toggleCart = (payload) =>{
 export const addToCart = (payload) =>{
     return {
         type: ADD_TO_CART,
+        payload
+    }
+}
+
+export const removeFromCart = (payload) =>{
+    return {
+        type: REMOVE_FROM_CART,
+        payload
+    }
+}
+
+export const addOne = (payload) =>{
+    return {
+        type: ADD_ONE,
+        payload
+    }
+}
+
+export const subOne = (payload) =>{
+    return {
+        type: SUB_ONE,
         payload
     }
 }

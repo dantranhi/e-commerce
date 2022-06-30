@@ -5,6 +5,10 @@ const ProductSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    brand:{
+        type: String,
+        required: true
+    },
     desc: {
         type: String,
         required: true

@@ -11,9 +11,12 @@ const cl = classNames.bind(styles);
 function NewProduct() {
     const [errors, setErrors] = useState([])
     const [allTypes, setAllTypes] = useState([])
+    const [allBrands, setAllBrands] = useState([])
     const [addType, setAddType] = useState(false)
+    const [addBrand, setAddBrand] = useState(false)
     const [formFields, setFormFields] = useState({
         name: '',
+        brand: '',
         desc: '',
         price: '',
         type: '',
@@ -23,11 +26,23 @@ function NewProduct() {
 
     useEffect(() => {
         async function fetchAllTypes() {
-            const res = await get('/product/type')
-            if (!res.message) {
-                setAllTypes(res)
+            try {
+                const res1 = await get('/product/type')
+                const res2 = await get('/product/brand')
+                if (!res1.message) {
+                    setAllTypes(res1)
+                }
+                else console.log(res1.message)
+
+                if (!res2.message) {
+                    setAllBrands(res2)
+                }
+                else console.log(res2.message)
             }
-            else console.log(res.message)
+            catch (err) {
+
+            }
+
         }
 
         fetchAllTypes()
@@ -81,6 +96,10 @@ function NewProduct() {
     const handleNewType = () => {
         setAddType(prev => !prev)
     }
+
+    const handleNewBrand = () => {
+        setAddBrand(prev => !prev)
+    }
     return (
         <div className="grid wide">
             <div className={cl('title')}>Thêm sản phẩm</div>
@@ -89,6 +108,21 @@ function NewProduct() {
                     <label className={cl('label')} htmlFor="name">Name: </label>
                     <input className={cl('input')} type="text" id="name" name="name" placeholder="Name" value={formFields.name} onChange={(e) => handleChange(e.target)} />
                     <div className={cl('validate-error')}>{useValidate(errors, 'name')}</div>
+                </div>
+
+                <div className={cl('group')}>
+                    <label className={cl('label')} htmlFor="type">Brand: </label>
+                    <div className={cl('type-wrapper')}>
+                        {addBrand ?
+                            (<input className={cl('input')} type="text" id="brand" name="brand" placeholder="Brand" value={formFields.brand} onChange={(e) => handleChange(e.target)} />)
+                            : (<><select className={cl('input')} name="brand" id="brand" value={formFields.brand} onChange={(e) => handleChange(e.target)} >
+                                {allBrands.map(brand => (
+                                    <option key={brand._id} value={brand.name}>{brand.name}</option>
+                                ))}
+                            </select></>)}
+                        <div className={cl('type-btn')} onClick={handleNewBrand}>{addBrand ? 'Choose' : 'Add new'}</div>
+                    </div>
+                    <div className={cl('validate-error')}>{useValidate(errors, 'brand')}</div>
                 </div>
 
                 <div className={cl('group')}>

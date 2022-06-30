@@ -10,7 +10,6 @@ const cl = classNames.bind(styles);
 
 function Cart({ onClose }) {
   const [state, dispatch] = useStore()
-  console.log(state)
   return (
     <div className={cl('modal')} onClick={(e) => { onClose(); }}>
       <div onClick={(e) => { e.stopPropagation() }} className={cl('inner')}>

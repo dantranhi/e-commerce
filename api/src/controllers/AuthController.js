@@ -10,17 +10,17 @@ class AuthController {
             const user = await User.findOne({ username: req.body.username })
             console.log(user)
             if (!user)
-                return res.json({ msg: 'User not found' })
+                return res.json({ message: 'User not found' })
             const isCorrectPassword = await bcrypt.compare(req.body.password, user.password)
             if (!isCorrectPassword)
-                return res.json({ msg: 'Password is incorrect' })
+                return res.json({ message: 'Password is incorrect' })
 
             const token = jwt.sign({ id: user._id, username: user.username, isAdmin: user.isAdmin }, process.env.JWT_SECRET)
             const { password, ...otherDetails } = user._doc;
             res.cookie("access_token", token, {
                 httpOnly: true,
                 maxAge: 3600 * 4 * 1000
-            }).status(200).json({ details: { ...otherDetails }});
+            }).status(200).json({ details: { ...otherDetails } });
         }
         catch (err) {
             next(err)
@@ -51,7 +51,7 @@ class AuthController {
             res.json({})
 
         } catch (error) {
-            res.json({ msg: 'Can not log out' })
+            res.json({ message: 'Can not log out' })
         }
     }
 

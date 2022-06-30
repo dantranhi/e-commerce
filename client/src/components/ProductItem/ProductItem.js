@@ -13,11 +13,7 @@ function ProductItem({ data }) {
   const [state, dispatch] = useStore()
   const handleAddToCart = (e) => {
     e.preventDefault();
-    dispatch(addToCart({
-      name: data.name,
-      photo: data.photos[0],
-      price: data.price,
-    }))
+    dispatch(addToCart(data))
   }
 
   return (

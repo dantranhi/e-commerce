@@ -2,6 +2,8 @@ import React, { useLayoutEffect, useState } from 'react'
 import Slider from "react-slick";
 import { useParams } from 'react-router-dom'
 
+import { useStore } from '../../store/UserContext'
+import {addToCart } from '../../store/actions'
 import { get } from '../../utils/httpRequest'
 import MultiLevelNav from '../../components/MultiLevelNav'
 import Button from '../../components/Button'
@@ -13,6 +15,7 @@ import styles from './Detail.module.scss';
 const cl = classNames.bind(styles);
 
 function Detail() {
+    const [, dispatch] = useStore()
     const params = useParams()
     const [product, setProduct] = useState(null)
     useLayoutEffect(() => {
@@ -67,7 +70,7 @@ function Detail() {
                             <div className={cl('desc')}>
                                 {product?.desc || 'No desc'}
                             </div>
-                            <Button className={cl('buy')} primary>Add to cart</Button>
+                            <Button onClick={()=>dispatch(addToCart(product))} className={cl('buy')} primary>Add to cart</Button>
                         </div>
                     </div>
                 </div>

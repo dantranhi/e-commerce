@@ -1,4 +1,4 @@
-import { SET_LOADING, LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILED, TOGGLE_CART, ADD_TO_CART } from './constants'
+import { SET_LOADING, LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILED, TOGGLE_CART, ADD_TO_CART, REMOVE_FROM_CART, ADD_ONE, SUB_ONE } from './constants'
 
 const INIT_ACCOUNT = JSON.parse(localStorage.getItem('user')) ?? {}
 
@@ -9,28 +9,28 @@ export const INIT_STATE = {
         error: '',
     },
     cart: {
-        data: [{
-            name: 'Ram',
-            photo: 'https://dl.airtable.com/.attachments/14ac9e946e1a02eb9ce7d632c83f742f/4fd98e64/product-1.jpeg',
-            price: 500000,
-            amount: 5
-        }],
+        data: [],
         isOpen: false
     }
 }
 
-const reducer = (state, {type, payload}) => {
+const reducer = (state, { type, payload }) => {
+    console.group('REDUCER')
+    console.log("PREV STATE: ", state);
+    console.log("ACTION: ", type);
+    console.groupEnd()
+    
     switch (type) {
         case SET_LOADING:
             return {
                 ...state,
                 loading: payload
-        }
+            }
         case LOGIN_START:
             return {
                 ...state,
                 loading: true
-        }
+            }
         case LOGIN_SUCCESS:
             return {
                 ...state,
@@ -38,7 +38,7 @@ const reducer = (state, {type, payload}) => {
                     info: payload,
                     error: ''
                 }
-        }
+            }
         case LOGIN_FAILED:
             return {
                 ...state,
@@ -46,7 +46,7 @@ const reducer = (state, {type, payload}) => {
                     info: {},
                     error: 'Login failed'
                 }
-        }
+            }
         case TOGGLE_CART:
             return {
                 ...state,
@@ -54,23 +54,62 @@ const reducer = (state, {type, payload}) => {
                     data: [...state.cart.data],
                     isOpen: !state.cart.isOpen
                 }
-        }
+            }
         case ADD_TO_CART:
+            const isInCart = state.cart.data.some(item => item._id === payload._id)
+            if (!isInCart)
+                return {
+                    ...state,
+                    cart: {
+                        data: [
+                            ...state.cart.data,
+                            {
+                                ...payload,
+                                amount: 1
+                            }
+                        ],
+                        isOpen: true
+                    }
+                }
+            const cartCloned = state.cart.data
+            const updatedCartItem = cartCloned.find(cartItem => cartItem._id === payload._id)
+            updatedCartItem.amount = updatedCartItem.amount + 1
+            console.log(updatedCartItem)
             return {
                 ...state,
                 cart: {
-                    data: [
-                        ...state.cart.data,
-                        {
-                            name: payload.name,
-                            photo: payload.photo,
-                            price: payload.price,
-                            amount: 1
-                        }
-                    ],
+                    data: cartCloned,
                     isOpen: true
                 }
-        }
+            }
+        case REMOVE_FROM_CART:
+            return {
+                ...state,
+                cart: {
+                    data: [...state.cart.data].filter(item => item._id !== payload),
+                    isOpen: true
+                }
+            }
+        case ADD_ONE:
+            return {
+                ...state,
+                cart: {
+                    data: [...state.cart.data].map(item => {
+                        return item._id === payload ? { ...item, amount: item.amount + 1 } : item
+                    }),
+                    isOpen: true
+                }
+            }
+        case SUB_ONE:
+            return {
+                ...state,
+                cart: {
+                    data: [...state.cart.data].map(item => {
+                        return item._id === payload && item.amount > 0 ? { ...item, amount: item.amount - 1 } : item
+                    }),
+                    isOpen: true
+                }
+            }
 
         default:
             return state

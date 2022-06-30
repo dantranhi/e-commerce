@@ -2,6 +2,7 @@ import { validationResult } from 'express-validator'
 
 import Product from '../models/Product.js'
 import Type from '../models/Type.js'
+import Brand from '../models/Brand.js'
 
 class ProductController {
     // [GET] /product
@@ -20,7 +21,7 @@ class ProductController {
         try {
             const product = await Product.findById(req.params.id)
             if (!product)
-                return res.json({message: 'Product with that id is not exist.'})
+                return res.json({ message: 'Product with that id is not exist.' })
             res.json(product)
         } catch (error) {
             next(error)
@@ -34,7 +35,17 @@ class ProductController {
             console.log(types)
             res.json(types)
         } catch (error) {
-            res.json({message: error})
+            res.json({ message: error })
+        }
+    }
+
+    // [GET] /product/brand
+    async getAllBrands(req, res, next) {
+        try {
+            const brands = await Brands.find()
+            res.json(brands)
+        } catch (error) {
+            res.json({ message: error })
         }
     }
 
@@ -72,7 +83,7 @@ class ProductController {
     async delete(req, res, next) {
         try {
             await Product.findByIdAndDelete(req.params.id)
-            res.json({ msg: 'Product deleted' })
+            res.json({ message: 'Product deleted' })
         } catch (error) {
             next(error)
         }
