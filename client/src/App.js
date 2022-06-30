@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Fragment } from 'react'
 import { useEffect } from 'react'
-import httpRequest,{get} from './utils/httpRequest'
+import {get} from './utils/httpRequest'
 
 import { useAuth } from './store/UserContext'
 import routes from './routes'

@@ -1,4 +1,4 @@
-.wrapper{
+.wrapper {
     border-radius: 8px;
     border: 1px solid #dedede;
     color: #484a4e;
@@ -12,18 +12,30 @@
     justify-content: center;
     transition: background-color 300ms ease-in-out;
 
-    &:hover{
-        background-color: #2caaf3;
+    &:hover {
+        filter: brightness(80%);
     }
 }
 
-.icon{
+.icon {
     font-size: 1.8rem;
     color: #4065a1;
     margin-right: 1rem;
 }
 
-.filled{
+.filled {
     background-color: #111726;
     color: #fff;
+}
+
+.primary {
+    cursor: pointer;
+    margin-inline: auto;
+    background-color: var(--secondary);
+    color: #fff;
+    font-size: 1rem;
+    font-family: 'Nunito', sans-serif;
+    width: fit-content;
+    border-radius: 3px;
+    padding: 6px 12px;
 }

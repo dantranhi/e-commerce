@@ -7,14 +7,15 @@ import styles from './Button.module.scss';
 const cl = classNames.bind(styles);
 
 
-function Button({ to, onClick, leftIcon, className, filled, children, ...passProps }) {
+function Button({ to, onClick, leftIcon, className, filled, primary, children, ...passProps }) {
     let Comp = 'button'
     const classes = cl('wrapper',{
-        filled
+        filled,
+        primary,
+        [className]: className,
     })
     let props = {
         onClick,
-        [className]: className,
         ...passProps
     }
     if (to) {

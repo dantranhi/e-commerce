@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear, faCartShopping, faUser, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
@@ -11,7 +11,7 @@ const cl = classNames.bind(styles);
 
 function Menu() {
   const [account, setAccount] = useAuth()
-  // console.log(account)
+  const navigate = useNavigate()
 
   const handleLogout = async () => {
     try {
@@ -21,6 +21,7 @@ function Menu() {
       else {
         localStorage.removeItem('user')
         setAccount({})
+        navigate('/')
       }
     } catch (error) {
 

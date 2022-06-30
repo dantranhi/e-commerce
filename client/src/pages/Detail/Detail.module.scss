@@ -1,0 +1,89 @@
+.wrapper{
+    margin-top: 40px;
+    font-family: Roboto, "Helvetica Neue";
+    height: fit-content;
+}
+
+.inner{
+    display: flex;
+    height: 100%;
+    gap: 28px;
+}
+
+.img-list{
+    flex: 1;
+    width: 50%;
+    height: 100%; 
+}
+
+
+.img-list div{
+    width: 100%;
+}
+
+.img{
+    width: 100%;
+    height: 400px;
+    object-fit: contain;
+}
+
+.mini-link{
+    display: block;
+    width: 60px;
+    height: 60px;
+}
+
+.mini-img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    
+}
+
+.info{
+    flex: 1;
+    width: 50%;
+    float: right;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.name{
+    color: #101729;
+    font-size: 2rem;
+}
+
+.brand{
+    color: #95a3b7;
+    font-family: 'Arima', cursive;
+    font-weight: 600;
+    font-size: 1.4rem;
+}
+
+.price{
+    color: #435061;
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+
+.desc{
+    font-size: 1rem;
+}
+
+.buy{
+    margin-inline: 0;
+}
+
+
+@media (max-width: 768px) {
+    .inner{
+        flex-direction: column;
+
+        .img-list, .info{
+            width: 100%;
+        }
+    }
+
+}

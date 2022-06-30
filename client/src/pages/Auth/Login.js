@@ -59,8 +59,8 @@ function Login() {
         <LogoIcon className={cl('logo')} />
         <h3 className={cl('title')}>Welcome back</h3>
         <form className={cl('form')} onSubmit={handleSubmit}>
-          <input className={cl('input')} type="text" id="username" placeholder="Enter your username" name="username" value={user.username} onChange={(e) => handleChangeInput(e.target)} />
-          <input className={cl('input')} type="password" id="password" name="password" placeholder="Enter your password" value={user.password} onChange={(e) => handleChangeInput(e.target)} />
+          <input className={cl('input')} type="text" autoComplete="on" id="username" placeholder="Enter your username" name="username" value={user.username} onChange={(e) => handleChangeInput(e.target)} />
+          <input className={cl('input')} type="password" autoComplete="on" id="password" name="password" placeholder="Enter your password" value={user.password} onChange={(e) => handleChangeInput(e.target)} />
           <Button filled className={cl('submit')}>Continue</Button>
         </form>
         <div className={cl('separator')}>

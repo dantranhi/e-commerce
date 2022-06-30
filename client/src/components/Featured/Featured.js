@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import {Link} from 'react-router-dom'
 
 import ProductItem from '../ProductItem'
 import { get } from '../../utils/httpRequest'
+import Button from '../Button'
 
 import classNames from 'classnames/bind';
 import styles from './Featured.module.scss';
@@ -28,12 +30,12 @@ function Featured() {
         <div className={cl('products')}>
           <div className="row">
             {products.map(productItem => (
-              <div key={productItem._id} className="col l-4 m-6 c-12 mt-4">
+              <Link to={`/products/${productItem._id}`} key={productItem._id} className="col l-4 m-6 c-12 mt-4">
                 <ProductItem data={productItem}></ProductItem>
-              </div>
+              </Link>
             ))}
           </div>
-          <div className={cl('all')}>All products</div>
+          <Button primary>All products</Button>
         </div>
       </div>
     </div>

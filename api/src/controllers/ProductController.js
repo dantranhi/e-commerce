@@ -19,6 +19,8 @@ class ProductController {
     async get(req, res, next) {
         try {
             const product = await Product.findById(req.params.id)
+            if (!product)
+                return res.json({message: 'Product with that id is not exist.'})
             res.json(product)
         } catch (error) {
             next(error)

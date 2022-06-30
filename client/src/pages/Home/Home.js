@@ -5,6 +5,7 @@ import {useAuth} from '../../store/UserContext'
 import Hero from '../../components/Hero'
 import Featured from '../../components/Featured'
 
+
 import classNames from 'classnames/bind';
 const cl = classNames.bind(styles);
 
