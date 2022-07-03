@@ -3,6 +3,8 @@ import axios from 'axios'
 
 import httpRequest, { get } from '../../utils/httpRequest'
 import useValidate from '../../hooks/useValidate'
+import image from '../../assets/img/image.png'
+import { Dropdown } from '../../components/Dropdown'
 
 import classNames from 'classnames/bind';
 import styles from './NewProduct.module.scss';
@@ -100,85 +102,115 @@ function NewProduct() {
     const handleNewBrand = () => {
         setAddBrand(prev => !prev)
     }
+
+    const handleChoose = (item) => {
+        setFormFields(prev => (
+            {
+                ...prev,
+                brand: item
+            }
+        ))
+    }
+    console.log(formFields)
+
     return (
-        <div className="grid wide">
-            <div className={cl('title')}>Thêm sản phẩm</div>
-            <form onSubmit={handleSubmit} className={cl('form')}>
-                <div className={cl('group')}>
-                    <label className={cl('label')} htmlFor="name">Name: </label>
-                    <input className={cl('input')} type="text" id="name" name="name" placeholder="Name" value={formFields.name} onChange={(e) => handleChange(e.target)} />
-                    <div className={cl('validate-error')}>{useValidate(errors, 'name')}</div>
-                </div>
-
-                <div className={cl('group')}>
-                    <label className={cl('label')} htmlFor="type">Brand: </label>
-                    <div className={cl('type-wrapper')}>
-                        {addBrand ?
-                            (<input className={cl('input')} type="text" id="brand" name="brand" placeholder="Brand" value={formFields.brand} onChange={(e) => handleChange(e.target)} />)
-                            : (<><select className={cl('input')} name="brand" id="brand" value={formFields.brand} onChange={(e) => handleChange(e.target)} >
-                                {allBrands.map(brand => (
-                                    <option key={brand._id} value={brand.name}>{brand.name}</option>
-                                ))}
-                            </select></>)}
-                        <div className={cl('type-btn')} onClick={handleNewBrand}>{addBrand ? 'Choose' : 'Add new'}</div>
+        <div className={cl('wrapper')}>
+            <div className={`grid wide`}>
+                <div className={cl('title')}>Thêm sản phẩm</div>
+                <form onSubmit={handleSubmit} className={cl('form')}>
+                    <div className={cl('group')}>
+                        <label className={cl('label')} htmlFor="name">Name: </label>
+                        <input className={cl('input')} type="text" id="name" name="name" placeholder="Name" value={formFields.name} onChange={(e) => handleChange(e.target)} />
+                        <div className={cl('validate-error')}>{useValidate(errors, 'name')}</div>
                     </div>
-                    <div className={cl('validate-error')}>{useValidate(errors, 'brand')}</div>
-                </div>
 
-                <div className={cl('group')}>
-                    <label className={cl('label')} htmlFor="desc">Description: </label>
-                    <input className={cl('input')} type="text" id="desc" name="desc" placeholder="Description" value={formFields.desc} onChange={(e) => handleChange(e.target)} />
-                    <div className={cl('validate-error')}>{useValidate(errors, 'desc')}</div>
-                </div>
-
-
-                <div className={cl('group')}>
-                    <label className={cl('label')} htmlFor="price">Price: </label>
-                    <input className={cl('input')} type="number" min="0" max="999999999" id="price" name="price" placeholder="Price" value={formFields.price} onChange={(e) => handleChange(e.target)} />
-                    <div className={cl('validate-error')}>{useValidate(errors, 'price')}</div>
-                </div>
-
-                <div className={cl('group')}>
-                    <label className={cl('label')} htmlFor="type">Type: </label>
-                    <div className={cl('type-wrapper')}>
-                        {addType ?
-                            (<input className={cl('input')} type="text" id="type" name="type" placeholder="Type" value={formFields.type} onChange={(e) => handleChange(e.target)} />)
-                            : (<><select className={cl('input')} name="type" id="type" value={formFields.type} onChange={(e) => handleChange(e.target)} >
-                                {allTypes.map(type => (
-                                    <option key={type._id} value={type.name}>{type.name}</option>
-                                ))}
-                            </select></>)}
-                        <div className={cl('type-btn')} onClick={handleNewType}>{addType ? 'Choose' : 'Add new'}</div>
+                    <div className={cl('group')}>
+                        <label className={cl('label')} htmlFor="type">Brand: </label>
+                        <div className={cl('type-wrapper')}>
+                            {addBrand ?
+                                (<input className={cl('input')} type="text" id="brand" name="brand" placeholder="Brand" value={formFields.brand} onChange={(e) => handleChange(e.target)} />)
+                                : (<>
+                                    <Dropdown data={allBrands}>
+                                        <Dropdown.Content>
+                                            <Dropdown.Search></Dropdown.Search>
+                                            <Dropdown.List onChoose={handleChoose}></Dropdown.List>
+                                        </Dropdown.Content>
+                                    </Dropdown>
+                                </>)}
+                            {/* {addBrand ?
+                                (<input className={cl('input')} type="text" id="brand" name="brand" placeholder="Brand" value={formFields.brand} onChange={(e) => handleChange(e.target)} />)
+                                : (<><select className={cl('input')} name="brand" id="brand" value={formFields.brand} onChange={(e) => handleChange(e.target)} >
+                                    {allBrands.map(brand => (
+                                        <option key={brand._id} value={brand.name}>{brand.name}</option>
+                                    ))}
+                                </select></>)} */}
+                            <div className={cl('type-btn')} onClick={handleNewBrand}>{addBrand ? 'Choose' : 'Add new'}</div>
+                        </div>
+                        <div className={cl('validate-error')}>{useValidate(errors, 'brand')}</div>
                     </div>
-                    {/* <div className={cl('validate-error')}>{useValidate(errors, 'type')}</div> */}
-                </div>
+
+                    <div className={cl('group')}>
+                        <label className={cl('label')} htmlFor="desc">Description: </label>
+                        <input className={cl('input')} type="text" id="desc" name="desc" placeholder="Description" value={formFields.desc} onChange={(e) => handleChange(e.target)} />
+                        <div className={cl('validate-error')}>{useValidate(errors, 'desc')}</div>
+                    </div>
 
 
-                <div className={cl('group')}>
-                    <label className={cl('label')} htmlFor="modelYear">Model year: </label>
-                    <input className={cl('input')} type="number" id="modelYear" name="modelYear" placeholder="Model Year" value={formFields.modelYear} onChange={(e) => handleChange(e.target)} />
-                    <div className={cl('validate-error')}>{useValidate(errors, 'modelYear')}</div>
-                </div>
+                    <div className={cl('group')}>
+                        <label className={cl('label')} htmlFor="price">Price: </label>
+                        <input className={cl('input')} type="number" min="0" max="999999999" id="price" name="price" placeholder="Price" value={formFields.price} onChange={(e) => handleChange(e.target)} />
+                        <div className={cl('validate-error')}>{useValidate(errors, 'price')}</div>
+                    </div>
 
-                <div className={cl('group')}>
-                    <label className={cl('label')} htmlFor="file">
-                        Image:
-                    </label>
-                    <input
-                        className={cl('input', 'file')}
-                        type="file"
-                        id="file"
-                        name="photos"
-                        multiple
-                        onChange={(e) => handleChange(e.target)}
-                    // style={{ display: "none" }}
-                    />
-                    <div className={cl('validate-error')}>{useValidate(errors, 'photos')}</div>
-                </div>
+                    <div className={cl('group')}>
+                        <label className={cl('label')} htmlFor="type">Type: </label>
+                        <div className={cl('type-wrapper')}>
+                            {addType ?
+                                (<input className={cl('input')} type="text" id="type" name="type" placeholder="Type" value={formFields.type} onChange={(e) => handleChange(e.target)} />)
+                                : (<><select className={cl('input')} name="type" id="type" value={formFields.type} onChange={(e) => handleChange(e.target)} >
+                                    {allTypes.map(type => (
+                                        <option key={type._id} value={type.name}>{type.name}</option>
+                                    ))}
+                                </select></>)}
+                            <div className={cl('type-btn')} onClick={handleNewType}>{addType ? 'Choose' : 'Add new'}</div>
+                        </div>
+                        {/* <div className={cl('validate-error')}>{useValidate(errors, 'type')}</div> */}
+                    </div>
 
 
-                <button className={cl('submit')}>Add</button>
-            </form>
+                    <div className={cl('group')}>
+                        <label className={cl('label')} htmlFor="modelYear">Model year: </label>
+                        <input className={cl('input')} type="number" id="modelYear" name="modelYear" placeholder="Model Year" value={formFields.modelYear} onChange={(e) => handleChange(e.target)} />
+                        <div className={cl('validate-error')}>{useValidate(errors, 'modelYear')}</div>
+                    </div>
+
+                    <div className={cl('group')}>
+                        <label className={cl('label', 'file-label')} htmlFor="file">
+                            <span>Image:</span>
+                            <ul className={cl('image-list')}>
+                                <li className={cl('image-item')}>
+                                    <img src={image} alt="uploaded" className={cl('upload-img')} />
+                                </li>
+                            </ul>
+                            <img className={cl('upload-img')} src={image} alt="" />
+                        </label>
+                        <input
+                            className={cl('input', 'file')}
+                            type="file"
+                            id="file"
+                            name="photos"
+                            multiple
+                            onChange={(e) => handleChange(e.target)}
+                        // style={{ display: "none" }}
+                        />
+                        <div className={cl('validate-error')}>{useValidate(errors, 'photos')}</div>
+                    </div>
+
+
+
+                    <button className={cl('submit')}>Add</button>
+                </form>
+            </div>
         </div>
     )
 }

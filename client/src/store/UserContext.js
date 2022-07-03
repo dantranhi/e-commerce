@@ -5,7 +5,7 @@ import reducer, { INIT_STATE } from './reducer'
 const Context = createContext();
 
 
-export const useAuth = () => useContext(Context)
+// export const useAuth = () => useContext(Context)
 export const useStore = () => useContext(Context)
 
 

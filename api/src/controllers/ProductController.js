@@ -42,7 +42,7 @@ class ProductController {
     // [GET] /product/brand
     async getAllBrands(req, res, next) {
         try {
-            const brands = await Brands.find()
+            const brands = await Brand.find()
             res.json(brands)
         } catch (error) {
             res.json({ message: error })
@@ -58,9 +58,14 @@ class ProductController {
         try {
             const savedProduct = new Product(req.body)
             const typeAlreadyExists = await Type.findOne({ name: req.body.type })
+            const brandAlreadyExists = await Brand.findOne({ name: req.body.type })
             if (!typeAlreadyExists) {
                 const newType = new Type({ name: req.body.type })
                 await newType.save()
+            }
+            if (!brandAlreadyExists) {
+                const newBrand = new Brand({ name: req.body.brand })
+                await newBrand.save()
             }
             await savedProduct.save()
             res.json(savedProduct)
