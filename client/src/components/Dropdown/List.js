@@ -10,11 +10,11 @@ const cl = classNames.bind(styles);
 
 function List({ onChoose }) {
     const [state] = useDropdown()
-
-
     return (
         <div className={cl('list')}>
-            {state.searchResult.map((item, index) => (
+            {state.searchResult.length>0 ? state.searchResult.map((item, index) => (
+                <Item onChoose={onChoose} key={index}>{item}</Item>
+            )) : state.values.map((item, index) => (
                 <Item onChoose={onChoose} key={index}>{item}</Item>
             ))}
         </div>

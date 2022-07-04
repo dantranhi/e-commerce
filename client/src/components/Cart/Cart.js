@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
@@ -10,6 +10,21 @@ const cl = classNames.bind(styles);
 
 function Cart({ onClose }) {
   const [state, dispatch] = useStore()
+  const [totalPrice, setTotalPrice] = useState('')
+
+  const calculateTotal = () => {
+    let total = state.cart.data.reduce((accumulate, curValue, curIndex) => {
+      return accumulate += curValue.price * curValue.amount
+    }, 0)
+
+    setTotalPrice(total)
+  }
+
+  useEffect(() => {
+    calculateTotal()
+    localStorage.setItem('userCart', JSON.stringify(state.cart.data))
+  }, [state.cart.data])
+
   return (
     <div className={cl('modal')} onClick={(e) => { onClose(); }}>
       <div onClick={(e) => { e.stopPropagation() }} className={cl('inner')}>
@@ -23,7 +38,7 @@ function Cart({ onClose }) {
           ))}
         </ul>
         <div className={cl('footer')}>
-          <div className={cl('total')}>Total: $12.99</div>
+          <div className={cl('total')}>Total: {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(totalPrice)}</div>
           <button className={cl('check-out')}>Check out</button>
         </div>
       </div>

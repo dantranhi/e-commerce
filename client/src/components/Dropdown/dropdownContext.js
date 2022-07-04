@@ -1,11 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react'
-
 const DropdownContext = createContext()
 
 export const useDropdown = () => useContext(DropdownContext)
-
-
-
 
 export function DropDownProvider({ children, init }) {
     let [state, setState] = useState({})
@@ -22,9 +18,7 @@ export function DropDownProvider({ children, init }) {
             }
             setState(initState)
         }
-
         assignData()
-
     }, [init])
     return (
         <DropdownContext.Provider value={[state, setState]}>

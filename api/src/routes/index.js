@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 
 import productRouter from './product.js'
 import authRouter from './auth.js'
+import { verifyToken } from '../utils/verifyToken.js';
 
 const CLIENT_URL = 'http://localhost:3000'
 
@@ -31,7 +32,6 @@ const router = (app) => {
     }))
     app.get('/auth/facebook/callback', passport.authenticate('facebook'), async (req, res, next) => {
         try {
-            console.log(req.user)
             req.session.user = req.user
             res.redirect(CLIENT_URL)
         }
@@ -40,7 +40,7 @@ const router = (app) => {
         }
     })
 
-    app.get('/api/login/success', (req, res) => {
+    app.get('/api/login/success', (req, res, next) => {
         if (req.session.user) {
             const token = jwt.sign({ id: req.session.user.id, username: req.session.user.username, isAdmin: req.session.user.isAdmin }, process.env.JWT_SECRET)
             const { password, ...otherDetails } = req.session.user;
@@ -49,6 +49,10 @@ const router = (app) => {
                 maxAge: 3600 * 4 * 1000
             }).json({ details: { ...otherDetails } })
         }
+        else next()
+    }, verifyToken, (req, res) => {
+        const { password, ...otherDetails } = req.user;
+        res.json({ details: { ...otherDetails } })
     })
 
     app.use('/:error', (req, res, next) => {

@@ -26,6 +26,8 @@ function NewProduct() {
         photos: '',
     })
 
+    const [temporaryImages, setTemporaryImages] = useState([])
+
     useEffect(() => {
         async function fetchAllTypes() {
             try {
@@ -42,9 +44,8 @@ function NewProduct() {
                 else console.log(res2.message)
             }
             catch (err) {
-
+                console.log(err)
             }
-
         }
 
         fetchAllTypes()
@@ -57,6 +58,16 @@ function NewProduct() {
                 [name]: files ? files : value
             }
         ))
+
+        if (files) {
+            let imgArray = []
+            const arr = [...files]
+            arr.forEach((file) => {
+                const value = URL.createObjectURL(file)
+                imgArray.push(value)
+            })
+            setTemporaryImages(imgArray)
+        }
 
     }
 
@@ -97,13 +108,25 @@ function NewProduct() {
 
     const handleNewType = () => {
         setAddType(prev => !prev)
+        setFormFields(prev => (
+            {
+                ...prev,
+                type: ''
+            }
+        ))
     }
 
     const handleNewBrand = () => {
         setAddBrand(prev => !prev)
+        setFormFields(prev => (
+            {
+                ...prev,
+                brand: ''
+            }
+        ))
     }
 
-    const handleChoose = (item) => {
+    const handleChooseBrand = (item) => {
         setFormFields(prev => (
             {
                 ...prev,
@@ -111,7 +134,15 @@ function NewProduct() {
             }
         ))
     }
-    console.log(formFields)
+
+    const handleChooseType = (item) => {
+        setFormFields(prev => (
+            {
+                ...prev,
+                type: item
+            }
+        ))
+    }
 
     return (
         <div className={cl('wrapper')}>
@@ -125,25 +156,26 @@ function NewProduct() {
                     </div>
 
                     <div className={cl('group')}>
-                        <label className={cl('label')} htmlFor="type">Brand: </label>
+                        <label className={cl('label')} htmlFor="brand">Brand: </label>
                         <div className={cl('type-wrapper')}>
                             {addBrand ?
-                                (<input className={cl('input')} type="text" id="brand" name="brand" placeholder="Brand" value={formFields.brand} onChange={(e) => handleChange(e.target)} />)
-                                : (<>
-                                    <Dropdown data={allBrands}>
-                                        <Dropdown.Content>
-                                            <Dropdown.Search></Dropdown.Search>
-                                            <Dropdown.List onChoose={handleChoose}></Dropdown.List>
-                                        </Dropdown.Content>
-                                    </Dropdown>
-                                </>)}
-                            {/* {addBrand ?
-                                (<input className={cl('input')} type="text" id="brand" name="brand" placeholder="Brand" value={formFields.brand} onChange={(e) => handleChange(e.target)} />)
-                                : (<><select className={cl('input')} name="brand" id="brand" value={formFields.brand} onChange={(e) => handleChange(e.target)} >
-                                    {allBrands.map(brand => (
-                                        <option key={brand._id} value={brand.name}>{brand.name}</option>
-                                    ))}
-                                </select></>)} */}
+                                (<input
+                                    className={cl('input')}
+                                    type="text"
+                                    id="brand"
+                                    name="brand"
+                                    placeholder="Brand"
+                                    value={formFields.brand}
+                                    onChange={(e) => handleChange(e.target)}
+                                />)
+                                :
+                                <Dropdown name="brand" data={allBrands}>
+                                    <Dropdown.Content label="Choose product brand">
+                                        <Dropdown.Search></Dropdown.Search>
+                                        <Dropdown.List onChoose={handleChooseBrand}></Dropdown.List>
+                                    </Dropdown.Content>
+                                </Dropdown>
+                            }
                             <div className={cl('type-btn')} onClick={handleNewBrand}>{addBrand ? 'Choose' : 'Add new'}</div>
                         </div>
                         <div className={cl('validate-error')}>{useValidate(errors, 'brand')}</div>
@@ -166,15 +198,23 @@ function NewProduct() {
                         <label className={cl('label')} htmlFor="type">Type: </label>
                         <div className={cl('type-wrapper')}>
                             {addType ?
-                                (<input className={cl('input')} type="text" id="type" name="type" placeholder="Type" value={formFields.type} onChange={(e) => handleChange(e.target)} />)
-                                : (<><select className={cl('input')} name="type" id="type" value={formFields.type} onChange={(e) => handleChange(e.target)} >
-                                    {allTypes.map(type => (
-                                        <option key={type._id} value={type.name}>{type.name}</option>
-                                    ))}
-                                </select></>)}
+                                (<input
+                                    className={cl('input')}
+                                    type="text" id="type"
+                                    name="type"
+                                    placeholder="Type"
+                                    value={formFields.type}
+                                    onChange={(e) => handleChange(e.target)}
+                                />)
+                                : (<Dropdown data={allTypes}>
+                                    <Dropdown.Content label="Choose product type">
+                                        {/* <Dropdown.Search></Dropdown.Search> */}
+                                        <Dropdown.List onChoose={handleChooseType}></Dropdown.List>
+                                    </Dropdown.Content>
+                                </Dropdown>)}
                             <div className={cl('type-btn')} onClick={handleNewType}>{addType ? 'Choose' : 'Add new'}</div>
                         </div>
-                        {/* <div className={cl('validate-error')}>{useValidate(errors, 'type')}</div> */}
+
                     </div>
 
 
@@ -188,9 +228,11 @@ function NewProduct() {
                         <label className={cl('label', 'file-label')} htmlFor="file">
                             <span>Image:</span>
                             <ul className={cl('image-list')}>
-                                <li className={cl('image-item')}>
-                                    <img src={image} alt="uploaded" className={cl('upload-img')} />
-                                </li>
+                                {temporaryImages.map((img, index) => (
+                                    <li key={index} className={cl('image-item')}>
+                                        <img src={img} alt="uploaded" className={cl('upload-img')} />
+                                    </li>
+                                ))}
                             </ul>
                             <img className={cl('upload-img')} src={image} alt="" />
                         </label>
@@ -201,7 +243,6 @@ function NewProduct() {
                             name="photos"
                             multiple
                             onChange={(e) => handleChange(e.target)}
-                        // style={{ display: "none" }}
                         />
                         <div className={cl('validate-error')}>{useValidate(errors, 'photos')}</div>
                     </div>

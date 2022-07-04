@@ -8,7 +8,6 @@ const cl = classNames.bind(styles);
 
 function Search() {
     const [state, setState] = useDropdown()
-    console.log(state)
 
     const handleChangeInput = (e) => {
         setState(prev => ({

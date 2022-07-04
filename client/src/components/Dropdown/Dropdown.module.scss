@@ -4,7 +4,7 @@
     // padding: 9.5px;
     border: 1px solid #e2e8ef;
     background-color: #fff;
-    border-radius: 8px;
+    border-radius: 4px;
     width: 100%;
 }
 
@@ -45,14 +45,14 @@
 
 
 .list{
-    border: 1px solid #e2e8ef;
+    border-top: 1px solid #e2e8ef;
     height: 100%;
     overflow-y: auto;
 }
 
 
 .item{
-    margin-top: 8px;
+    // margin-top: 8px;
     padding: 8px;
     text-align: left;
     background-color: #fff;

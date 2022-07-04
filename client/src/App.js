@@ -13,15 +13,20 @@ import './index.css';
 
 
 function App() {
-  const [,dispatch] = useStore()
+  const [, dispatch] = useStore()
 
   useEffect(() => {
     async function checkLogin() {
-      dispatch(loginStart())
-      const res = await get('/login/success')
-      if (res.details) {
-        dispatch(loginSuccess(res.details))
-        localStorage.setItem('user', JSON.stringify(res.details))
+      try {
+        dispatch(loginStart())
+        const res = await get('/login/success')
+        if (res?.details) {
+          localStorage.setItem('user', JSON.stringify(res.details))
+          dispatch(loginSuccess(res.details))
+        }
+        else console.log('Not logged in')
+      } catch (error) {
+        console.log(error)
       }
     }
     checkLogin()

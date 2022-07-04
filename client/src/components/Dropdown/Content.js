@@ -8,7 +8,7 @@ const cl = classNames.bind(styles);
 
 
 
-function Content({children}) {
+function Content({ label, children }) {
     const [state, setState] = useDropdown()
 
     const handleToggleDropdown = () => {
@@ -19,7 +19,7 @@ function Content({children}) {
     }
     return (
         <div className={cl('choose-button')}>
-            <span onClick={handleToggleDropdown} className={cl('value')}>{state.currentValue || 'Choose a brand'}</span>
+            <span onClick={handleToggleDropdown} className={cl('value')}>{state.currentValue || label}</span>
             {state.show && <div className={cl('content-wrapper')}>
                 {children}
             </div>}

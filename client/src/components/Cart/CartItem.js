@@ -16,7 +16,7 @@ function CartItem({ data }) {
             <div className={cl('info')}>
                 <div className={cl('name')}>{data?.name || 'High-Back Bench'}</div>
                 <div className={cl('price')}>{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(data?.price)}</div>
-                <button onClick={()=>dispatch(removeFromCart(data?.id))} className={cl('remove')}>remove</button>
+                <button onClick={()=>dispatch(removeFromCart(data?._id))} className={cl('remove')}>remove</button>
             </div>
             <div className={cl('quantity')}>
                 <button onClick={()=>dispatch(addOne(data?._id))} className={cl('adjust')}>

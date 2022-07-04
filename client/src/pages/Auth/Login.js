@@ -1,8 +1,8 @@
-import React, { useState, useLayoutEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { faFacebook } from '@fortawesome/free-brands-svg-icons'
 
-import {loginStart, loginSuccess, loginFailed} from '../../store/actions'
+import { loginStart, loginSuccess, loginFailed } from '../../store/actions'
 import httpRequest from '../../utils/httpRequest'
 import { LogoIcon } from '../../components/Icons'
 import GoogleIcon from '../../assets/img/google.png'
@@ -18,10 +18,13 @@ function Login() {
   const [state, dispatch] = useStore()
   console.log(state.user.info)
 
-  useLayoutEffect(() => {
-    if (Object.keys(state.user.info).length !== 0) {
-      navigate('/')
-      return
+  useEffect(() => {
+    if (Object.keys(state.user.info).length > 0) {
+      const timeoutId = setTimeout(() => {
+        navigate('/')
+        return
+      }, 1000)
+      return ()=>clearTimeout(timeoutId)
     }
   }, [])
 

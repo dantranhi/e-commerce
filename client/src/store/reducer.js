@@ -1,6 +1,7 @@
 import { SET_LOADING, LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILED, TOGGLE_CART, ADD_TO_CART, REMOVE_FROM_CART, ADD_ONE, SUB_ONE } from './constants'
 
 const INIT_ACCOUNT = JSON.parse(localStorage.getItem('user')) ?? {}
+const INIT_CART = JSON.parse(localStorage.getItem('userCart')) ?? []
 
 export const INIT_STATE = {
     loading: false,
@@ -9,7 +10,7 @@ export const INIT_STATE = {
         error: '',
     },
     cart: {
-        data: [],
+        data: INIT_CART,
         isOpen: false
     }
 }
