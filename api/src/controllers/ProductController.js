@@ -8,7 +8,8 @@ class ProductController {
     // [GET] /product
     async getAll(req, res, next) {
         try {
-            const products = await Product.find()
+            // const products = await Product.find()
+            const products = res.paginatedResult
             res.json(products)
         } catch (error) {
             next(error)

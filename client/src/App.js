@@ -17,16 +17,19 @@ function App() {
 
   useEffect(() => {
     async function checkLogin() {
+      dispatch(loginStart())
       try {
-        dispatch(loginStart())
         const res = await get('/login/success')
-        if (res?.details) {
+        if (res.details) {
           localStorage.setItem('user', JSON.stringify(res.details))
           dispatch(loginSuccess(res.details))
         }
-        else console.log('Not logged in')
+        else {
+          console.log('Not logged in')  
+        }
       } catch (error) {
         console.log(error)
+        localStorage.removeItem('user')
       }
     }
     checkLogin()

@@ -1,0 +1,49 @@
+.wrapper{
+    margin-block: 2rem;
+    display: block;
+    width: 100%;
+    font-family: 'Nunito', sans-serif;
+}
+
+.list{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-block: 0;
+}
+
+.item{
+    border: 1px solid transparent;
+    padding: 4px 11.5px;
+    border-radius: 4px;
+    color: #0f1e28;
+
+    &.disabled{
+        pointer-events: none;
+    }
+}
+
+.link{
+    color:inherit ;
+    font-weight: 800;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon{
+
+}
+
+.icon-img{
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.active{
+    color: #5aa6f1;
+    background-color: #f1f5f9;
+}

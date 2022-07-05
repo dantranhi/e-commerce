@@ -7,12 +7,21 @@
     max-width: 280px;
     // box-shadow: 12px 0px 11px rgb(0 0 0 / 20%);
     z-index: 10;
-    transition: all 250ms ease-in-out;
+    transition: all 100ms ease-in-out;
 
     &.minimized {
         max-width: 20px;
         background-color: rgba(14, 30, 41, 0.2);
         border: 1px solid #fafafa;
+        cursor: pointer;
+
+        &:hover{
+            background-color: rgba(14, 30, 41, 0.102);
+
+            & > .expand-btn{
+                background-color: #dadfe4;
+            }
+        }
 
         & > .panel{
             display: none;
@@ -132,6 +141,7 @@
     background-color: #c4cacf;
     border-radius: 50%;
     border: 1px solid #fafafa;
+    cursor: pointer;
 }
 
 .hidden{

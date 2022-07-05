@@ -10,8 +10,8 @@ const cl = classNames.bind(styles);
 function Sidebar({ children }) {
     const [show, setShow] = useState(false)
     return (
-        <aside className={cl('wrapper', { minimized: show })}>
-            <div className={cl('panel')}>
+        <aside onClick={()=>setShow(prev=>!prev)} className={cl('wrapper', { minimized: show })}>
+            <div onClick={(e)=>e.stopPropagation()} className={cl('panel')}>
                 <div className={cl('top')}>
                     <div className={cl('info')}>
                         <img src={exampleAvatar} alt="" className={cl('avatar')} />
@@ -20,7 +20,7 @@ function Sidebar({ children }) {
                             <div className={cl('role')}>Admin</div>
                         </div>
                     </div>
-                    <button onClick={() => setShow(prev => !prev)} className={cl('minimize')}><FontAwesomeIcon icon={faChevronLeft} /></button>
+                    <button onClick={(e) => {e.stopPropagation(); setShow(prev => !prev)}} className={cl('minimize')}><FontAwesomeIcon icon={faChevronLeft} /></button>
                 </div>
 
                 <div className={cl('mid')}>
@@ -34,7 +34,10 @@ function Sidebar({ children }) {
                     </button>
                 </div>
             </div>
-            <button onClick={() => setShow(prev => !prev)} className={cl('expand-btn', {hidden: !show})}><FontAwesomeIcon icon={faChevronRight} /></button>
+            <button onClick={(e) => {
+                e.stopPropagation()
+                setShow(prev => !prev)
+            }} className={cl('expand-btn', {hidden: !show})}><FontAwesomeIcon icon={faChevronRight} /></button>
         </aside>
     )
 

@@ -2,6 +2,7 @@
     margin-top: 40px;
     font-family: Roboto, "Helvetica Neue";
     height: fit-content;
+    padding-inline: min(1rem, 10%);
 }
 
 .inner{
@@ -25,6 +26,8 @@
     width: 100%;
     height: 400px;
     object-fit: contain;
+    border: 1px solid #dedede;
+
 }
 
 .mini-link{

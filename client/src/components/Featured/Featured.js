@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import {Link} from 'react-router-dom'
 
-import ProductItem from '../ProductItem'
+import FeaturedItems from './FeaturedItems'
 import { get } from '../../utils/httpRequest'
 import Button from '../Button'
+import Pagination from '../Pagination'
+
 
 import classNames from 'classnames/bind';
 import styles from './Featured.module.scss';
@@ -14,10 +15,16 @@ function Featured() {
   useEffect(() => {
     async function fetchFeaturedProduct() {
       const data = await get('/product')
+      console.log(data)
       setProducts(data)
     }
     fetchFeaturedProduct()
   }, [])
+
+  const handleFetchPage = async (page) => {
+    const data = await get(`/product?page=${page}`)
+    setProducts(data)
+  }
 
   return (
     <div className={cl('wrapper')}>
@@ -29,12 +36,9 @@ function Featured() {
         </div>
         <div className={cl('products')}>
           <div className="row">
-            {products.map(productItem => (
-              <Link to={`/products/${productItem._id}`} key={productItem._id} className="col l-4 m-6 c-12 mt-4">
-                <ProductItem data={productItem}></ProductItem>
-              </Link>
-            ))}
+            <FeaturedItems products={products.data}></FeaturedItems>
           </div>
+          <Pagination {...products} onFetchNewData={handleFetchPage}></Pagination>
           <Button primary>All products</Button>
         </div>
       </div>

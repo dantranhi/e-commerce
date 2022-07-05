@@ -10,6 +10,7 @@ const cl = classNames.bind(styles);
 
 function CartItem({ data }) {
     const [, dispatch] = useStore()
+
     return (
         <div className={cl('wrapper')}>
             <img src={data?.photos[0] || "https://dl.airtable.com/.attachments/14ac9e946e1a02eb9ce7d632c83f742f/4fd98e64/product-1.jpeg"} alt="product" className={cl('img')} />

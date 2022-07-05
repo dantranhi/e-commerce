@@ -1,12 +1,8 @@
 import React from 'react'
 import { DropDownProvider } from './dropdownContext'
 
-
-
-
-
-
 function Dropdown({ children, data = [] }) {
+
     
     // const dropdownData = [
     //     'MSI', 'ASUS', 'ACER', 'GIGABYTE', 'AOC', 'LOGITECH', 'DAREU', 'EDRA', 'FILCO', 'INTEL', 'AMD', 'GSKILL', 'KINGSTON'
@@ -21,6 +17,8 @@ function Dropdown({ children, data = [] }) {
     // }
 
     // console.log(INIT_VALUE)
+
+  
 
     return (
         <DropDownProvider init={data}>

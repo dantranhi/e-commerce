@@ -10,7 +10,8 @@ import {
     SET_AMOUNT,
     REMOVE_FROM_CART,
     DELETE_CART,
-    TOGGLE_CART
+    TOGGLE_CART,
+    CLEAR_CART_ERROR
 } from './constants'
 
 export const setLoading = (payload) =>{
@@ -80,6 +81,13 @@ export const addOne = (payload) =>{
 export const subOne = (payload) =>{
     return {
         type: SUB_ONE,
+        payload
+    }
+}
+
+export const clearCartError = (payload) =>{
+    return {
+        type: CLEAR_CART_ERROR,
         payload
     }
 }

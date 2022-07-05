@@ -5,6 +5,7 @@ import httpRequest, { get } from '../../utils/httpRequest'
 import useValidate from '../../hooks/useValidate'
 import image from '../../assets/img/image.png'
 import { Dropdown } from '../../components/Dropdown'
+import ValidateMessage from '../../components/ValidateMessage'
 
 import classNames from 'classnames/bind';
 import styles from './NewProduct.module.scss';
@@ -24,6 +25,7 @@ function NewProduct() {
         type: '',
         modelYear: new Date().getFullYear(),
         photos: '',
+        stock: ''
     })
 
     const [temporaryImages, setTemporaryImages] = useState([])
@@ -152,7 +154,8 @@ function NewProduct() {
                     <div className={cl('group')}>
                         <label className={cl('label')} htmlFor="name">Name: </label>
                         <input className={cl('input')} type="text" id="name" name="name" placeholder="Name" value={formFields.name} onChange={(e) => handleChange(e.target)} />
-                        <div className={cl('validate-error')}>{useValidate(errors, 'name')}</div>
+                        {/* <div className={cl('validate-error')}>{useValidate(errors, 'name')}</div> */}
+                        <ValidateMessage name='name' errors={errors}></ValidateMessage>
                     </div>
 
                     <div className={cl('group')}>
@@ -183,7 +186,7 @@ function NewProduct() {
 
                     <div className={cl('group')}>
                         <label className={cl('label')} htmlFor="desc">Description: </label>
-                        <input className={cl('input')} type="text" id="desc" name="desc" placeholder="Description" value={formFields.desc} onChange={(e) => handleChange(e.target)} />
+                        <textarea className={cl('input')} type="text" id="desc" name="desc" placeholder="Description" value={formFields.desc} onChange={(e) => handleChange(e.target)} />
                         <div className={cl('validate-error')}>{useValidate(errors, 'desc')}</div>
                     </div>
 
@@ -247,7 +250,11 @@ function NewProduct() {
                         <div className={cl('validate-error')}>{useValidate(errors, 'photos')}</div>
                     </div>
 
-
+                    <div className={cl('group')}>
+                        <label className={cl('label')} htmlFor="stock">Stock: </label>
+                        <input className={cl('input')} type="number" min="0" max="1000" id="stock" name="stock" placeholder="Stock" value={formFields.stock} onChange={(e) => handleChange(e.target)} />
+                        <div className={cl('validate-error')}>{useValidate(errors, 'stock')}</div>
+                    </div>
 
                     <button className={cl('submit')}>Add</button>
                 </form>

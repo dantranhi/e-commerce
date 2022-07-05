@@ -1,9 +1,9 @@
-import React, { useLayoutEffect, useState } from 'react'
+import React, { useLayoutEffect, useState, useEffect } from 'react'
 import Slider from "react-slick";
 import { useParams } from 'react-router-dom'
 
 import { useStore } from '../../store/UserContext'
-import {addToCart } from '../../store/actions'
+import { addToCart, clearCartError } from '../../store/actions'
 import { get } from '../../utils/httpRequest'
 import MultiLevelNav from '../../components/MultiLevelNav'
 import Button from '../../components/Button'
@@ -15,7 +15,7 @@ import styles from './Detail.module.scss';
 const cl = classNames.bind(styles);
 
 function Detail() {
-    const [, dispatch] = useStore()
+    const [state, dispatch] = useStore()
     const params = useParams()
     const [product, setProduct] = useState(null)
     useLayoutEffect(() => {
@@ -30,6 +30,17 @@ function Detail() {
 
         fetchProduct()
     }, [])
+
+    useEffect(() => {
+        let timerId
+        if (state.cart.error) {
+            timerId = setTimeout(() => {
+                dispatch(clearCartError())
+            }, 3000)
+        }
+
+        return () => clearTimeout(timerId)
+    }, [state.cart])
 
 
     const settings = {
@@ -50,7 +61,7 @@ function Detail() {
 
     return (
         <>
-            <MultiLevelNav list={[{label: 'Home', path: '/'}, {label: 'Product', path:`/products/${product?._id}`} ]}></MultiLevelNav>
+            <MultiLevelNav list={[{ label: 'Home', path: '/' }, { label: 'Product', path: `/products/${product?._id}` }]}></MultiLevelNav>
             <div className={cl('wrapper')}>
                 <div className='grid wide'>
                     <div className={cl('inner')}>
@@ -70,7 +81,9 @@ function Detail() {
                             <div className={cl('desc')}>
                                 {product?.desc || 'No desc'}
                             </div>
-                            <Button onClick={()=>dispatch(addToCart(product))} className={cl('buy')} primary>Add to cart</Button>
+                            {product?.stock > 0 ? (<Button onClick={() => dispatch(addToCart(product))} className={cl('buy')} primary>Add to cart</Button>) : (<Button className={cl('buy')} primary>Out of stock</Button>)}
+                            {state.cart.error ? (<div className={cl('error')}>{state.cart.error}</div>) : <></>}
+
                         </div>
                     </div>
                 </div>
