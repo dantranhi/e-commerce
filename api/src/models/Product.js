@@ -5,7 +5,7 @@ const ProductSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    brand:{
+    brand: {
         type: String,
         required: true
     },
@@ -25,9 +25,16 @@ const ProductSchema = mongoose.Schema({
         type: Number,
         default: new Date().getFullYear()
     },
-    photos: {
-        type: [String]
-    },
+    photos: [
+        {
+            url: {
+                type: String
+            },  
+            public_id: {
+                type: String
+            }
+        }
+    ],
     isFeatured: {
         type: Boolean,
         default: false

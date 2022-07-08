@@ -15,7 +15,6 @@ function Featured() {
   useEffect(() => {
     async function fetchFeaturedProduct() {
       const data = await get('/product')
-      console.log(data)
       setProducts(data)
     }
     fetchFeaturedProduct()

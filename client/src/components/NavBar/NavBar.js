@@ -24,7 +24,7 @@ function NavBar() {
       <div className={cl('header')}>
         <div className={cl('nav')}>
           <Link to='/' className={cl('nav-item')}>Home</Link>
-          <Link to='/products' className={cl('nav-item')}>Products</Link>
+          <Link to='/product' className={cl('nav-item')}>Products</Link>
           <Link to='/login' className={cl('nav-item')}>About</Link>
         </div>
         <label htmlFor={cl('mobile')} className={cl('mobile-bars')}><FontAwesomeIcon className={cl('mobile-bars-icon')} icon={faBars} /></label>

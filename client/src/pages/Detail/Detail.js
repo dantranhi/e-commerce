@@ -61,14 +61,14 @@ function Detail() {
 
     return (
         <>
-            <MultiLevelNav list={[{ label: 'Home', path: '/' }, { label: 'Product', path: `/products/${product?._id}` }]}></MultiLevelNav>
+            <MultiLevelNav list={[{ label: 'Home', path: '/' }, { label: 'Product', path: `/product/${product?._id}` }]}></MultiLevelNav>
             <div className={cl('wrapper')}>
                 <div className='grid wide'>
                     <div className={cl('inner')}>
                         <div className={cl('img-list')}>
                             <Slider className={cl('img-list')} {...settings}>
                                 {product ? product.photos.map((item, index) => (
-                                    <img key={index} src={item} alt="" className={cl('img')} />
+                                    <img key={index} src={item.url} alt="" className={cl('img')} />
                                 )) : null}
                             </Slider>
                         </div>

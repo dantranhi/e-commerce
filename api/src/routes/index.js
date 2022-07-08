@@ -47,6 +47,7 @@ const router = (app) => {
             res.cookie("access_token", token, {
                 httpOnly: true,
                 maxAge: 3600 * 4 * 1000
+                // maxAge: 60 * 1000
             }).json({ details: { ...otherDetails } })
         }
         else next()

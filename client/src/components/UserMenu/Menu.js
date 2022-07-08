@@ -33,7 +33,7 @@ function Menu() {
     <ul className={cl('wrapper')}>
       <li>Hello {state.user.info.username}</li>
       {state.user.info.isAdmin && <li>
-        <Link to='/products/create' className={cl('link')}>
+        <Link to='/admin/product/create' className={cl('link')}>
           <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faGear} /></span> Admin
         </Link>
       </li>}

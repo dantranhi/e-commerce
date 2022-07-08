@@ -18,9 +18,12 @@
     padding: 4px 11.5px;
     border-radius: 4px;
     color: #0f1e28;
+    cursor: pointer;
 
     &.disabled{
         pointer-events: none;
+        cursor: default;
+        color: #bababa;
     }
 }
 
@@ -46,4 +49,5 @@
 .active{
     color: #5aa6f1;
     background-color: #f1f5f9;
+    border: 1px solid #dddddd;
 }

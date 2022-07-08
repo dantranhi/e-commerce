@@ -1,17 +1,21 @@
 import NewProduct from '../pages/NewProduct'
 import Home from '../pages/Home'
 import Detail from '../pages/Detail'
+import ProductList from '../pages/ProductList'
+import EditProduct from '../pages/EditProduct'
 import Sidebar from '../components/Sidebar'
 import {Login} from '../pages/Auth'
 import AdminLayout from '../layouts/AdminLayout'
 
 const routes = [
-    { id: 5, path: '/products/:id', component: Detail },
-    { id: 1, path: '/', component: Home },
-    { id: 2, path: '/products', component: Home },
-    { id: 3, path: '/login', component: Login, layout: null },
-    { id: 4, path: '/products/create', component: NewProduct, layout: AdminLayout },
-    { id: 6, path: '/admin', component: Sidebar },
+    { path: '/admin/product/create', component: NewProduct, layout: AdminLayout },
+    { path: '/admin/product/:id', component: EditProduct, layout: AdminLayout },
+    { path: '/product/:id', component: Detail },
+    { path: '/product', component: Home },
+    { path: '/admin/product', component: ProductList, layout: AdminLayout },
+    { path: '/admin', component: Sidebar },
+    { path: '/login', component: Login, layout: null },
+    { path: '/', component: Home },
 ]
 
 export default routes

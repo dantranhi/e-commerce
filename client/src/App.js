@@ -7,6 +7,7 @@ import { loginStart, loginSuccess, loginFailed } from './store/actions'
 import { useStore } from './store/UserContext'
 import routes from './routes'
 import DefaultLayout from './layouts/DefaultLayout'
+import 'antd/dist/antd.css';
 import './grid.css';
 import './index.css';
 
@@ -30,6 +31,7 @@ function App() {
       } catch (error) {
         console.log(error)
         localStorage.removeItem('user')
+        dispatch(loginFailed())
       }
     }
     checkLogin()
@@ -39,13 +41,13 @@ function App() {
     <Router>
       <div className="app">
         <Routes>
-          {routes.map(item => {
+          {routes.map((item, index) => {
             let Layout = DefaultLayout
             if (item.layout) Layout = item.layout
             if (item.layout === null) Layout = Fragment
             let Page = item.component
             return (
-              <Route key={item.id} path={item.path} element={(
+              <Route key={index} path={item.path} element={(
                 <Layout>
                   <Page></Page>
                 </Layout>

@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser'
 import passport from 'passport'
 import session from 'express-session'
+import cloudinary from 'cloudinary'
 
 import initializePassport from './configs/passport.js'
 import router from './routes/index.js'
@@ -28,6 +29,12 @@ app.use(session({
     },
 }))
 initializePassport(passport)
+cloudinary.config({ 
+    cloud_name: 'dauu0vpgc', 
+    api_key: '778177312327272', 
+    api_secret: 'IG_zmRjj8rJ7xTjo-cF1cAzSd7Q',
+    secure: true
+  });
 
 mongoose.connect(process.env.MONGO, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
     console.log('DB connected')

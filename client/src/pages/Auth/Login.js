@@ -24,6 +24,7 @@ function Login() {
         navigate('/')
         return
       }, 1000)
+      
       return ()=>clearTimeout(timeoutId)
     }
   }, [])
