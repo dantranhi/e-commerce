@@ -16,13 +16,13 @@ function ProductList() {
     useEffect(() => {
         async function fetchFeaturedProduct() {
             const data = await get(`/product`)
-            setProducts(data.data)
+            console.log(data)
+            setProducts(data)
         }
         fetchFeaturedProduct()
     }, [])
 
     const confirm = async (e, id) => {
-        console.log(e);
         try{
             const res = await axios.delete(`/product/${id}`)
             if (res.data.success){
@@ -45,7 +45,7 @@ function ProductList() {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
-            render: (text) => <a>{text}</a>,
+            render: (text) => <a href="/">{text}</a>,
         },
         {
             title: 'Brand',
@@ -76,7 +76,7 @@ function ProductList() {
                         okText="Yes"
                         cancelText="No"
                     >
-                        <a href="#">Delete</a>
+                        <a href="/">Delete</a>
                     </Popconfirm>
                 </Space>
             ),

@@ -7,7 +7,7 @@ import { loginStart, loginSuccess, loginFailed } from './store/actions'
 import { useStore } from './store/UserContext'
 import routes from './routes'
 import DefaultLayout from './layouts/DefaultLayout'
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.min.css';
 import './grid.css';
 import './index.css';
 

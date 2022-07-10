@@ -13,14 +13,14 @@ const cl = classNames.bind(styles);
 
 function Featured() {
   const [products, setProducts] = useState([])
-  const { data, loading, error, reFetch } = useFetch('/product')
+  const { data, loading, error} = useFetch('/product/grid')
   
   useEffect(() =>{
     setProducts(data)
   },[data])
 
   const handleFetchPage = async (page) => {
-    const data = await get(`/product?page=${page}`)
+    const data = await get(`/product/grid?page=${page}`)
     setProducts(data)
   }
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { ToastContainer, toast } from 'react-toastify';
 import { Select, Input } from 'antd';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PropTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -312,7 +312,7 @@ function ProductForm({ edit }) {
 
                 <div className={cl('group')}>
                     <label className={cl('label')} htmlFor="stock">Stock: </label>
-                    <Input type="number" min="0" max="1000" id="stock" name="stock" placeholder="Stock" value={formFields.stock || 0} onChange={(e) => handleChange(e.target)} />
+                    <Input type="number" min="0" max="1000" id="stock" name="stock" placeholder="Stock" value={formFields.stock} onChange={(e) => handleChange(e.target)} />
                     <ValidateMessage name='stock' errors={errors}></ValidateMessage>
                 </div>
 

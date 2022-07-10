@@ -7,11 +7,21 @@ import Brand from '../models/Brand.js'
 import { createError } from '../utils/error.js'
 
 class ProductController {
-    // [GET] /product
-    async getAll(req, res, next) {
+    // [GET] /product/grid
+    async getAllGrid(req, res, next) {
         try {
             // const products = await Product.find()
             const products = res.paginatedResult
+            res.json(products)
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    // [GET] /product/
+    async getAll(req, res, next) {
+        try {
+            const products = await Product.find()
             res.json(products)
         } catch (error) {
             next(error)

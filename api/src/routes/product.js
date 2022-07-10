@@ -10,10 +10,11 @@ const router = express.Router();
 router.get('/type', ProductController.getAllTypes)
 router.get('/brand', ProductController.getAllBrands)
 
-router.get('/', paginate(Product, 12), ProductController.getAll)
+router.get('/grid', paginate(Product, 12), ProductController.getAllGrid)
 router.get('/:id', ProductController.get)
 router.post('/create', verifyAdmin, ...productValidator, ProductController.create)
 router.put('/:id', verifyAdmin, ...productValidator, ProductController.update)
 router.delete('/:id', verifyAdmin, ProductController.delete)
 
+router.get('/', ProductController.getAll)
 export default router
