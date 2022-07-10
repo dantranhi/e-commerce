@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import RightChevrons from '../../assets/img/right-chevrons.png'
 import LeftChevrons from '../../assets/img/left-chevrons.png'
+import PropTypes from 'prop-types'
 
 import classNames from 'classnames/bind';
 import styles from './Pagination.module.scss';
@@ -51,6 +52,16 @@ function Pagination({ currentPage, data, previous, next, offset, pages, onFetchN
             </ul>
         </div>
     )
+}
+
+Pagination.propTypes = {
+    currentPage: PropTypes.object,
+    data: PropTypes.array,
+    previous: PropTypes.object,
+    next: PropTypes.object,
+    offset: PropTypes.number,
+    pages: PropTypes.number,
+    onFetchNewData: PropTypes.func
 }
 
 export default Pagination

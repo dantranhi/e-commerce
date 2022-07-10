@@ -1,11 +1,12 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
+import PropTypes from 'prop-types';
 
 import classNames from 'classnames/bind';
 import styles from './MultiLevelNav.module.scss';
 const cl = classNames.bind(styles);
 
-function MultiLevelNav({list = [{label: 'Home', path: '/'}, {label: 'Single Product', path:'/products'} ]}) {
+function MultiLevelNav({list}) {
   return (
     <div className={cl('wrapper')}>
         <div className={`grid wide ${cl('inner')}`}>
@@ -15,6 +16,10 @@ function MultiLevelNav({list = [{label: 'Home', path: '/'}, {label: 'Single Prod
         </div>
     </div>
   )
+}
+
+MultiLevelNav.propTypes = {
+  list: PropTypes.array.isRequired
 }
 
 export default MultiLevelNav

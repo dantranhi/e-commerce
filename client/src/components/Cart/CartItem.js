@@ -1,6 +1,7 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import PropTypes from 'prop-types'
 
 import { useStore } from '../../store/UserContext'
 import { removeFromCart, addOne, subOne } from '../../store/actions'
@@ -30,6 +31,10 @@ function CartItem({ data }) {
             </div>
         </div>
     )
+}
+
+CartItem.propTypes = {
+    data: PropTypes.object.isRequired
 }
 
 export default CartItem

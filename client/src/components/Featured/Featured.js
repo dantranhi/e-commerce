@@ -4,6 +4,7 @@ import FeaturedItems from './FeaturedItems'
 import { get } from '../../utils/httpRequest'
 import Button from '../Button'
 import Pagination from '../Pagination'
+import useFetch from '../../hooks/useFetch'
 
 
 import classNames from 'classnames/bind';
@@ -12,13 +13,11 @@ const cl = classNames.bind(styles);
 
 function Featured() {
   const [products, setProducts] = useState([])
-  useEffect(() => {
-    async function fetchFeaturedProduct() {
-      const data = await get('/product')
-      setProducts(data)
-    }
-    fetchFeaturedProduct()
-  }, [])
+  const { data, loading, error, reFetch } = useFetch('/product')
+  
+  useEffect(() =>{
+    setProducts(data)
+  },[data])
 
   const handleFetchPage = async (page) => {
     const data = await get(`/product?page=${page}`)
@@ -34,11 +33,13 @@ function Featured() {
           <span className={cl('line')}></span>
         </div>
         <div className={cl('products')}>
-          <div className="row">
-            <FeaturedItems products={products.data}></FeaturedItems>
-          </div>
-          <Pagination {...products} onFetchNewData={handleFetchPage}></Pagination>
-          <Button primary>All products</Button>
+          {loading || error ? 'Loading' : <>
+            <div className="row">
+              <FeaturedItems products={products.data || []}></FeaturedItems>
+            </div>
+            <Pagination {...products} onFetchNewData={handleFetchPage}></Pagination>
+          </>}
+          <Button primary >All products</Button>
         </div>
       </div>
     </div>

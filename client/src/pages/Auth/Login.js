@@ -11,12 +11,12 @@ import Button from '../../components/Button'
 import { useStore } from '../../store/UserContext'
 import classNames from 'classnames/bind';
 import styles from './Login.module.scss';
+
 const cl = classNames.bind(styles);
 
 function Login() {
   const navigate = useNavigate()
   const [state, dispatch] = useStore()
-  console.log(state.user.info)
 
   useEffect(() => {
     if (Object.keys(state.user.info).length > 0) {

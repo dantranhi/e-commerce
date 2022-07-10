@@ -6,10 +6,11 @@ import { faCartShopping, faUser, faBars, faXmark } from '@fortawesome/free-solid
 
 import { toggleCart } from '../../store/actions'
 import { useStore } from '../../store/UserContext'
+import { LogoIcon } from '../Icons/Icons'
 import UserMenu from '../UserMenu'
 import Cart from '../Cart'
-import { LogoIcon } from '../Icons/Icons'
 import styles from './NavBar.module.scss';
+
 const cl = classNames.bind(styles);
 
 function NavBar() {

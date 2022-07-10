@@ -1,8 +1,11 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
+
 import ProductItem from '../ProductItem'
 
-function FeaturedItems({products, currentItems}) {
+
+function FeaturedItems({ products }) {
     return (
         <>
             {products && products.map(productItem => (
@@ -12,6 +15,10 @@ function FeaturedItems({products, currentItems}) {
             ))}
         </>
     )
+}
+
+FeaturedItems.propTypes = {
+    products: PropTypes.array.isRequired
 }
 
 export default FeaturedItems

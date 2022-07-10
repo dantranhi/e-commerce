@@ -1,26 +1,28 @@
 import React, { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
+
 import useValidate from '../../hooks/useValidate'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
 import styles from './ValidateMessage.module.scss'
 
 function ValidateMessage({ errors, name }) {
-    const [hide, setHide] = useState(false)
     const [message, setMessage] = useState('')
 
     let msg = useValidate(errors, name)
-    useEffect(()=>{
+    useEffect(() => {
         setMessage(msg)
-    },[msg])
+    }, [msg])
+
     return (
         <div className={styles['validate-error']}>
-            {!hide && message && (<>
-                <span>{message}</span>
-                <FontAwesomeIcon className={styles['close-icon']} onClick={()=>setHide(true)} icon={faXmark} />
-            </>)}
+            <span>{message}</span>
         </div>
     )
+}
+
+ValidateMessage.propTypes = {
+    errors: PropTypes.array.isRequired,
+    name: PropTypes.string.isRequired
 }
 
 export default ValidateMessage

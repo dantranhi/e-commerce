@@ -1,6 +1,6 @@
 .form {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: 2.5rem;
     row-gap: 2rem;
     font-family: 'Roboto', sans-serif;
@@ -16,23 +16,30 @@
 }
 
 .group {
+    max-height: 212px;
     display: grid;
     grid-template-columns: 1fr 3fr;
     grid-template-rows: 40px 40px;
     row-gap: 10px;
-    align-items: center;
+    // align-items: center;
+    place-items: start stretch; ;
+
 
     &.textarea-group{
         grid-row: span 2;
         grid-template-rows: 4fr 1fr;
     }
+
+    &.group-file{
+        grid-row: span 2;
+        grid-template-rows: 1fr 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 1rem;
+    }
 }
 
 .label {
     min-width: 120px;
-    // place-self: center start;
-
-
 }
 
 .type-wrapper {
@@ -42,8 +49,7 @@
 }
 
 .textarea{
-    // grid-column: span 2;
-    height: 100%;
+    height: 100% !important;
 }
 
 .file {
@@ -51,29 +57,43 @@
 }
 
 .file-label {
-    grid-column: 1 / -1;
-    height: 100%;
+    padding: 0.75rem;
+    background-color: #fff;
+    height: 100% !important;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.75rem;
     cursor: pointer;
+    
 }
 
 .image-list {
-    height: 100%;
+    grid-column: 1 / -1;
     display: flex;
+    height: 100%;
+    width: 100%;    
     align-items: center;
     gap: 8px;
 }
 
 .image-item {
-    height: 100%;
+    
 }
 
-.upload-img {
-    height: 100%;
-    aspect-ratio: 1 / 1;
+.upload-img{
+    height: 60px;
+    max-width: 60px;
     object-fit: cover;
+}
+
+.upload-icon{
+    font-size: 1.5rem;
+}
+
+.label-text{
+    font-weight: 600;
 }
 
 .validate-error {

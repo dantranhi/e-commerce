@@ -3,9 +3,12 @@ import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
 import { Select, Input } from 'antd';
 import 'react-toastify/dist/ReactToastify.css';
+import PropTypes from 'prop-types'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowUpFromBracket, faPlus } from '@fortawesome/free-solid-svg-icons'
 
+import useFetch from '../../hooks/useFetch'
 import httpRequest, { get } from '../../utils/httpRequest'
-import image from '../../assets/img/image.png'
 import ValidateMessage from '../../components/ValidateMessage'
 
 import classNames from 'classnames/bind';
@@ -21,6 +24,8 @@ function ProductForm({ edit }) {
     const [allBrands, setAllBrands] = useState([])
     const [addType, setAddType] = useState(false)
     const [addBrand, setAddBrand] = useState(false)
+    const [appendImages, setAppendImages] = useState(false)
+    const [defaultImages, setDefaultImages] = useState([])
     const [formFields, setFormFields] = useState({
         name: '',
         brand: '',
@@ -32,23 +37,16 @@ function ProductForm({ edit }) {
         stock: ''
     })
 
-    // const [product, setProduct] = useState({})
+    const { data, loading, error, reFetch } = useFetch(`/product/${edit}`, !!edit)
+    if (error) console.log(error)
     useEffect(() => {
-        async function fetchProductById(id) {
-            try {
-                const data = await get(`/product/${id}`)
-                setFormFields(data)
-            } catch (error) {
-                console.log(error)
-            }
+        if (!Array.isArray(data)) {
+            setFormFields(data)
+            setDefaultImages([...data.photos])
         }
+    }, [data])
 
-        if (edit) {
-            fetchProductById(edit)
-        }
-    }, [])
-
-    const [temporaryImages, setTemporaryImages] = useState([])
+    const [temporaryImages, setTemporaryImages] = useState([])  
 
     useEffect(() => {
         async function fetchAllTypes() {
@@ -128,7 +126,6 @@ function ProductForm({ edit }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(formFields)
         try {
             const list = await Promise.all(
                 Object.values(formFields.photos).map(async (file) => {
@@ -152,8 +149,9 @@ function ProductForm({ edit }) {
 
             const newProduct = {
                 ...formFields,
-                photos: list,
+                photos: appendImages ? [...defaultImages, ...list] : list,
             };
+            console.log(newProduct)
             try {
                 if (!edit) {
                     const res = await httpRequest.post('/product/create', newProduct)
@@ -175,8 +173,6 @@ function ProductForm({ edit }) {
                         setErrors(res.data.errors)
                         console.log(res.data)
                     }
-
-
                 }
             }
             catch (err) {
@@ -187,6 +183,7 @@ function ProductForm({ edit }) {
             toast.error(error)
         }
     }
+
 
 
     return (
@@ -282,22 +279,26 @@ function ProductForm({ edit }) {
                     <ValidateMessage name='modelYear' errors={errors}></ValidateMessage>
                 </div>
 
-                <div className={cl('group')}>
-                    <label className={cl('label', 'file-label')} htmlFor="file">
-                        <span>Image:</span>
-                        <ul className={cl('image-list')}>
-                            {Array.isArray(formFields?.photos) ? formFields?.photos.map((img, index) => (
-                                <li key={index} className={cl('image-item')}>
-                                    <img src={img.url} alt="uploaded" className={cl('upload-img')} />
-                                </li>
-                            )) : temporaryImages.map((img, index) => (
-                                <li key={index} className={cl('image-item')}>
-                                    <img src={img} alt="uploaded" className={cl('upload-img')} />
-                                </li>
-                            ))}
-                        </ul>
-                        <img className={cl('upload-img')} src={image} alt="" />
+                <div className={cl('group', 'group-file')}>
+                    <label className={cl('label', 'file-label')} htmlFor="file" >
+                        <FontAwesomeIcon className={cl('upload-icon')} icon={faArrowUpFromBracket} />
+                        <span className={cl('label-text')}>Replace images</span>
                     </label>
+                    <label className={cl('label', 'file-label')} htmlFor="file" onClick={()=>setAppendImages(true)}>
+                        <FontAwesomeIcon className={cl('upload-icon')} icon={faPlus} />
+                        <span className={cl('label-text')}>Add images</span>
+                    </label>
+                    <ul className={cl('image-list')}>
+                        {Array.isArray(formFields?.photos) ? formFields?.photos.map((img, index) => (
+                            <li key={index} className={cl('image-item')}>
+                                <img src={img.url} alt="uploaded" className={cl('upload-img')} />
+                            </li>
+                        )) : temporaryImages.map((img, index) => (
+                            <li key={index} className={cl('image-item')}>
+                                <img src={img} alt="uploaded" className={cl('upload-img')} />
+                            </li>
+                        ))}
+                    </ul>
                     <input
                         className={cl('file')}
                         type="file"
@@ -315,7 +316,7 @@ function ProductForm({ edit }) {
                     <ValidateMessage name='stock' errors={errors}></ValidateMessage>
                 </div>
 
-                <button className={cl('submit')}>Add</button>
+                <button className={cl('submit')}>{!!edit ? 'Save' : 'Create'}</button>
             </form>
             <ToastContainer
                 position="top-right"
@@ -330,6 +331,10 @@ function ProductForm({ edit }) {
             />
         </>
     )
+}
+
+ProductForm.propTypes = {
+    edit: PropTypes.string
 }
 
 export default ProductForm

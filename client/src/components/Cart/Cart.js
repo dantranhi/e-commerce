@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import PropTypes from 'prop-types'
 
 import { useStore } from '../../store/UserContext'
 import CartItem from './CartItem'
@@ -44,6 +45,10 @@ function Cart({ onClose }) {
       </div>
     </div>
   )
+}
+
+Cart.propTypes = {
+  onClose: PropTypes.func
 }
 
 export default Cart
