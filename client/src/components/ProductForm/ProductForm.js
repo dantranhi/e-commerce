@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useId } from 'react'
 import axios from 'axios'
-import { Select, Input } from 'antd';
+import { Select, Input, Space, Divider, Typography } from 'antd';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PropTypes from 'prop-types'
@@ -19,11 +19,12 @@ const { Option } = Select
 const { TextArea } = Input
 
 function ProductForm({ edit }) {
+    const uniqueId = useId()
     const [errors, setErrors] = useState([])
     const [allTypes, setAllTypes] = useState([])
     const [allBrands, setAllBrands] = useState([])
-    const [addType, setAddType] = useState(false)
-    const [addBrand, setAddBrand] = useState(false)
+    const [newTypeName, setNewTypeName] = useState('')
+    const [newBrandName, setNewBrandName] = useState('')
     const [appendImages, setAppendImages] = useState(false)
     const [defaultImages, setDefaultImages] = useState([])
     const [formFields, setFormFields] = useState({
@@ -37,7 +38,7 @@ function ProductForm({ edit }) {
         stock: ''
     })
 
-    const { data, loading, error, reFetch } = useFetch(`/product/${edit}`, !!edit)
+    const { data, error } = useFetch(`/product/${edit}`, !!edit)
     if (error) console.log(error)
     useEffect(() => {
         if (!Array.isArray(data)) {
@@ -46,7 +47,7 @@ function ProductForm({ edit }) {
         }
     }, [data])
 
-    const [temporaryImages, setTemporaryImages] = useState([])  
+    const [temporaryImages, setTemporaryImages] = useState([])
 
     useEffect(() => {
         async function fetchAllTypes() {
@@ -90,26 +91,6 @@ function ProductForm({ edit }) {
         }
     }
 
-    const handleNewType = () => {
-        setAddType(prev => !prev)
-        setFormFields(prev => (
-            {
-                ...prev,
-                type: ''
-            }
-        ))
-    }
-
-    const handleNewBrand = () => {
-        setAddBrand(prev => !prev)
-        setFormFields(prev => (
-            {
-                ...prev,
-                brand: ''
-            }
-        ))
-    }
-
     const handleChangeSelect = (value, field) => {
         setFormFields(prev => (
             {
@@ -119,8 +100,16 @@ function ProductForm({ edit }) {
         ))
     }
 
-    const handleSearchSelect = (value) => {
-        console.log('search:', value);
+    const addTypeItem = (e) => {
+        e.preventDefault();
+        setAllTypes(prev => ([...prev, { name: newTypeName }]))
+        setNewTypeName('')
+    };
+
+    const addBrandItem = (e) => {
+        e.preventDefault();
+        setAllBrands(prev => ([...prev, { name: newBrandName }]))
+        setNewBrandName('')
     };
 
 
@@ -184,8 +173,6 @@ function ProductForm({ edit }) {
         }
     }
 
-
-
     return (
         <>
             <form onSubmit={handleSubmit} className={cl('form')}>
@@ -197,34 +184,41 @@ function ProductForm({ edit }) {
 
                 <div className={cl('group')}>
                     <label className={cl('label')} htmlFor="brand">Brand: </label>
-                    <div className={cl('type-wrapper')}>
-                        {addBrand ?
-                            (<Input
-                                type="text"
-                                id="brand"
-                                name="brand"
-                                placeholder="Brand"
-                                value={formFields.brand}
-                                onChange={(e) => handleChange(e.target)}
-                            />)
-                            :
-                            (<Select
-                                className={cl('select')}
-                                showSearch
-                                placeholder="Select brand"
-                                value={edit ? formFields.brand : undefined}
-                                optionFilterProp="children"
-                                onChange={(value) => handleChangeSelect(value, 'brand')}
-                                onSearch={handleSearchSelect}
-                                filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
-                            >
-                                {allBrands.map(item => (
-                                    <Option key={item._id} value={item.name}>{item.name}</Option>
-                                ))}
-                            </Select>)
-                        }
-                        <div className={cl('type-btn')} onClick={handleNewBrand}>{addBrand ? 'Choose' : 'Add new'}</div>
-                    </div>
+                    <Select
+                        placeholder="Choose a brand or add one"
+                        value={formFields.brand || undefined}
+                        onChange={(value) => handleChangeSelect(value, 'brand')}
+                        dropdownRender={(menu) => (
+                            <>
+                                {menu}
+                                <Divider
+                                    style={{
+                                        margin: '8px 0',
+                                    }}
+                                />
+                                <Space
+                                    align="center"
+                                    style={{
+                                        padding: '0 8px 4px',
+                                    }}
+                                >
+                                    <Input placeholder="Please enter brand name" name="brand" value={newBrandName} onChange={(e) => setNewBrandName(e.target.value)} />
+                                    <Typography.Link
+                                        onClick={addBrandItem}
+                                        style={{
+                                            whiteSpace: 'nowrap',
+                                        }}
+                                    >
+                                        <FontAwesomeIcon icon={faPlus} /> Add item
+                                    </Typography.Link>
+                                </Space>
+                            </>
+                        )}
+                    >
+                        {allBrands.map(item => (
+                            <Option key={item._id || uniqueId} value={item.name}>{item.name}</Option>
+                        ))}
+                    </Select>
                     <ValidateMessage name='brand' errors={errors}></ValidateMessage>
                 </div>
 
@@ -243,32 +237,41 @@ function ProductForm({ edit }) {
 
                 <div className={cl('group')}>
                     <label className={cl('label')} htmlFor="type">Type: </label>
-                    <div className={cl('type-wrapper')}>
-                        {addType ?
-                            (<Input
-                                type="text"
-                                id="type"
-                                name="type"
-                                placeholder="Type"
-                                value={formFields.type}
-                                onChange={(e) => handleChange(e.target)}
-                            />)
-                            : (<Select
-                                className={cl('select')}
-                                showSearch
-                                value={edit ? formFields.type : undefined}
-                                placeholder="Select type"
-                                optionFilterProp="children"
-                                onChange={(value) => handleChangeSelect(value, 'type')}
-                                onSearch={handleSearchSelect}
-                                filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
-                            >
-                                {allTypes.map(item => (
-                                    <Option key={item._id} value={item.name}>{item.name}</Option>
-                                ))}
-                            </Select>)}
-                        <div className={cl('type-btn')} onClick={handleNewType}>{addType ? 'Choose' : 'Add new'}</div>
-                    </div>
+                    <Select
+                        placeholder="Choose a type or add one"
+                        value={formFields.type || undefined}
+                        onChange={(value) => handleChangeSelect(value, 'type')}
+                        dropdownRender={(menu) => (
+                            <>
+                                {menu}
+                                <Divider
+                                    style={{
+                                        margin: '8px 0',
+                                    }}
+                                />
+                                <Space
+                                    align="center"
+                                    style={{
+                                        padding: '0 8px 4px',
+                                    }}
+                                >
+                                    <Input placeholder="Please enter type name" name="type" value={newTypeName} onChange={(e) => setNewTypeName(e.target.value)} />
+                                    <Typography.Link
+                                        onClick={addTypeItem}
+                                        style={{
+                                            whiteSpace: 'nowrap',
+                                        }}
+                                    >
+                                        <FontAwesomeIcon icon={faPlus} /> Add item
+                                    </Typography.Link>
+                                </Space>
+                            </>
+                        )}
+                    >
+                        {allTypes.map(item => (
+                            <Option key={item._id || uniqueId} value={item.name}>{item.name}</Option>
+                        ))}
+                    </Select>
                     <ValidateMessage name='type' errors={errors}></ValidateMessage>
                 </div>
 
@@ -280,14 +283,16 @@ function ProductForm({ edit }) {
                 </div>
 
                 <div className={cl('group', 'group-file')}>
-                    <label className={cl('label', 'file-label')} htmlFor="file" >
+                    <label className={cl('label', 'file-label', { full: !edit })} htmlFor="file" >
                         <FontAwesomeIcon className={cl('upload-icon')} icon={faArrowUpFromBracket} />
-                        <span className={cl('label-text')}>Replace images</span>
+                        <span className={cl('label-text')}>{!!edit ? 'Replace images' : 'Add images'}</span>
                     </label>
-                    <label className={cl('label', 'file-label')} htmlFor="file" onClick={()=>setAppendImages(true)}>
-                        <FontAwesomeIcon className={cl('upload-icon')} icon={faPlus} />
-                        <span className={cl('label-text')}>Add images</span>
-                    </label>
+                    {!!edit && (
+                        <label className={cl('label', 'file-label')} htmlFor="file" onClick={() => setAppendImages(true)}>
+                            <FontAwesomeIcon className={cl('upload-icon')} icon={faPlus} />
+                            <span className={cl('label-text')}>Add images</span>
+                        </label>
+                    )}
                     <ul className={cl('image-list')}>
                         {Array.isArray(formFields?.photos) ? formFields?.photos.map((img, index) => (
                             <li key={index} className={cl('image-item')}>

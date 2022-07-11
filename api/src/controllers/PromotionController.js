@@ -1,36 +1,82 @@
 import Promotion from '../models/Promotion.js'
-import PromotionType from '../models/PromotionType.js'
-import { createError} from '../utils/error.js'
+import { validationResult } from 'express-validator'
 
-class PromotionController{
-    async getAll(req, res, next){
-        try{
+
+import PromotionType from '../models/PromotionType.js'
+import { createError } from '../utils/error.js'
+
+class PromotionController {
+    // [GET] /promotion
+    async getAll(req, res, next) {
+        try {
             const promotions = await Promotion.find()
-        res.status(200).json(promotions)
-        } catch(e){
+            res.status(200).json({success: true, data: promotions})
+        } catch (e) {
             next(createError(500, 'Promotions not found'))
         }
     }
 
-    async getAllTypes(req, res, next){
+    // [GET] /promotion/:id
+    async get(req, res, next) {
+        try {
+            const promotion = await Promotion.findById(req.params.id)
+            res.status(200).json({success: true, data: promotion})
+        } catch (e) {
+            next(createError(500, 'Promotions not found'))
+        }
+    }
+
+    // [GET] /promotion/type
+    async getAllTypes(req, res, next) {
         const types = await PromotionType.find()
         res.status(200).json(types)
     }
 
-    async getAllPeriods(req, res, next){
+    // [GET] /promotion/periods
+    async getAllPeriods(req, res, next) {
         const promotions = await Promotion.find()
         const periods = promotions.map(p => p.startEndDate)
         res.status(200).json(periods)
     }
 
-    async create(req, res, next){
-        try{
+
+    // [POST] /promotion/create
+    async create(req, res, next) {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({ errors: errors.array() });
+        }
+        try {
             const promotion = new Promotion(req.body)
             await promotion.save()
-            console.log(promotion)
-            res.json(promotion)
-        }catch(e){
+            res.status(200).json({ success: true, message: 'Promotion created successfully' })
+        } catch (e) {
             next(e)
+        }
+    }
+
+
+    // [PUT] /promotion/:id
+    async update(req, res, next) {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({ errors: errors.array() });
+        }
+        try {
+            await Promotion.findByIdAndUpdate(req.params.id, req.body)
+            res.json({success: true, message: 'Promotion updated successfully'})
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    // [DELETE] /promotion/:id
+    async delete(req, res, next) {
+        try {
+            await Promotion.findByIdAndDelete(req.params.id)
+            res.json({success: true, message: 'Promotion deleted successfully'})
+        } catch (error) {
+            next(error)
         }
     }
 }

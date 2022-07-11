@@ -10,7 +10,7 @@ const cl = classNames.bind(styles);
 function Sidebar({ children }) {
     const [show, setShow] = useState(false)
     return (
-        <aside onClick={()=>setShow(prev=>!prev)} className={cl('wrapper', { minimized: show })}>
+        <aside onClick={()=>setShow(prev=>!prev)} className={cl('wrapper', { minimized: !show })}>
             <div onClick={(e)=>e.stopPropagation()} className={cl('panel')}>
                 <div className={cl('top')}>
                     <div className={cl('info')}>
@@ -37,7 +37,7 @@ function Sidebar({ children }) {
             <button onClick={(e) => {
                 e.stopPropagation()
                 setShow(prev => !prev)
-            }} className={cl('expand-btn', {hidden: !show})}><FontAwesomeIcon icon={faChevronRight} /></button>
+            }} className={cl('expand-btn', {hidden: show})}><FontAwesomeIcon icon={faChevronRight} /></button>
         </aside>
     )
 

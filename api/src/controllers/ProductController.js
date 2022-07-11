@@ -66,7 +66,7 @@ class ProductController {
     async create(req, res, next) {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.json({ errors: errors.array() });
+            return res.json({ success: false, errors: errors.array() });
         }
         try {
             const { photos, stock, ...dataToFindDuplicate } = req.body

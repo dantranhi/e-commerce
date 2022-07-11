@@ -12,7 +12,10 @@ const useFetch = (url, condition = true) => {
                 setLoading(true);
                 try {
                     const res = await get(url);
-                    setData(res);
+                    if (res.success){
+                        setData(res.data);
+                    }
+                    else setData(res)
                 } catch (err) {
                     setError(err);
                 }
@@ -27,6 +30,7 @@ const useFetch = (url, condition = true) => {
         setLoading(true);
         try {
             const res = await get(url);
+            console.log(res)
             setData(res.data);
         } catch (err) {
             setError(err);
