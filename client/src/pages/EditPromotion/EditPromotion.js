@@ -13,7 +13,7 @@ function EditPromotion() {
     return (
         <div className={cl('wrapper')}>
             <div className={`grid wide`}>
-                <div className={cl('title')}>Thêm chương trình khuyến mãi</div>
+                <div className={cl('title')}>Chỉnh sửa chương trình khuyến mãi</div>
                 <PromotionForm edit={promotionId}></PromotionForm>
             </div>
         </div>

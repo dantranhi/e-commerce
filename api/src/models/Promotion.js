@@ -16,6 +16,6 @@ const PromotionSchema = mongoose.Schema({
     startEndDate: [{
         type: Date
     }]
-})
+}, {timestamps: true})
 
 export default mongoose.model('Promotion', PromotionSchema)

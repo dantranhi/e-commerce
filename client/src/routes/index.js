@@ -1,12 +1,12 @@
 import NewProduct from '../pages/NewProduct'
 import NewPromotion from '../pages/NewPromotion'
 import EditPromotion from '../pages/EditPromotion'
+import Dashboard from '../pages/Dashboard'
 import Home from '../pages/Home'
 import Detail from '../pages/Detail'
 import ProductList from '../pages/ProductList'
 import PromotionList from '../pages/PromotionList'
 import EditProduct from '../pages/EditProduct'
-import Sidebar from '../components/Sidebar'
 import {Login} from '../pages/Auth'
 import AdminLayout from '../layouts/AdminLayout'
 
@@ -19,7 +19,7 @@ const routes = [
     { path: '/product', component: Home },
     { path: '/admin/product', component: ProductList, layout: AdminLayout },
     { path: '/admin/promotion', component: PromotionList, layout: AdminLayout },
-    { path: '/admin', component: Sidebar },
+    { path: '/admin', component: Dashboard, layout: AdminLayout },
     { path: '/login', component: Login, layout: null },
     { path: '/', component: Home },
 ]

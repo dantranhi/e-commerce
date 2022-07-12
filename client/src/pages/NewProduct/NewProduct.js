@@ -1,6 +1,4 @@
 import React from 'react'
-import 'react-toastify/dist/ReactToastify.css';
-
 import ProductForm from '../../components/ProductForm'
 
 import classNames from 'classnames/bind';

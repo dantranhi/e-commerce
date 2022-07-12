@@ -73,6 +73,19 @@ li.slick-active{
   text-align: center;
 }
 
+.redirect-link{
+  display: block;
+  margin-block: 1rem;
+  color:#401563;
+  font-size: 1rem;
+  font-weight: 500;
+
+}
+
+.redirect-link:hover{
+  text-decoration: dashed;
+}
+
 /* Custom scrollbar */
 /* width */
 ::-webkit-scrollbar {

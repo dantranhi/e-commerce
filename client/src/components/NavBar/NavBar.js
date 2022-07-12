@@ -48,7 +48,7 @@ function NavBar() {
         <div className={cl('function')}>
           <div className={cl('cart')}>
             <FontAwesomeIcon onClick={handleOpenCart} className={cl('icon')} icon={faCartShopping} />
-            <span className={cl('cart-number')}>3</span>
+          <span className={cl('cart-number')}>{state.cart.data.length}</span>
           </div>
           <UserMenu>
             <div className={cl('user')}>

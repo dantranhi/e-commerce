@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useId } from 'react'
 import axios from 'axios'
-import { Select, Input, Space, Divider, Typography } from 'antd';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import {Link } from 'react-router-dom'
+import { Select, Input, Space, Divider, Typography, Button } from 'antd';
+import { toast } from 'react-toastify';
+
 import PropTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowUpFromBracket, faPlus } from '@fortawesome/free-solid-svg-icons'
@@ -321,19 +322,9 @@ function ProductForm({ edit }) {
                     <ValidateMessage name='stock' errors={errors}></ValidateMessage>
                 </div>
 
-                <button className={cl('submit')}>{!!edit ? 'Save' : 'Create'}</button>
+                <Button className={cl('submit')} type="primary" htmlType="submit" >{!!edit ? 'Save' : 'Create'}</Button>
+                <Link to='/admin/product' className="redirect-link" type="secondary" htmlType="submit" >Return to List</Link>
             </form>
-            <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-            />
         </>
     )
 }

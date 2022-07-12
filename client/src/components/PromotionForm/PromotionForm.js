@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import {Link} from 'react-router-dom'
 import { Input, Select, InputNumber, DatePicker, Popconfirm, Checkbox, Button } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import moment from 'moment';
 
 import httpRequest from '../../utils/httpRequest'
@@ -35,14 +35,18 @@ function PromotionForm({ edit }) {
     const { data: allProducts } = useFetch('/product')
     const { data: allPromotionPeriods } = useFetch('/promotion/periods')
 
-    const { data: promotionData, error } = useFetch(`/promotion/${edit}`, !!edit)
+    const { data: promotionData, error, loading } = useFetch(`/promotion/${edit}`, !!edit)
     if (error) console.log('Error while fetch Promotion data: ' + error)
-    console.log(promotionData)
     useEffect(() => {
-        if (promotionData.data) {
-            setFormFields({ ...promotionData.data, startEndDate: [moment(promotionData.data.startEndDate[0]), moment(promotionData.data.startEndDate[0])] })
+        if (edit && !loading && Object.keys(promotionData).length > 0) {
+            setFormFields(
+                {
+                    ...promotionData,
+                    startEndDate: [moment(promotionData.startEndDate[0]), moment(promotionData.startEndDate[0])]
+                })
         }
     }, [promotionData])
+
 
     const handleChangeForm = ({ name, value, checked }) => {
         setFormFields(prev => ({
@@ -64,7 +68,6 @@ function PromotionForm({ edit }) {
                 })
             }
             newState.content[index][customName] = value
-            console.log(newState)
             return newState
         })
     }
@@ -264,17 +267,7 @@ function PromotionForm({ edit }) {
                 Add a row
             </Button>
             <Button className={cl('submit')} type="primary" htmlType="submit" >Submit</Button>
-            <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-            />
+            <Link to='/admin/promotion' className={`${cl('submit')} redirect-link`} type="secondary" htmlType="submit" >Return to List</Link>
         </form>
     )
 }

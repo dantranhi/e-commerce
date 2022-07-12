@@ -1,15 +1,16 @@
 import React from 'react'
-import { Space, Table, Popconfirm } from 'antd'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { Link } from 'react-router-dom'
+import { Space, Table, Popconfirm, Typography } from 'antd'
+import { toast } from 'react-toastify';
 
+
+import { Link } from 'react-router-dom'
 import useFetch from '../../hooks/useFetch'
 
 import classNames from 'classnames/bind';
 import styles from '../ProductList/ProductList.module.scss';
 import axios from 'axios';
 const cl = classNames.bind(styles);
+const { Title } = Typography
 
 function PromotionList() {
     const { data: promotionData, loading, reFetch } = useFetch('/promotion')
@@ -63,21 +64,12 @@ function PromotionList() {
 
     return (
         <div className={cl('wrapper')}>
-            <div className="grid wide">
+            <div className="grid ultrawide">
+                <Title level={2}>Promotion List</Title>
+                <Link className="redirect-link" to='/admin/promotion/create'>Add</Link>
                 {loading ? 'LOADING' : (
                     <Table columns={columns} dataSource={promotionData} rowKey="_id" />
                 )}
-                <ToastContainer
-                    position="top-right"
-                    autoClose={5000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                />
             </div>
         </div>
     )

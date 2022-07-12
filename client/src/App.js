@@ -1,13 +1,15 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Fragment } from 'react'
 import { useEffect } from 'react'
-import { get } from './utils/httpRequest'
+import { ToastContainer } from 'react-toastify';
 
+import { get } from './utils/httpRequest'
 import { loginStart, loginSuccess, loginFailed } from './store/actions'
 import { useStore } from './store/UserContext'
 import routes from './routes'
 import DefaultLayout from './layouts/DefaultLayout'
 import 'antd/dist/antd.min.css';
+import 'react-toastify/dist/ReactToastify.css';
 import './grid.css';
 import './index.css';
 
@@ -26,7 +28,7 @@ function App() {
           dispatch(loginSuccess(res.details))
         }
         else {
-          console.log('Not logged in')  
+          console.log('Not logged in')
         }
       } catch (error) {
         console.log(error)
@@ -57,6 +59,17 @@ function App() {
           })}
         </Routes>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </Router>
   );
 }

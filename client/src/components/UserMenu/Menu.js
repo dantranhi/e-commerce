@@ -1,11 +1,11 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGear, faCartShopping, faUser, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+import { faGear, faCartShopping, faUser, faArrowRightFromBracket, faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
 
-import {logout} from '../../store/actions'
-import { useStore} from '../../store/UserContext'
+import { logout } from '../../store/actions'
+import { useStore } from '../../store/UserContext'
 import classNames from 'classnames/bind';
 import styles from './UserMenu.module.scss';
 const cl = classNames.bind(styles);
@@ -33,7 +33,7 @@ function Menu() {
     <ul className={cl('wrapper')}>
       <li>Hello {state.user.info.username}</li>
       {state.user.info.isAdmin && <li>
-        <Link to='/admin/product/create' className={cl('link')}>
+        <Link to='/admin' className={cl('link')}>
           <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faGear} /></span> Admin
         </Link>
       </li>}
@@ -47,10 +47,14 @@ function Menu() {
           <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faUser} /></span> Profile
         </Link>
       </li>
-      {state.user.info.username && <li>
+      {state.user.info.username ? <li>
         <div onClick={handleLogout} className={cl('link')}>
           <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faArrowRightFromBracket} /></span> Logout
         </div>
+      </li> : <li>
+        <Link to='/login' className={cl('link')}>
+          <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faArrowRightToBracket} /></span> Login
+        </Link>
       </li>}
     </ul>
   )

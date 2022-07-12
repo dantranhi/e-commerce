@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { faFacebook } from '@fortawesome/free-brands-svg-icons'
+import { toast } from 'react-toastify';
 
 import { loginStart, loginSuccess, loginFailed } from '../../store/actions'
 import httpRequest from '../../utils/httpRequest'
@@ -45,6 +46,7 @@ function Login() {
     if (res.data.message)
       dispatch(loginFailed(res.data.message))
     else {
+      toast.success('Login successfully')
       dispatch(loginSuccess(res.data.details))
       localStorage.setItem('user', JSON.stringify(res.data.details))
       navigate('/')
@@ -80,13 +82,10 @@ function Login() {
         <div className={cl('bottom')}>
           Don't have an account? <Link to='/register' className={cl('signup')}>Sign up</Link>
         </div>
-
-
       </div>
       <div className={cl('right')}>
         <img src={LoginHero} alt="" className={cl('hero')} />
       </div>
-
     </div>
   )
 }
