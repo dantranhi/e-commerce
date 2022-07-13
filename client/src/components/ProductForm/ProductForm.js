@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useId } from 'react'
 import axios from 'axios'
-import {Link } from 'react-router-dom'
-import { Select, Input, Space, Divider, Typography, Button } from 'antd';
+import { Link } from 'react-router-dom'
+import { Select, Input, Space, Divider, Typography, Button, Popconfirm } from 'antd';
 import { toast } from 'react-toastify';
 
 import PropTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowUpFromBracket, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faArrowUpFromBracket, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons'
 
 import useFetch from '../../hooks/useFetch'
-import httpRequest, { get } from '../../utils/httpRequest'
+import httpRequest from '../../utils/httpRequest'
 import ValidateMessage from '../../components/ValidateMessage'
 
 import classNames from 'classnames/bind';
@@ -22,8 +22,6 @@ const { TextArea } = Input
 function ProductForm({ edit }) {
     const uniqueId = useId()
     const [errors, setErrors] = useState([])
-    const [allTypes, setAllTypes] = useState([])
-    const [allBrands, setAllBrands] = useState([])
     const [newTypeName, setNewTypeName] = useState('')
     const [newBrandName, setNewBrandName] = useState('')
     const [appendImages, setAppendImages] = useState(false)
@@ -39,7 +37,7 @@ function ProductForm({ edit }) {
         stock: ''
     })
 
-    const { data, error } = useFetch(`/product/${edit}`, !!edit)
+    const { data, error, reFetch } = useFetch(`/product/${edit}`, !!edit)
     if (error) console.log(error)
     useEffect(() => {
         if (!Array.isArray(data)) {
@@ -50,28 +48,8 @@ function ProductForm({ edit }) {
 
     const [temporaryImages, setTemporaryImages] = useState([])
 
-    useEffect(() => {
-        async function fetchAllTypes() {
-            try {
-                const res1 = await get('/product/type')
-                const res2 = await get('/product/brand')
-                if (!res1.message) {
-                    setAllTypes(res1)
-                }
-                else console.log(res1.message)
-
-                if (!res2.message) {
-                    setAllBrands(res2)
-                }
-                else console.log(res2.message)
-            }
-            catch (err) {
-                console.log(err)
-            }
-        }
-
-        fetchAllTypes()
-    }, [])
+    const { data: allTypes, setData: setAllTypes } = useFetch('/product/type')
+    const { data: allBrands, setData: setAllBrands } = useFetch('/product/brand')
 
     const handleChange = ({ name, value, files }) => {
         setFormFields(prev => (
@@ -112,6 +90,17 @@ function ProductForm({ edit }) {
         setAllBrands(prev => ([...prev, { name: newBrandName }]))
         setNewBrandName('')
     };
+
+    const confirmDeleteSingleImage = async (e, imageObject) => {
+        const res = await httpRequest.patch(`/product/${edit}`, imageObject)
+        if (res.data.success) {
+            toast.success(res.data.message)
+            reFetch()
+        }
+        if (res.data.errors) {
+            console.log(res.data)
+        }
+    }
 
 
     const handleSubmit = async (e) => {
@@ -156,8 +145,9 @@ function ProductForm({ edit }) {
                 else {
                     const res = await httpRequest.put(`/product/${edit}`, newProduct)
                     if (res.data.success) {
-                        toast.success("Product updated successfully")
+                        toast.success(res.data.message)
                         setErrors([])
+                        reFetch()
                     }
                     if (res.data.errors) {
                         setErrors(res.data.errors)
@@ -298,6 +288,15 @@ function ProductForm({ edit }) {
                         {Array.isArray(formFields?.photos) ? formFields?.photos.map((img, index) => (
                             <li key={index} className={cl('image-item')}>
                                 <img src={img.url} alt="uploaded" className={cl('upload-img')} />
+                                <Popconfirm
+                                    className={cl('delete-wrapper')}
+                                    title="Are you sure to delete this image?"
+                                    onConfirm={(e) => confirmDeleteSingleImage(e, img)}
+                                    okText="Yes"
+                                    cancelText="No"
+                                >
+                                    <FontAwesomeIcon className={cl('delete-icon')} icon={faXmark} />
+                                </Popconfirm>
                             </li>
                         )) : temporaryImages.map((img, index) => (
                             <li key={index} className={cl('image-item')}>
@@ -323,7 +322,7 @@ function ProductForm({ edit }) {
                 </div>
 
                 <Button className={cl('submit')} type="primary" htmlType="submit" >{!!edit ? 'Save' : 'Create'}</Button>
-                <Link to='/admin/product' className="redirect-link" type="secondary" htmlType="submit" >Return to List</Link>
+                <Link to='/admin/product' className="redirect-link" type="secondary" >Return to List</Link>
             </form>
         </>
     )

@@ -10,7 +10,6 @@ class ProductController {
     // [GET] /product/grid
     async getAllGrid(req, res, next) {
         try {
-            // const products = await Product.find()
             const products = res.paginatedResult
             res.json(products)
         } catch (error) {
@@ -34,7 +33,7 @@ class ProductController {
         try {
             const product = await Product.findById(req.params.id)
             if (!product)
-                return res.json({ message: 'Product with that id is not exist.' })
+                return res.json({ success: false, message: 'Product with that id is not exist.' })
             res.json(product)
         } catch (error) {
             next(error)
@@ -45,10 +44,9 @@ class ProductController {
     async getAllTypes(req, res, next) {
         try {
             const types = await Type.find()
-            console.log(types)
             res.json(types)
         } catch (error) {
-            res.json({ message: error })
+            res.json({ success: false, message: error })
         }
     }
 
@@ -58,7 +56,7 @@ class ProductController {
             const brands = await Brand.find()
             res.json(brands)
         } catch (error) {
-            res.json({ message: error })
+            res.json({ success: false, message: error })
         }
     }
 
@@ -110,9 +108,27 @@ class ProductController {
                 }
             }
             const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body)
-            res.json({ success: true })
+            res.json({ success: true, message: 'Product updated successfully' })
         } catch (error) {
             console.log(error)
+            next(error)
+        }
+    }
+
+    // [PATCH] /product/:id
+    async updateImages(req, res, next) {
+        try {
+            const product = await Product.findById(req.params.id)
+            if (product) {
+                cloudinary.v2.uploader.destroy(req.body.public_id, function (error, result) {
+                    console.log(result, error)
+                });
+                product.photos = product.photos.filter(item => item.public_id !== req.body.public_id)
+                product.save()
+                res.json({ success: true, message: "Product's image deleted successfully" })
+            }
+            else return res.json({success: false, message: 'Product id not exist'})
+        } catch (error) {
             next(error)
         }
     }

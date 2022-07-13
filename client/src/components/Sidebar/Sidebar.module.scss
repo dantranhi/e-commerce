@@ -109,13 +109,21 @@
 
 .bot {
     padding: 14px 12px;
-
+    display: flex;
+    gap: 1rem;
 }
 
-.logout-btn {
+.bot-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    // height
     font-size: 1rem;
     width: 100%;
-    padding: 8px 12px;
+    height: 100%;
+    max-height: 40px;
+    padding: 4px 12px;
     border-radius: 4px;
     text-align: left;
     color: #fff;
@@ -126,9 +134,13 @@
     }
 }
 
-.logout-icon {
+.bot-icon {
     margin-right: 1rem;
     transform: translateY(1px);
+}
+
+.copyright{
+    text-align: center;
 }
 
 .expand-btn {

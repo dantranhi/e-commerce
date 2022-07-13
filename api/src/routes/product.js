@@ -14,6 +14,7 @@ router.get('/grid', paginate(Product, 12), ProductController.getAllGrid)
 router.get('/:id', ProductController.get)
 router.post('/create', verifyAdmin, ...productValidator, ProductController.create)
 router.put('/:id', verifyAdmin, ...productValidator, ProductController.update)
+router.patch('/:id', verifyAdmin, ProductController.updateImages)
 router.delete('/:id', verifyAdmin, ProductController.delete)
 
 router.get('/', ProductController.getAll)

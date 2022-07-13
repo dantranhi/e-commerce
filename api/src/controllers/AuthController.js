@@ -8,7 +8,6 @@ class AuthController {
     async login(req, res, next) {
         try {
             const user = await User.findOne({ username: req.body.username })
-            console.log(user)
             if (!user)
                 return res.json({ message: 'User not found' })
             const isCorrectPassword = await bcrypt.compare(req.body.password, user.password)
@@ -48,10 +47,9 @@ class AuthController {
         try {
             req.user = null
             res.clearCookie('access_token')
-            res.json({})
-
+            res.json({ success: true, message: 'Logged out' })
         } catch (error) {
-            res.json({ message: 'Can not log out' })
+            res.json({ success: false, message: 'An error has occurred' })
         }
     }
 

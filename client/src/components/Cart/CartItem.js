@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import PropTypes from 'prop-types'
 
+import formatCurrency from '../../utils/formatCurrentcy'
 import { useStore } from '../../store/UserContext'
 import { removeFromCart, addOne, subOne } from '../../store/actions'
 import classNames from 'classnames/bind';
@@ -17,7 +18,7 @@ function CartItem({ data }) {
             <img src={data?.photos[0].url || "https://dl.airtable.com/.attachments/14ac9e946e1a02eb9ce7d632c83f742f/4fd98e64/product-1.jpeg"} alt="product" className={cl('img')} />
             <div className={cl('info')}>
                 <div className={cl('name')}>{data?.name || 'High-Back Bench'}</div>
-                <div className={cl('price')}>{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(data?.price)}</div>
+                <div className={cl('price')}>{formatCurrency(data?.price)}</div>
                 <button onClick={()=>dispatch(removeFromCart(data?._id))} className={cl('remove')}>remove</button>
             </div>
             <div className={cl('quantity')}>

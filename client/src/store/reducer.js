@@ -17,10 +17,10 @@ export const INIT_STATE = {
 }
 
 const reducer = (state, { type, payload }) => {
-    console.group('REDUCER')
-    console.log("PREV STATE: ", state);
-    console.log("ACTION: ", type);
-    console.groupEnd()
+    // console.group('REDUCER')
+    // console.log("PREV STATE: ", state);
+    // console.log("ACTION: ", type);
+    // console.groupEnd()
 
     switch (type) {
         case SET_LOADING:

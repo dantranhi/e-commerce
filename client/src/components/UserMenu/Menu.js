@@ -1,9 +1,10 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear, faCartShopping, faUser, faArrowRightFromBracket, faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons'
-import axios from 'axios'
 
+import httpRequest from '../../utils/httpRequest'
 import { logout } from '../../store/actions'
 import { useStore } from '../../store/UserContext'
 import classNames from 'classnames/bind';
@@ -16,14 +17,16 @@ function Menu() {
 
   const handleLogout = async () => {
     try {
-      const res = await axios.post('http://localhost:3006/api/auth/logout', {}, { withCredentials: true })
-      if (res.message)
-        console.log(res.message)
-      else {
+      const res = await httpRequest.post('/auth/logout')
+      if (res.data.success) {
         dispatch(logout())
         localStorage.removeItem('user')
         navigate('/')
-      }
+        toast.info(res.data.message)
+    }
+    else {
+        toast.error(res.data.message)
+    }
     } catch (error) {
 
     }

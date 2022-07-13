@@ -9,6 +9,7 @@ import { useStore } from './store/UserContext'
 import routes from './routes'
 import DefaultLayout from './layouts/DefaultLayout'
 import 'antd/dist/antd.min.css';
+import 'tippy.js/dist/tippy.css';
 import 'react-toastify/dist/ReactToastify.css';
 import './grid.css';
 import './index.css';
@@ -36,7 +37,10 @@ function App() {
         dispatch(loginFailed())
       }
     }
-    checkLogin()
+
+    if (localStorage.getItem('user')) {
+      checkLogin()
+    }
   }, [])
 
   return (

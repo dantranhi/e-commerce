@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Input, Select, InputNumber, DatePicker, Popconfirm, Checkbox, Button } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
@@ -17,7 +17,12 @@ const cl = classNames.bind(styles);
 const { Option } = Select;
 const { RangePicker } = DatePicker
 
+
+
 function PromotionForm({ edit }) {
+    console.log(edit)
+    let url = '/promotion/periods'
+    let editUrl = `/promotion/periods/${edit}`
     const [errors, setErrors] = useState([])
     const [formFields, setFormFields] = useState({
         name: '',
@@ -33,7 +38,8 @@ function PromotionForm({ edit }) {
 
     const { data: allTypes } = useFetch('/promotion/type')
     const { data: allProducts } = useFetch('/product')
-    const { data: allPromotionPeriods } = useFetch('/promotion/periods')
+
+    const { data: allPromotionPeriods } = useFetch(!!edit ? editUrl : url)
 
     const { data: promotionData, error, loading } = useFetch(`/promotion/${edit}`, !!edit)
     if (error) console.log('Error while fetch Promotion data: ' + error)
@@ -42,7 +48,7 @@ function PromotionForm({ edit }) {
             setFormFields(
                 {
                     ...promotionData,
-                    startEndDate: [moment(promotionData.startEndDate[0]), moment(promotionData.startEndDate[0])]
+                    startEndDate: [moment(promotionData.startEndDate[0]), moment(promotionData.startEndDate[1])]
                 })
         }
     }, [promotionData])
@@ -125,8 +131,7 @@ function PromotionForm({ edit }) {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        const { comeWithOtherPromotion, ...newPromotion } = formFields
-        console.log(newPromotion)
+        const newPromotion = { ...formFields }
 
         try {
             if (!edit) {
@@ -267,7 +272,7 @@ function PromotionForm({ edit }) {
                 Add a row
             </Button>
             <Button className={cl('submit')} type="primary" htmlType="submit" >Submit</Button>
-            <Link to='/admin/promotion' className={`${cl('submit')} redirect-link`} type="secondary" htmlType="submit" >Return to List</Link>
+            <Link to='/admin/promotion' className={`${cl('submit')} redirect-link`} type="secondary" >Return to List</Link>
         </form>
     )
 }

@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import PropTypes from 'prop-types'
 
+import formatCurrency from '../../utils/formatCurrentcy'
 import { useStore } from '../../store/UserContext'
 import CartItem from './CartItem'
 import classNames from 'classnames/bind';
@@ -10,7 +11,7 @@ import styles from './Cart.module.scss';
 const cl = classNames.bind(styles);
 
 function Cart({ onClose }) {
-  const [state, dispatch] = useStore()
+  const [state] = useStore()
   const [totalPrice, setTotalPrice] = useState('')
 
   const calculateTotal = () => {
@@ -39,7 +40,7 @@ function Cart({ onClose }) {
           ))}
         </ul>
         <div className={cl('footer')}>
-          <div className={cl('total')}>Total: {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(totalPrice)}</div>
+          <div className={cl('total')}>Total: {formatCurrency(totalPrice)}</div>
           <button className={cl('check-out')}>Check out</button>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import React from 'react'
 import Tippy from '@tippyjs/react/headless'
-import 'tippy.js/dist/tippy.css';
+
 
 import Menu from './Menu'
 import classNames from 'classnames/bind';

@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCartPlus } from '@fortawesome/free-solid-svg-icons'
 import PropTypes from 'prop-types'
 
+import formatCurrency from '../../utils/formatCurrentcy'
 import { useStore } from '../../store/UserContext'
 import { addToCart } from '../../store/actions'
 import classNames from 'classnames/bind';
@@ -29,7 +30,7 @@ function ProductItem({ data }) {
       </div>
       <div className={cl('info')}>
         <div className={cl('name')}>{data.name}</div>
-        <div className={cl('price')}>{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(data.price)}</div>
+        <div className={cl('price')}>{formatCurrency(data.price)}</div>
       </div>
     </div>
   )

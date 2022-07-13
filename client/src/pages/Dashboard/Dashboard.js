@@ -2,7 +2,8 @@ import React from 'react'
 import { faDesktop, faHandHoldingDollar, faPercent } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
 
-import Overview from '../../components/OverView'
+import Overview from '../../components/Overview'
+import NotificationSidebar from '../../components/NotificationSidebar'
 import useFetch from '../../hooks/useFetch'
 
 function Dashboard() {
@@ -32,6 +33,9 @@ function Dashboard() {
                                 </div>
                             </div>
                         </Overview>
+                    </div>
+                    <div className="col l-3 m-4 c-12">
+                        <NotificationSidebar></NotificationSidebar>
                     </div>
                 </div>
             </div>

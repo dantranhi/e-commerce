@@ -82,7 +82,7 @@
 }
 
 .image-item {
-    
+    position: relative;
 }
 
 .upload-img{
@@ -104,6 +104,30 @@
     color: rgb(255, 24, 24);
     font-weight: 600;
 }
+
+.delete-wrapper{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    transform: translate(50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    &:hover{
+        background-color: rgb(232, 212, 253, 0.4);
+    }
+}
+
+.delete-icon{
+    font-size: 1.3rem;
+    color:rgb(255, 24, 24);
+}
+
 
 .submit{
     grid-column: 1 / -1;

@@ -1,14 +1,16 @@
 import React from 'react'
 import { Space, Table, Popconfirm, Typography } from 'antd'
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify'
+import axios from 'axios'
 
 
 import { Link } from 'react-router-dom'
 import useFetch from '../../hooks/useFetch'
-
+import formatDate from '../../utils/formatDate'
 import classNames from 'classnames/bind';
-import styles from '../ProductList/ProductList.module.scss';
-import axios from 'axios';
+import styles from '../ProductList/ProductList.module.scss'
+
+
 const cl = classNames.bind(styles);
 const { Title } = Typography
 
@@ -41,6 +43,13 @@ function PromotionList() {
             title: 'Start - end date',
             dataIndex: 'startEndDate',
             key: 'startEndDate',
+            render: (date, record) => formatDate(record.startEndDate[0], 'DD-MM-YYYY') + ' --> ' + formatDate(record.startEndDate[1], 'DD-MM-YYYY')
+        },
+        {
+            title: 'Stack with other promotions?',
+            dataIndex: 'comeWithOtherPromotion',
+            key: 'comeWithOtherPromotion',
+            render : (text) => String(text),
         },
         {
             title: 'Action',
