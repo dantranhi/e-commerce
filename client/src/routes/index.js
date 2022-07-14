@@ -6,8 +6,9 @@ import Home from '../pages/Home'
 import Detail from '../pages/Detail'
 import ProductList from '../pages/ProductList'
 import PromotionList from '../pages/PromotionList'
+import UserList from '../pages/UserList'
 import EditProduct from '../pages/EditProduct'
-import {Login} from '../pages/Auth'
+import {Login, Register} from '../pages/Auth'
 import AdminLayout from '../layouts/AdminLayout'
 
 const routes = [
@@ -19,8 +20,10 @@ const routes = [
     { path: '/product', component: Home },
     { path: '/admin/product', component: ProductList, layout: AdminLayout },
     { path: '/admin/promotion', component: PromotionList, layout: AdminLayout },
+    { path: '/admin/user', component: UserList, layout: AdminLayout },
     { path: '/admin', component: Dashboard, layout: AdminLayout },
     { path: '/login', component: Login, layout: null },
+    { path: '/register', component: Register, layout: null },
     { path: '/', component: Home },
 ]
 

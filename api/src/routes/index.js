@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 
 import productRouter from './product.js'
 import authRouter from './auth.js'
+import userRouter from './user.js'
 import promotionRouter from './promotion.js'
 import { verifyToken } from '../utils/verifyToken.js';
 
@@ -12,6 +13,7 @@ const router = (app) => {
     app.use('/api/product', productRouter)
     app.use('/api/auth', authRouter)
     app.use('/api/promotion', promotionRouter)
+    app.use('/api/user', userRouter)
 
 
     // Login Google

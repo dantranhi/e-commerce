@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import { validationResult } from 'express-validator'
 
 import User from '../models/User.js'
 
@@ -28,7 +29,23 @@ class AuthController {
 
     // [POST] /auth/register
     async register(req, res, next) {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({ success: false, errors: errors.array() });
+        }
         try {
+            const isDuplicate = !!(await User.findOne({ username: req.body.username }))
+            if (isDuplicate) {
+                return res.json({
+                    success: false, errors: [{
+                        "msg": "Tên đăng nhập đã tồn tại",
+                        "param": "username",
+                        "value": req.body.username,
+                        "location": "body",
+                    }]
+                })
+            }
+
             const hashedPassword = await bcrypt.hash(req.body.password, 10)
             const savedUser = new User({
                 username: req.body.username,
@@ -36,7 +53,7 @@ class AuthController {
                 email: req.body.email
             })
             await savedUser.save()
-            res.json(savedUser)
+            res.json({success: true, user: savedUser})
         } catch (error) {
             next(error)
         }

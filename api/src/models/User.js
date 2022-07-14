@@ -23,7 +23,9 @@ const UserSchema = mongoose.Schema({
     facebookId: {
         type: String
     },
-    image: { type: String }
+    image: { type: String },
+    address: { type: String },
+    point: { type: Number, default: 0 }
 }, { timestamps: true })
 
 export default mongoose.model('User', UserSchema);

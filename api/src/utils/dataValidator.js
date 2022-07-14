@@ -13,3 +13,9 @@ export const promotionValidator = [
     body('content.*.productId').notEmpty().withMessage('Sản phẩm của đợt khuyến mãi là bắt buộc'),
     body('startEndDate').isArray({min: 2, max: 2}).withMessage('Phải có đủ thời gian bắt đầu và kết thúc khuyến mãi')
 ]
+
+export const userValidator = [
+    body('username').isLength({min: 6, max: 20}).withMessage('Tên đăng nhập phải từ 6-20 ký tự'),
+    body('email').isEmail().withMessage('Email không hợp lệ'),
+    body('password').notEmpty().withMessage('Mật khẩu không được trống').matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/).withMessage('Mật khẩu phải dài tối thiểu 6 ký tự và chứa ít nhất 1 ký tự hoa, 1 ký tự thường và 1 số'),
+]
