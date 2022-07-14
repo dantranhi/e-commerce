@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Space, Table, Popconfirm, Typography, Switch } from 'antd'
 import { toast } from 'react-toastify';
 
 import useFetch from '../../hooks/useFetch'
 import httpRequest from '../../utils/httpRequest'
+import { useStore } from '../../store/UserContext'
 
 import classNames from 'classnames/bind';
 import styles from './UserList.module.scss';
@@ -12,7 +13,9 @@ const cl = classNames.bind(styles);
 const { Title } = Typography;
 
 function UserList() {
+    const [state] = useStore()
     const { data: users, loading, error, reFetch } = useFetch('/user')
+
 
     const handleChangeRole = async (userId, value) => {
         const res = await httpRequest.patch(`/user/${userId}`, { isAdmin: value })
@@ -41,21 +44,21 @@ function UserList() {
             title: 'Role',
             dataIndex: 'isAdmin',
             key: 'isAdmin',
-            render: (text, record) => <Switch onChange={() => handleChangeRole(record._id, !text)} checkedChildren="ADM" unCheckedChildren="USER" defaultChecked={text} />
+            render: (text, record) => <Switch disabled={state.user.info.id === record._id} onChange={() => handleChangeRole(record._id, !text)} checkedChildren="ADM" unCheckedChildren="USER" defaultChecked={text} />
         },
         {
             title: 'Action',
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <Popconfirm
+                    {state.user.info.id !== record._id && <Popconfirm
                         title="Are you sure to delete this user?"
                         onConfirm={(e) => confirmDeleteUser(e, record._id)}
                         okText="Yes"
                         cancelText="No"
                     >
                         <a href="/">Delete</a>
-                    </Popconfirm>
+                    </Popconfirm>}
                 </Space>
             ),
         },
@@ -66,7 +69,7 @@ function UserList() {
         <div className={cl('wrapper')}>
             <div className="grid ultrawide">
                 <Title level={2}>Users</Title>
-                {loading ? 'LOADING' : (<Table columns={columns} dataSource={users} rowKey="_id" />)}
+                <Table columns={columns} dataSource={users} rowKey="_id" />
             </div>
         </div>
     )

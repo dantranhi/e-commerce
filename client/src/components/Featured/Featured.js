@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-
+import {Link} from 'react-router-dom'
+ 
 import FeaturedItems from './FeaturedItems'
 import { get } from '../../utils/httpRequest'
 import Button from '../Button'
@@ -13,16 +14,17 @@ const cl = classNames.bind(styles);
 
 function Featured() {
   const [products, setProducts] = useState([])
-  const { data, loading, error} = useFetch('/product/grid')
+  const { data, loading, error} = useFetch('/product/grid?limit=3')
   
   useEffect(() =>{
     setProducts(data)
   },[data])
 
   const handleFetchPage = async (page) => {
-    const data = await get(`/product/grid?page=${page}`)
+    const data = await get(`/product/grid?page=${page}&limit=3`)
     setProducts(data)
   }
+
 
   return (
     <div className={cl('wrapper')}>
@@ -39,7 +41,9 @@ function Featured() {
             </div>
             <Pagination {...products} onFetchNewData={handleFetchPage}></Pagination>
           </>}
-          <Button primary >All products</Button>
+          <Button primary >
+            <Link className={cl('all-link')} to='/product'>All products</Link>
+          </Button>
         </div>
       </div>
     </div>

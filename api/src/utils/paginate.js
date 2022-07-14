@@ -9,6 +9,7 @@ function paginate(model, perPage = 12) {
         // Paginate
         let page = parseInt(req.query.page);
         let limit = parseInt(req.query.limit);
+        let q = req.query.q;
 
         // if (req.query.hasOwnProperty('_sort')) {
         //     Object.assign(res.locals._sort, {
@@ -17,9 +18,6 @@ function paginate(model, perPage = 12) {
         //         column: req.query.column
         //     })
         // }
-
-
-
 
         if (isNaN(page)) page = 1;
         if (isNaN(limit)) limit = perPage;
@@ -63,16 +61,16 @@ function paginate(model, perPage = 12) {
 
         try {
             //Search
-            // if (req.query.hasOwnProperty('_search')) {
-            //     result.data = await model.find({name: { $regex: new RegExp(req.query.v, 'i') }}).limit(limit).skip(startIndex)
-            //     result.v=req.query.v
-            // }
+            if (q) {
+                result.data = await model.find({ name: { $regex: new RegExp(q, 'i') } }).limit(limit).skip(startIndex)
+                result.q = q
+            }
             // else if (req.query.hasOwnProperty('_sort'))
             //     result.data = await model.find().sort({
             //         [req.query.column]: req.query.type
             //     }).limit(limit).skip(startIndex)
             // else
-                result.data = await model.find().limit(limit).skip(startIndex)
+            else result.data = await model.find().limit(limit).skip(startIndex)
             res.paginatedResult = result
             next()
         }
