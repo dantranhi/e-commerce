@@ -1,5 +1,6 @@
 import NewProduct from '../pages/NewProduct'
 import NewPromotion from '../pages/NewPromotion'
+import NewOrder from '../pages/NewOrder'
 import EditPromotion from '../pages/EditPromotion'
 import Dashboard from '../pages/Dashboard'
 import SearchProduct from '../pages/SearchProduct'
@@ -17,6 +18,7 @@ const routes = [
     { path: '/admin/product/:id', component: EditProduct, layout: AdminLayout },
     { path: '/admin/promotion/create', component: NewPromotion, layout: AdminLayout },
     { path: '/admin/promotion/:id', component: EditPromotion, layout: AdminLayout },
+    { path: '/order/create', component: NewOrder, layout: null },
     { path: '/product/:id', component: Detail },
     { path: '/product', component: SearchProduct },
     { path: '/admin/product', component: ProductList, layout: AdminLayout },

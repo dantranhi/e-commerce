@@ -7,9 +7,9 @@ const Context = createContext();
 export const useStore = () => useContext(Context)
 
 
-export const useAuthState = () => {
-    const [account] = useContext(Context);
-    return account;
+export const useCurrentUser = () => {
+    const {user: {info}} = useContext(Context);
+    return info;
 };
 
 export const Provider = ({ children }) => {

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import PropTypes from 'prop-types'
 
-import formatCurrency from '../../utils/formatCurrentcy'
+import formatCurrency from '../../utils/formatCurrency'
 import { useStore } from '../../store/UserContext'
 import { removeFromCart, addOne, subOne } from '../../store/actions'
 import classNames from 'classnames/bind';

@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom'
 
 import useFetch from '../../hooks/useFetch'
-import formatCurrency from '../../utils/formatCurrentcy'
+import formatCurrency from '../../utils/formatCurrency'
 import classNames from 'classnames/bind';
 import styles from './ProductList.module.scss';
 import axios from 'axios';

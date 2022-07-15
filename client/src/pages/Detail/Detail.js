@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 
 import { useStore } from '../../store/UserContext'
 import { addToCart, clearCartError } from '../../store/actions'
-import formatCurrency from '../../utils/formatCurrentcy';
+import formatCurrency from '../../utils/formatCurrency';
 import useFetch from '../../hooks/useFetch'
 import MultiLevelNav from '../../components/MultiLevelNav'
 import Button from '../../components/Button'
