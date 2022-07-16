@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
 import formatCurrency from '../../utils/formatCurrency'
 import { useStore } from '../../store/UserContext'
@@ -41,7 +42,7 @@ function Cart({ onClose }) {
         </ul>
         <div className={cl('footer')}>
           <div className={cl('total')}>Total: {formatCurrency(totalPrice)}</div>
-          <button className={cl('check-out')}>Check out</button>
+          <Link to={`/order/create`} className={cl('check-out')}>Check out</Link>
         </div>
       </div>
     </div>

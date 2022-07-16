@@ -1,8 +1,5 @@
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
-import RightChevrons from '../../assets/img/right-chevrons.png'
-import LeftChevrons from '../../assets/img/left-chevrons.png'
+import { RightOutlined, LeftOutlined, DoubleRightOutlined, DoubleLeftOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types'
 
 import classNames from 'classnames/bind';
@@ -13,14 +10,14 @@ function Pagination({ currentPage, data, previous, next, offset, pages, onFetchN
     return (
         <div className={cl('wrapper')}>
             <ul className={cl('list')}>
-                <li onClick={() => onFetchNewData(1)} className={cl('item')}>
+                <li onClick={() => onFetchNewData(1)} className={cl('item', { disabled: previous === undefined })}>
                     <span className={cl('link')}>
-                        <img src={LeftChevrons} className={cl('icon-img')} alt="start" />
+                        <DoubleLeftOutlined />
                     </span>
                 </li>
                 <li onClick={() => onFetchNewData(previous.page || 1)} className={cl('item', { disabled: previous === undefined })}>
                     <span className={cl('link')}>
-                        <FontAwesomeIcon className={cl('icon')} icon={faChevronLeft} />
+                        <LeftOutlined />
                     </span>
                 </li>
                 {new Array(pages).fill(0).map((item, index) => {
@@ -41,12 +38,13 @@ function Pagination({ currentPage, data, previous, next, offset, pages, onFetchN
                 })}
                 <li onClick={() => onFetchNewData(next.page)} className={cl('item', { disabled: next === undefined })}>
                     <span className={cl('link')}>
-                        <FontAwesomeIcon className={cl('icon')} icon={faChevronRight} />
+                        <RightOutlined />
+
                     </span>
                 </li>
-                <li onClick={() => onFetchNewData(pages)} className={cl('item')}>
+                <li onClick={() => onFetchNewData(pages)} className={cl('item', { disabled: next === undefined })}>
                     <span className={cl('link')}>
-                        <img src={RightChevrons} className={cl('icon-img')} alt="start" />
+                        <DoubleRightOutlined />
                     </span>
                 </li>
             </ul>

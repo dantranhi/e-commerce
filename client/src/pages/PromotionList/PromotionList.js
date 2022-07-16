@@ -1,5 +1,5 @@
 import React from 'react'
-import { Space, Table, Popconfirm, Typography } from 'antd'
+import { Space, Table, Popconfirm, Typography, Button } from 'antd'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 
@@ -63,7 +63,7 @@ function PromotionList() {
                         okText="Yes"
                         cancelText="No"
                     >
-                        <a href="/">Delete</a>
+                        <Button danger>Delete</Button>
                     </Popconfirm>
                 </Space>
             ),

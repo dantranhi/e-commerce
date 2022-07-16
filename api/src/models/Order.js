@@ -13,9 +13,10 @@ const OrderSchema = mongoose.Schema({
         }
     ],
     delivery: { type: Number, required: true },
-    totalPrice: { type: Number, required: true},
+    totalPrice: { type: Number, required: true },
     userAddress: { type: String, required: true },
-    userPhone: { type: String, required: true }
+    userPhone: { type: String, required: true },
+    status: { type: String, default: 'Pending' }
 }, { timestamps: true })
 
 export default mongoose.model('Order', OrderSchema)

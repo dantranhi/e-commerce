@@ -1,4 +1,4 @@
-import { SET_LOADING, LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILED, TOGGLE_CART, ADD_TO_CART, REMOVE_FROM_CART, ADD_ONE, SUB_ONE, CLEAR_CART_ERROR } from './constants'
+import { SET_LOADING, LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILED, TOGGLE_CART, ADD_TO_CART, REMOVE_FROM_CART, ADD_ONE, SUB_ONE, CLEAR_CART_ERROR, DELETE_CART } from './constants'
 
 const INIT_ACCOUNT = JSON.parse(localStorage.getItem('user')) ?? {}
 const INIT_CART = JSON.parse(localStorage.getItem('userCart')) ?? []
@@ -115,6 +115,14 @@ const reducer = (state, { type, payload }) => {
                         return item._id === payload && item.amount + 1 <= item.stock ? { ...item, amount: item.amount + 1 } : item
                     }),
                     isOpen: true
+                }
+            }
+        case DELETE_CART:
+            return {
+                ...state,
+                cart: {
+                    data: [],
+                    isOpen: false
                 }
             }
         case SUB_ONE:

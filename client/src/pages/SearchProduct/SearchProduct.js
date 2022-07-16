@@ -1,11 +1,14 @@
 import { useState, useRef, useCallback } from 'react'
-import { Input } from 'antd'
+import { Input, Typography, Space } from 'antd'
+import { SearchOutlined } from '@ant-design/icons';
+import {Link} from 'react-router-dom'
 
 import useProductFetch from '../../hooks/useProductFetch';
 import ProductItem from '../../components/ProductItem'
 import classNames from 'classnames/bind';
 import styles from './SearchProduct.module.scss';
 const cl = classNames.bind(styles);
+const { Title } = Typography
 
 function SearchProduct() {
     const [searchValue, setSearchValue] = useState('')
@@ -33,14 +36,27 @@ function SearchProduct() {
         <div>
             <div className={cl('wrapper')}>
                 <div className="grid wide">
-                    <Input type="text" value={searchValue} onChange={handleChangeSearchValue} />
-                    {products.map((item, index) => {
-                        if (index === products.length - 1)
-                            return <ProductItem ref={lastProductElementRef} data={item} key={item._id}></ProductItem>
-                        return <ProductItem data={item} key={item._id}></ProductItem>
-                    })}
-                    {loading && <div>Loading...</div>}
-                    {error && <div>Error</div>}
+                    <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+                        <Title className={cl('title')}>Search products:</Title>
+                        <Input
+                            size="large"
+                            className={cl('search')}
+                            type="text"
+                            value={searchValue}
+                            onChange={handleChangeSearchValue}
+                            prefix={<SearchOutlined />}
+                        />
+                        <div className="row">
+                            {products.map((item, index) => {
+                                if (index === products.length - 1)
+                                    return <Link to={`/product/${item._id}`} key={item._id} className={`col l-4 m-6 c-12 mt-4`}><ProductItem ref={lastProductElementRef} data={item}></ProductItem></Link>
+                                return <Link to={`/product/${item._id}`} key={item._id} className={`col l-4 m-6 c-12 mt-4`}><ProductItem data={item} ></ProductItem></Link>
+                            })}
+                        </div>
+                        {loading && <div>Loading...</div>}
+                        {error && <div>Error</div>}
+                    </Space>
+
                 </div>
             </div>
         </div >

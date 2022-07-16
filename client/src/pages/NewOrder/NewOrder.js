@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react'
 import { Typography, Divider, Input, Space, Button } from 'antd'
 import classNames from 'classnames/bind';
 import { useNavigate } from 'react-router-dom'
-import {toast} from 'react-toastify'
+import { toast } from 'react-toastify'
 
 import ValidateMessage from '../../components/ValidateMessage'
 import httpRequest from '../../utils/httpRequest'
 import Cart from '../../components/Cart'
 import { useStore } from '../../store/UserContext'
+import { deleteCart } from '../../store/actions'
 import Order from '../../components/Order'
 import formatCurrency from '../../utils/formatCurrency'
 import styles from './NewOrder.module.scss';
@@ -41,7 +42,7 @@ function NewOrder() {
 
     useEffect(() => {
         let newTemp = data.reduce((accumulate, item) => {
-            return accumulate + item.price
+            return accumulate + item.price * item.amount
         }, 0)
         let delivery = newTemp >= 500000 ? 0 : 30000
         let sum = newTemp + delivery
@@ -80,9 +81,11 @@ function NewOrder() {
 
     const handleSubmitOrder = async (e) => {
         e.preventDefault()
+        const userInfo = JSON.parse(localStorage.getItem('user'))
+        console.log(userInfo)
         try {
             let allData = {
-                userId: user.info.id,
+                userId: userInfo.id,
                 ...info,
                 productList: data.map(item => ({
                     productId: item._id,
@@ -95,9 +98,10 @@ function NewOrder() {
             const res = await httpRequest.post(`/order/${user.info.id}/create`, allData)
             if (res.data.success) {
                 toast.success(res.data.message)
+                dispatch(deleteCart())
                 navigate('/')
             }
-            if (res.data.errors){
+            if (res.data.errors) {
                 setErrors(res.data.errors)
             }
         } catch (error) {

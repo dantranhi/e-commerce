@@ -14,35 +14,35 @@ import {
     CLEAR_CART_ERROR
 } from './constants'
 
-export const setLoading = (payload) =>{
+export const setLoading = (payload) => {
     return {
         type: SET_LOADING,
         payload
     }
 }
 
-export const loginStart = (payload) =>{
+export const loginStart = (payload) => {
     return {
         type: LOGIN_START,
         payload
     }
 }
 
-export const loginSuccess = (payload) =>{
+export const loginSuccess = (payload) => {
     return {
         type: LOGIN_SUCCESS,
         payload
     }
 }
 
-export const loginFailed = (payload) =>{
+export const loginFailed = (payload) => {
     return {
         type: LOGIN_FAILED,
         payload
     }
 }
 
-export const logout = (payload) =>{
+export const logout = (payload) => {
     return {
         type: LOGIN_FAILED,
         payload
@@ -50,44 +50,51 @@ export const logout = (payload) =>{
 }
 
 // Cart
-export const toggleCart = (payload) =>{
+export const toggleCart = (payload) => {
     return {
         type: TOGGLE_CART,
         payload
     }
 }
 
-export const addToCart = (payload) =>{
+export const addToCart = (payload) => {
     return {
         type: ADD_TO_CART,
         payload
     }
 }
 
-export const removeFromCart = (payload) =>{
+export const removeFromCart = (payload) => {
     return {
         type: REMOVE_FROM_CART,
         payload
     }
 }
 
-export const addOne = (payload) =>{
+export const addOne = (payload) => {
     return {
         type: ADD_ONE,
         payload
     }
 }
 
-export const subOne = (payload) =>{
+export const subOne = (payload) => {
     return {
         type: SUB_ONE,
         payload
     }
 }
 
-export const clearCartError = (payload) =>{
+export const clearCartError = (payload) => {
     return {
         type: CLEAR_CART_ERROR,
+        payload
+    }
+}
+
+export const deleteCart = (payload) => {
+    return {
+        type: DELETE_CART,
         payload
     }
 }
