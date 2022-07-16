@@ -63,6 +63,7 @@ class AuthController {
     logout(req, res, next) {
         try {
             req.user = null
+            req.session.user = null
             res.clearCookie('access_token')
             res.json({ success: true, message: 'Logged out' })
         } catch (error) {

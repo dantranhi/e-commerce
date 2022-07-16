@@ -1,0 +1,25 @@
+.wrapper {
+    padding-block: 2rem;
+}
+
+.status {
+    font-weight: 600;
+    font-size: 1.25rem;
+    text-align: right;
+
+    >span {
+        color: var(--secondary);
+    }
+}
+
+.date{
+    
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.code{
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+    color: var(--primary);
+}

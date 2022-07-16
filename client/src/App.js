@@ -17,7 +17,7 @@ import './index.css';
 
 
 function App() {
-  const [, dispatch] = useStore()
+  const [state, dispatch] = useStore()
 
   useEffect(() => {
     async function checkLogin() {
@@ -38,10 +38,11 @@ function App() {
       }
     }
 
-    if (localStorage.getItem('user')) {
+    if (localStorage.getItem('user') || state.loginType === 'google' || state.loginType === 'facebook') {
       checkLogin()
     }
   }, [])
+
 
   return (
     <Router>

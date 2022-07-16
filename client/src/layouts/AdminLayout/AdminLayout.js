@@ -15,7 +15,7 @@ function AdminLayout({children}) {
                 <Sidebar.Item leftIcon={faDisplay} path='/admin/product'>Products</Sidebar.Item>
                 <Sidebar.Item leftIcon={faPercent} path='/admin/promotion'>Promotions</Sidebar.Item>
                 <Sidebar.Item leftIcon={faUser} path='/admin/user'>Users</Sidebar.Item>
-                <Sidebar.Item leftIcon={faClipboardList} path='/admin/promotion'>Orders</Sidebar.Item>
+                <Sidebar.Item leftIcon={faClipboardList} path='/admin/order'>Orders</Sidebar.Item>
                 <Sidebar.Item leftIcon={faDollarSign} path='/admin/income'>Income</Sidebar.Item>
             </Sidebar.List>
             <Sidebar.List title="Redirect">

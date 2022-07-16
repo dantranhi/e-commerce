@@ -90,7 +90,7 @@ function NewOrder() {
                 productList: data.map(item => ({
                     productId: item._id,
                     quantity: item.amount,
-                    currentPrice: item.price
+                    currentPrice: item.price,
                 })),
                 ...total
             }

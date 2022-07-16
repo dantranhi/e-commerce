@@ -30,6 +30,16 @@ class OrderController {
         }
     }
 
+    // [GET] /order/user/:id
+    async getUserOrders(req, res, next) {
+        try {
+            const orders = await Order.find({ userId: req.params.id })
+            res.json({ success: true, data: orders })
+        } catch (error) {
+            next(error)
+        }
+    }
+
     // [GET] /order/status
     async getAllStatus(req, res, next) {
         try {
@@ -40,11 +50,21 @@ class OrderController {
         }
     }
 
-    // [PUT] /order/:id
+    // [PATCH] /order/:id
     async updateStatus(req, res, next) {
         try {
             await Order.findByIdAndUpdate(req.params.id, req.body)
             res.json({ success: true, message: 'Order status updated successfully' })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    // [PUT] /order/:id
+    async cancelOrder(req, res, next) {
+        try {
+            await Order.findByIdAndUpdate(req.params.id, req.body)
+            res.json({ success: true, message: 'Order cancelled successfully' })
         } catch (error) {
             next(error)
         }

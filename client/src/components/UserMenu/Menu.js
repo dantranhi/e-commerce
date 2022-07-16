@@ -2,10 +2,10 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGear, faCartShopping, faUser, faArrowRightFromBracket, faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons'
+import { faGear, faCartShopping, faUser, faArrowRightFromBracket, faArrowRightToBracket, faClipboardList } from '@fortawesome/free-solid-svg-icons'
 
 import httpRequest from '../../utils/httpRequest'
-import { logout } from '../../store/actions'
+import { logout, setLoginType } from '../../store/actions'
 import { useStore } from '../../store/UserContext'
 import classNames from 'classnames/bind';
 import styles from './UserMenu.module.scss';
@@ -20,13 +20,14 @@ function Menu() {
       const res = await httpRequest.post('/auth/logout')
       if (res.data.success) {
         dispatch(logout())
+        dispatch(setLoginType(''))
         localStorage.removeItem('user')
         navigate('/')
         toast.info(res.data.message)
-    }
-    else {
+      }
+      else {
         toast.error(res.data.message)
-    }
+      }
     } catch (error) {
 
     }
@@ -34,12 +35,17 @@ function Menu() {
 
   return (
     <ul className={cl('wrapper')}>
-      <li>Hello {state.user.info.username}</li>
+      {state.user.info.username &&
+        <li>Hello {state.user.info.username}</li>
+      }
       {state.user.info.isAdmin && <li>
         <Link to='/admin' className={cl('link')}>
           <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faGear} /></span> Admin
         </Link>
       </li>}
+      <Link to={`/order/my-orders/${state.user.info.id}`} className={cl('link')}>
+        <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faClipboardList} /></span> Orders
+      </Link>
       <li>
         <Link to='/' className={cl('link')}>
           <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faCartShopping} /></span> Cart

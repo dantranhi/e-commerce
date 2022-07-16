@@ -1,10 +1,12 @@
-import { SET_LOADING, LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILED, TOGGLE_CART, ADD_TO_CART, REMOVE_FROM_CART, ADD_ONE, SUB_ONE, CLEAR_CART_ERROR, DELETE_CART } from './constants'
+import { SET_LOADING, LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILED, TOGGLE_CART, ADD_TO_CART, REMOVE_FROM_CART, ADD_ONE, SUB_ONE, CLEAR_CART_ERROR, DELETE_CART, SET_LOGIN_TYPE } from './constants'
 
 const INIT_ACCOUNT = JSON.parse(localStorage.getItem('user')) ?? {}
 const INIT_CART = JSON.parse(localStorage.getItem('userCart')) ?? []
+const INIT_LOGIN_TYPE = localStorage.getItem('loginType') ?? ''
 
 export const INIT_STATE = {
     loading: false,
+    loginType: INIT_LOGIN_TYPE,
     user: {
         info: INIT_ACCOUNT,
         error: '',
@@ -126,12 +128,12 @@ const reducer = (state, { type, payload }) => {
                 }
             }
         case SUB_ONE:
-            const subItem = state.cart.data.find(item=>item._id===payload)
-            if (subItem.amount<=1) return {
+            const subItem = state.cart.data.find(item => item._id === payload)
+            if (subItem.amount <= 1) return {
                 ...state,
                 cart: {
                     ...state.cart,
-                    data: [...state.cart.data].filter(item=>item._id!==payload)
+                    data: [...state.cart.data].filter(item => item._id !== payload)
                 }
             }
 
@@ -143,6 +145,12 @@ const reducer = (state, { type, payload }) => {
                     }),
                     isOpen: true
                 }
+            }
+        case SET_LOGIN_TYPE:
+            localStorage.setItem('loginType', payload)
+            return {
+                ...state,
+                loginType: payload
             }
 
         default:

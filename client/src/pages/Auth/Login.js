@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { faFacebook } from '@fortawesome/free-brands-svg-icons'
 import { toast } from 'react-toastify';
 
-import { loginStart, loginSuccess, loginFailed } from '../../store/actions'
+import { loginStart, loginSuccess, loginFailed, setLoginType } from '../../store/actions'
 import httpRequest from '../../utils/httpRequest'
 import { LogoIcon } from '../../components/Icons'
 import GoogleIcon from '../../assets/img/google.png'
@@ -25,8 +25,8 @@ function Login() {
         navigate('/')
         return
       }, 1000)
-      
-      return ()=>clearTimeout(timeoutId)
+
+      return () => clearTimeout(timeoutId)
     }
   }, [])
 
@@ -48,16 +48,19 @@ function Login() {
     else {
       toast.success('Login successfully')
       dispatch(loginSuccess(res.data.details))
+      dispatch(setLoginType('vanilla'))
       localStorage.setItem('user', JSON.stringify(res.data.details))
       navigate('/')
     }
   }
 
   const handleLoginGoogle = () => {
+    dispatch(setLoginType('google'))
     window.open('http://localhost:3006/google', '_self')
   }
 
   const handleLoginFacebook = () => {
+    dispatch(setLoginType('facebook'))
     window.open('http://localhost:3006/facebook', '_self')
   }
 

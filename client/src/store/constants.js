@@ -14,3 +14,6 @@ export const SUB_ONE = 'sub-amount'
 export const CLEAR_CART_ERROR = 'clear-cart-error'
 export const REMOVE_FROM_CART = 'remove-from-cart'
 export const DELETE_CART = 'delete-cart'
+
+// Login
+export const SET_LOGIN_TYPE = 'set-login-type'

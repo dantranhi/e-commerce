@@ -48,6 +48,7 @@ const router = (app) => {
 
     app.get('/api/login/success', (req, res, next) => {
         if (req.session.user) {
+            console.log('Co session')
             const token = jwt.sign({ id: req.session.user.id, username: req.session.user.username, isAdmin: req.session.user.isAdmin }, process.env.JWT_SECRET)
             const { password, ...otherDetails } = req.session.user;
             res.cookie("access_token", token, {

@@ -9,7 +9,7 @@ const OrderSchema = mongoose.Schema({
         {
             productId: { type: String, required: true },
             quantity: { type: Number, required: true },
-            currentPrice: { type: Number, required: true }
+            currentPrice: { type: Number, required: true },
         }
     ],
     delivery: { type: Number, required: true },

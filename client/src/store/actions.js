@@ -11,7 +11,8 @@ import {
     REMOVE_FROM_CART,
     DELETE_CART,
     TOGGLE_CART,
-    CLEAR_CART_ERROR
+    CLEAR_CART_ERROR,
+    SET_LOGIN_TYPE
 } from './constants'
 
 export const setLoading = (payload) => {
@@ -95,6 +96,14 @@ export const clearCartError = (payload) => {
 export const deleteCart = (payload) => {
     return {
         type: DELETE_CART,
+        payload
+    }
+}
+
+// Login
+export const setLoginType = (payload) => {
+    return {
+        type: SET_LOGIN_TYPE,
         payload
     }
 }
