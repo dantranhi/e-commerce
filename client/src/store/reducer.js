@@ -1,4 +1,4 @@
-import { SET_LOADING, LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILED, TOGGLE_CART, ADD_TO_CART, REMOVE_FROM_CART, ADD_ONE, SUB_ONE, CLEAR_CART_ERROR, DELETE_CART, SET_LOGIN_TYPE } from './constants'
+import { SET_LOADING, LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILED, LOGOUT, TOGGLE_CART, ADD_TO_CART, REMOVE_FROM_CART, ADD_ONE, SUB_ONE, CLEAR_CART_ERROR, DELETE_CART, SET_LOGIN_TYPE } from './constants'
 
 const INIT_ACCOUNT = JSON.parse(localStorage.getItem('user')) ?? {}
 const INIT_CART = JSON.parse(localStorage.getItem('userCart')) ?? []
@@ -36,6 +36,7 @@ const reducer = (state, { type, payload }) => {
                 loading: true
             }
         case LOGIN_SUCCESS:
+            localStorage.setItem('user', JSON.stringify(payload))
             return {
                 ...state,
                 user: {
@@ -44,13 +45,28 @@ const reducer = (state, { type, payload }) => {
                 }
             }
         case LOGIN_FAILED:
+            localStorage.removeItem('user')
+            localStorage.removeItem('loginType')
             return {
                 ...state,
+                loading: false,
                 user: {
                     info: {},
                     error: 'Login failed'
                 }
             }
+        case LOGOUT: {
+            localStorage.removeItem('user')
+            localStorage.removeItem('loginType')
+            return {
+                ...state,
+                loginType: '',
+                user: {
+                    info: INIT_ACCOUNT,
+                    error: ''
+                }
+            }
+        }
         case TOGGLE_CART:
             return {
                 ...state,

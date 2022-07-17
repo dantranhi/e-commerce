@@ -20,8 +20,6 @@ function Menu() {
       const res = await httpRequest.post('/auth/logout')
       if (res.data.success) {
         dispatch(logout())
-        dispatch(setLoginType(''))
-        localStorage.removeItem('user')
         navigate('/')
         toast.info(res.data.message)
       }
@@ -43,9 +41,9 @@ function Menu() {
           <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faGear} /></span> Admin
         </Link>
       </li>}
-      <Link to={`/order/my-orders/${state.user.info.id}`} className={cl('link')}>
+      {Object.keys(state.user.info).length > 0 && <Link to={`/order/my-orders/${state.user.info.id}`} className={cl('link')}>
         <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faClipboardList} /></span> Orders
-      </Link>
+      </Link>}
       <li>
         <Link to='/' className={cl('link')}>
           <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faCartShopping} /></span> Cart

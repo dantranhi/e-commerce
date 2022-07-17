@@ -57,15 +57,15 @@ function MyOrders() {
                         <Order.List>
                             {!productsLoading && orderList.productList.map(item => {
                                 const thisProduct = products.find(p => p._id === item.productId)
-                                if (thisProduct)
-                                    return (
-                                        <Order.Item key={item._id} data={{
-                                            photos: thisProduct.photos,
-                                            name: thisProduct.name,
-                                            amount: item.quantity,
-                                            price: item.currentPrice
-                                        }}></Order.Item>
-                                    )
+
+                                return (
+                                    <Order.Item key={item._id} data={{
+                                        photos: thisProduct.photos,
+                                        name: thisProduct.name,
+                                        amount: item.quantity,
+                                        price: item.currentPrice
+                                    }}></Order.Item>
+                                )
                             })}
                             <Divider />
 
@@ -84,7 +84,7 @@ function MyOrders() {
                                         Cancel this order
                                     </Button>
                                 </Popconfirm>}
-                            
+
 
                             {index !== myOrders.length - 1 && <Divider>+++++</Divider>}
                         </Order.List>

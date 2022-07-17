@@ -15,6 +15,8 @@ function UserList() {
     const [currentUser, setCurrentUser] = useState(()=>JSON.parse(localStorage.getItem('user')))
     const { data: users, loading, error, reFetch } = useFetch('/user')
 
+    console.log(currentUser)
+
 
     const handleChangeRole = async (userId, value) => {
         const res = await httpRequest.patch(`/user/${userId}`, { isAdmin: value })
@@ -43,14 +45,14 @@ function UserList() {
             title: 'Role',
             dataIndex: 'isAdmin',
             key: 'isAdmin',
-            render: (text, record) => <Switch disabled={currentUser.id === record._id} onChange={() => handleChangeRole(record._id, !text)} checkedChildren="ADM" unCheckedChildren="USER" defaultChecked={text} />
+            render: (text, record) => <Switch disabled={currentUser._id === record._id} onChange={() => handleChangeRole(record._id, !text)} checkedChildren="ADM" unCheckedChildren="USER" defaultChecked={text} />
         },
         {
             title: 'Action',
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    {currentUser.id !== record._id && <Popconfirm
+                    {currentUser._id !== record._id && <Popconfirm
                         title="Are you sure to delete this user?"
                         onConfirm={(e) => confirmDeleteUser(e, record._id)}
                         okText="Yes"

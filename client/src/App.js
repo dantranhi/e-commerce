@@ -20,6 +20,7 @@ function App() {
   const [state, dispatch] = useStore()
 
   useEffect(() => {
+    const loginMethod = localStorage.getItem('loginType') ?? null
     async function checkLogin() {
       dispatch(loginStart())
       try {
@@ -33,15 +34,14 @@ function App() {
         }
       } catch (error) {
         console.log(error)
-        localStorage.removeItem('user')
-        dispatch(loginFailed())
+        // dispatch(loginFailed())
       }
     }
 
-    if (localStorage.getItem('user') || state.loginType === 'google' || state.loginType === 'facebook') {
+    if (localStorage.getItem('user') || loginMethod === 'google' || loginMethod === 'facebook') {
       checkLogin()
     }
-  }, [])
+  }, [state.loginType])
 
 
   return (

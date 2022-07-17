@@ -49,7 +49,6 @@ function Login() {
       toast.success('Login successfully')
       dispatch(loginSuccess(res.data.details))
       dispatch(setLoginType('vanilla'))
-      localStorage.setItem('user', JSON.stringify(res.data.details))
       navigate('/')
     }
   }

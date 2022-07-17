@@ -1,15 +1,15 @@
 import React from 'react'
 import { Space, Table, Popconfirm, Typography, Tag, Button, Select } from 'antd'
 import { toast } from 'react-toastify';
+import classNames from 'classnames/bind';
 
 import httpRequest from '../../utils/httpRequest'
 import Order from '../../components/Order'
 import useFetch from '../../hooks/useFetch'
 import formatCurrency from '../../utils/formatCurrency'
 import formatDate from '../../utils/formatDate'
-import classNames from 'classnames/bind';
 import styles from '../ProductList/ProductList.module.scss';
-import axios from 'axios';
+
 const cl = classNames.bind(styles);
 const { Title } = Typography;
 const { Option } = Select
@@ -54,6 +54,8 @@ function ProductList() {
             case 'Delivered':
                 color = '#ffc6ff'
                 break
+            default:
+                color = 'white'
         }
         return color
     }
@@ -81,6 +83,16 @@ function ProductList() {
             dataIndex: 'createdAt',
             key: 'createdAt',
             render: (date) => formatDate(date, 'DD-MM-YYYY')
+        },
+        {
+            title: 'Phone number',
+            dataIndex: 'userPhone',
+            key: 'userPhone',
+        },
+        {
+            title: 'Address',
+            dataIndex: 'userAddress',
+            key: 'userAddress',
         },
         {
             title: 'Status',
@@ -138,15 +150,15 @@ function ProductList() {
                                     <Order.List>
                                         {!productsLoading && record.productList.map(item => {
                                             const thisProduct = products.find(p => p._id === item.productId)
-                                            if (thisProduct)
-                                                return (
-                                                    <Order.Item key={item._id} data={{
-                                                        photos: thisProduct.photos,
-                                                        name: thisProduct.name,
-                                                        amount: item.quantity,
-                                                        price: item.currentPrice
-                                                    }}></Order.Item>
-                                                )
+
+                                            return (
+                                                <Order.Item key={item._id} data={{
+                                                    photos: thisProduct.photos,
+                                                    name: thisProduct.name,
+                                                    amount: item.quantity,
+                                                    price: item.currentPrice
+                                                }}></Order.Item>
+                                            )
                                         })}
                                     </Order.List>
                                 </Order>
