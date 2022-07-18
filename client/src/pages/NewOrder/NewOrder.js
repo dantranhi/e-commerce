@@ -17,9 +17,10 @@ const cl = classNames.bind(styles);
 const { Title } = Typography
 
 function NewOrder() {
+    const [profile, setProfile] = useState(JSON.parse(localStorage.getItem('user')) ?? null)
+    console.log(profile)
     const navigate = useNavigate()
     const [showCart, setShowCart] = useState(false)
-    const [loadings, setLoadings] = useState([]);
     const [errors, setErrors] = useState([])
 
 
@@ -36,9 +37,9 @@ function NewOrder() {
     const [{ cart: { data }, user }, dispatch] = useStore()
 
     useEffect(() => {
-        if (Object.keys(user.info).length === 0)
+        if (!profile)
             navigate('/login')
-    }, [user])
+    }, [])
 
     useEffect(() => {
         let newTemp = data.reduce((accumulate, item) => {
@@ -60,32 +61,15 @@ function NewOrder() {
         }))
     }
 
-    // const enterLoading = (index) => {
-    //     setLoadings((prevLoadings) => {
-    //         const newLoadings = [...prevLoadings];
-    //         newLoadings[index] = true;
-    //         return newLoadings;
-    //     });
-    //     setTimeout(() => {
-    //         setLoadings((prevLoadings) => {
-    //             const newLoadings = [...prevLoadings];
-    //             newLoadings[index] = false;
-    //             return newLoadings;
-    //         });
-    //     }, 1000);
-    // };
-
     const handleOpenCart = () => {
         setShowCart(prev => !prev)
     }
 
     const handleSubmitOrder = async (e) => {
         e.preventDefault()
-        const userInfo = JSON.parse(localStorage.getItem('user'))
-        console.log(userInfo)
         try {
             let allData = {
-                userId: userInfo.id,
+                userId: profile.details._id,
                 ...info,
                 productList: data.map(item => ({
                     productId: item._id,
@@ -95,7 +79,7 @@ function NewOrder() {
                 ...total
             }
             console.log(allData)
-            const res = await httpRequest.post(`/order/${user.info.id}/create`, allData)
+            const res = await httpRequest.post(`/order/${profile.details._id}/create`, allData)
             if (res.data.success) {
                 toast.success(res.data.message)
                 dispatch(deleteCart())
@@ -123,7 +107,7 @@ function NewOrder() {
                                 <ValidateMessage name="userPhone" errors={errors}></ValidateMessage>
                                 <div className={cl('nav-links')}>
                                     <Button onClick={handleOpenCart}>Giỏ hàng</Button>
-                                    <Button type="primary" htmlType="submit" loading={loadings[0]}>
+                                    <Button type="primary" htmlType="submit">
                                         Thanh toán
                                     </Button>
                                 </div>

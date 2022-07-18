@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Fragment } from 'react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify';
 
-import { get } from './utils/httpRequest'
-import { loginStart, loginSuccess, loginFailed } from './store/actions'
 import { useStore } from './store/UserContext'
+import { logout, loginSuccess, setLoading } from './store/actions'
+import { get } from './utils/httpRequest'
 import routes from './routes'
 import DefaultLayout from './layouts/DefaultLayout'
 import 'antd/dist/antd.min.css';
@@ -17,31 +17,20 @@ import './index.css';
 
 
 function App() {
-  const [state, dispatch] = useStore()
-
+  const [, dispatch] = useStore()
   useEffect(() => {
-    const loginMethod = localStorage.getItem('loginType') ?? null
-    async function checkLogin() {
-      dispatch(loginStart())
-      try {
-        const res = await get('/login/success')
-        if (res.details) {
-          localStorage.setItem('user', JSON.stringify(res.details))
-          dispatch(loginSuccess(res.details))
-        }
-        else {
-          console.log('Not logged in')
-        }
-      } catch (error) {
-        console.log(error)
-        // dispatch(loginFailed())
+    const getUser = async () => {
+      dispatch(setLoading(true))
+      const res = await get('/auth/login/success')
+      if (res.success) {
+        dispatch(loginSuccess({ details: res.user }))
+      }
+      else {
+        dispatch(logout())
       }
     }
-
-    if (localStorage.getItem('user') || loginMethod === 'google' || loginMethod === 'facebook') {
-      checkLogin()
-    }
-  }, [state.loginType])
+    getUser();
+  }, []);
 
 
   return (

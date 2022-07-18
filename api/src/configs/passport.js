@@ -1,40 +1,47 @@
 // import LocalStrategy from 'passport-local'
 import bcrypt from 'bcryptjs'
-import GoogleStrategy from 'passport-google-oauth20'
-import FacebookStrategy from 'passport-facebook'
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
+import { Strategy as FacebookStrategy } from 'passport-facebook'
 
 import User from '../models/User.js'
 import { googleKeys, facebookKeys } from './keys.js'
 
 function initializePassport(passport) {
-    // Xác thực user đăng nhập bình thường
-    // const authenticateUser = async (username, password, done) => {
-    //     const user = await User.findOne({ username: username })
-    //     if (user == null) {
-    //         return done(null, false, { message: 'Tên người dùng không tồn tại' })
-    //     }
-    //     try {
-    //         if (await bcrypt.compare(password, user.password)) {
-    //             return done(null, user, { message: 'Đăng nhập thành công' })
+    // passport.use(
+    //     new GoogleStrategy(
+    //         {
+    //             clientID: googleKeys.clientID,
+    //             clientSecret: googleKeys.clientSecret,
+    //             callbackURL: googleKeys.callbackURL
+    //         },
+    //         function (accessToken, refreshToken, profile, done) {
+    //             console.log(profile)
+    //             done(null, profile);
     //         }
-    //         else {
-    //             return done(null, false, { message: 'Mật khẩu không đúng' })
+    //     )
+    // );
+
+
+    // passport.use(
+    //     new FacebookStrategy(
+    //         {
+    //             clientID: facebookKeys.facebook_key,
+    //             clientSecret: facebookKeys.facebook_secret,
+    //             callbackURL: facebookKeys.callback_url,
+    //         },
+    //         function (accessToken, refreshToken, profile, done) {
+    //             done(null, profile);
     //         }
-    //     } catch (e) {
-    //         return done(e)
-    //     }
-    // }
+    //     )
+    // );
 
 
-    // passport.use(new LocalStrategy.Strategy({ usernameField: 'username' }, authenticateUser))
-
-    // Xác thực user đăng nhập bằng Google
-    passport.use(new GoogleStrategy.Strategy({
+    passport.use(new GoogleStrategy({
         clientID: googleKeys.clientID,
         clientSecret: googleKeys.clientSecret,
         callbackURL: googleKeys.callbackURL
-    }, (request, accessToken, refreshToken, profile, done) => {
-        // console.log(profile)
+    }, (accessToken, refreshToken, profile, done) => {
+        // console.log(accessToken)
         // Check if google profile exist.
         if (profile.id) {
             User.findOne({ googleId: profile.id })
@@ -61,7 +68,7 @@ function initializePassport(passport) {
 
 
     // Xác thực user đăng nhập bằng Facebook
-    passport.use(new FacebookStrategy.Strategy({
+    passport.use(new FacebookStrategy({
         clientID: facebookKeys.facebook_key,
         clientSecret: facebookKeys.facebook_secret,
         callbackURL: facebookKeys.callback_url,
@@ -87,10 +94,45 @@ function initializePassport(passport) {
                                     .then(user => done(null, user));
                             }
                         })
-                }          
+                }
             });
         }
     ));
+
+
+    passport.serializeUser((user, done) => {
+        done(null, user);
+    });
+
+    passport.deserializeUser((user, done) => {
+        done(null, user);
+    });
+
+
+
+
+    // Xác thực user đăng nhập bình thường
+    // const authenticateUser = async (username, password, done) => {
+    //     const user = await User.findOne({ username: username })
+    //     if (user == null) {
+    //         return done(null, false, { message: 'Tên người dùng không tồn tại' })
+    //     }
+    //     try {
+    //         if (await bcrypt.compare(password, user.password)) {
+    //             return done(null, user, { message: 'Đăng nhập thành công' })
+    //         }
+    //         else {
+    //             return done(null, false, { message: 'Mật khẩu không đúng' })
+    //         }
+    //     } catch (e) {
+    //         return done(e)
+    //     }
+    // }
+
+
+    // passport.use(new LocalStrategy.Strategy({ usernameField: 'username' }, authenticateUser))
+
+
 
 
 
@@ -98,19 +140,19 @@ function initializePassport(passport) {
 
 
     // Cach dung
-    passport.serializeUser((user, done) => {
-        done(null, user._id);
-    });
+    // passport.serializeUser((user, done) => {
+    //     done(null, user._id);
+    // });
 
-    passport.deserializeUser((_id, done) => {
-        User.findById(_id, (err, user) => {
-            if (err) {
-                done(null, false, { error: err });
-            } else {
-                done(null, user);
-            }
-        });
-    });
+    // passport.deserializeUser((_id, done) => {
+    //     User.findById(_id, (err, user) => {
+    //         if (err) {
+    //             done(null, false, { error: err });
+    //         } else {
+    //             done(null, user);
+    //         }
+    //     });
+    // });
 }
 
 export default initializePassport

@@ -16,8 +16,8 @@ const cl = classNames.bind(styles);
 
 function MyOrders() {
     const [cancelLoading, setCancelLoading] = useState([])
-    const currentUser = JSON.parse(localStorage.getItem('user'))
-    const { data: myOrders, loading, reFetch } = useFetch(`/order/user/${currentUser.id}`)
+    const [profile, setProfile] = useState(JSON.parse(localStorage.getItem('user')) ?? null)
+    const { data: myOrders, loading, reFetch } = useFetch(`/order/user/${profile._id}`)
     const { data: products, loading: productsLoading } = useFetch('/product')
 
     const handleCancelOrder = async (index, orderId) => {

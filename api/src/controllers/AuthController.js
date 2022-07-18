@@ -15,12 +15,9 @@ class AuthController {
             if (!isCorrectPassword)
                 return res.json({ message: 'Password is incorrect' })
 
-            const token = jwt.sign({ id: user._id, username: user.username, isAdmin: user.isAdmin }, process.env.JWT_SECRET)
+            const token = jwt.sign({ id: user._id, username: user.username, isAdmin: user.isAdmin }, process.env.JWT_SECRET, { expiresIn: '1h' })
             const { password, ...otherDetails } = user._doc;
-            res.cookie("access_token", token, {
-                httpOnly: true,
-                maxAge: 3600 * 4 * 1000
-            }).status(200).json({ details: { ...otherDetails } });
+            res.cookie("access_token", token).status(200).json({ details: { ...otherDetails }, token: token });
         }
         catch (err) {
             next(err)
@@ -53,7 +50,7 @@ class AuthController {
                 email: req.body.email
             })
             await savedUser.save()
-            res.json({success: true, user: savedUser})
+            res.json({ success: true, user: savedUser })
         } catch (error) {
             next(error)
         }
@@ -62,11 +59,11 @@ class AuthController {
     // [POST] /auth/logout
     logout(req, res, next) {
         try {
-            req.user = null
-            req.session.user = null
+            if (req?.user) req.logout(()=>console.log('Log out!'));
             res.clearCookie('access_token')
             res.json({ success: true, message: 'Logged out' })
         } catch (error) {
+            console.log(error)
             res.json({ success: false, message: 'An error has occurred' })
         }
     }

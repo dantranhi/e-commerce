@@ -17,7 +17,11 @@ const app = express()
 // Middleware
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }))
+app.use(cors({
+    origin: "http://localhost:3000",
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true,
+}))
 app.use(cookieParser())
 app.use(session({
     secret: 'keyboard cat',
@@ -29,12 +33,13 @@ app.use(session({
     },
 }))
 initializePassport(passport)
-cloudinary.config({ 
-    cloud_name: 'dauu0vpgc', 
-    api_key: '778177312327272', 
+app.use(passport.session());
+cloudinary.config({
+    cloud_name: 'dauu0vpgc',
+    api_key: '778177312327272',
     api_secret: 'IG_zmRjj8rJ7xTjo-cF1cAzSd7Q',
     secure: true
-  });
+});
 
 mongoose.connect(process.env.MONGO, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
     console.log('DB connected')

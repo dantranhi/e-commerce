@@ -23,7 +23,7 @@ class OrderController {
     // [GET] /order
     async getAll(req, res, next) {
         try {
-            const orders = await Order.find()
+            const orders = await Order.find().sort({ createdAt: 'desc' })
             res.json({ success: true, data: orders })
         } catch (error) {
             next(error)
@@ -33,7 +33,7 @@ class OrderController {
     // [GET] /order/user/:id
     async getUserOrders(req, res, next) {
         try {
-            const orders = await Order.find({ userId: req.params.id })
+            const orders = await Order.find({ userId: req.params.id }).sort({ createdAt: 'desc' })
             res.json({ success: true, data: orders })
         } catch (error) {
             next(error)

@@ -1,11 +1,13 @@
-import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useState, useEffect, useCallback } from 'react'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear, faCartShopping, faUser, faArrowRightFromBracket, faArrowRightToBracket, faClipboardList } from '@fortawesome/free-solid-svg-icons'
+import decode from 'jwt-decode';
 
-import httpRequest from '../../utils/httpRequest'
-import { logout, setLoginType } from '../../store/actions'
+
+import httpRequest, { get } from '../../utils/httpRequest'
+import { logout } from '../../store/actions'
 import { useStore } from '../../store/UserContext'
 import classNames from 'classnames/bind';
 import styles from './UserMenu.module.scss';
@@ -14,12 +16,16 @@ const cl = classNames.bind(styles);
 function Menu() {
   const [state, dispatch] = useStore()
   const navigate = useNavigate()
+  const location = useLocation()
+
+  const [profile, setProfile] = useState(JSON.parse(localStorage.getItem('user')))
 
   const handleLogout = async () => {
     try {
       const res = await httpRequest.post('/auth/logout')
       if (res.data.success) {
         dispatch(logout())
+        setProfile(null)
         navigate('/')
         toast.info(res.data.message)
       }
@@ -31,17 +37,29 @@ function Menu() {
     }
   }
 
+
+  useEffect(() => {
+    const token = profile?.token;
+
+    if (token) {
+      const decodedToken = decode(token);
+      if (decodedToken.exp * 1000 - new Date().getTime() < 0) dispatch(logout());
+    }
+    setProfile(JSON.parse(localStorage.getItem('user')));
+  }, [state.userData]);
+
+
   return (
     <ul className={cl('wrapper')}>
-      {state.user.info.username &&
-        <li>Hello {state.user.info.username}</li>
+      {profile &&
+        <li>Hello {profile.details.username}</li>
       }
-      {state.user.info.isAdmin && <li>
+      {profile && profile.details.isAdmin && <li>
         <Link to='/admin' className={cl('link')}>
           <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faGear} /></span> Admin
         </Link>
       </li>}
-      {Object.keys(state.user.info).length > 0 && <Link to={`/order/my-orders/${state.user.info.id}`} className={cl('link')}>
+      {profile && <Link to={`/order/my-orders/${profile.details._id}`} className={cl('link')}>
         <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faClipboardList} /></span> Orders
       </Link>}
       <li>
@@ -54,7 +72,7 @@ function Menu() {
           <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faUser} /></span> Profile
         </Link>
       </li>
-      {state.user.info.username ? <li>
+      {profile ? <li>
         <div onClick={handleLogout} className={cl('link')}>
           <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faArrowRightFromBracket} /></span> Logout
         </div>

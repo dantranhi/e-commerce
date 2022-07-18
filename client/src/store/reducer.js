@@ -1,16 +1,10 @@
-import { SET_LOADING, LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILED, LOGOUT, TOGGLE_CART, ADD_TO_CART, REMOVE_FROM_CART, ADD_ONE, SUB_ONE, CLEAR_CART_ERROR, DELETE_CART, SET_LOGIN_TYPE } from './constants'
+import { SET_LOADING, LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILED, LOGOUT, TOGGLE_CART, ADD_TO_CART, REMOVE_FROM_CART, ADD_ONE, SUB_ONE, CLEAR_CART_ERROR, DELETE_CART } from './constants'
 
-const INIT_ACCOUNT = JSON.parse(localStorage.getItem('user')) ?? {}
 const INIT_CART = JSON.parse(localStorage.getItem('userCart')) ?? []
-const INIT_LOGIN_TYPE = localStorage.getItem('loginType') ?? ''
 
 export const INIT_STATE = {
     loading: false,
-    loginType: INIT_LOGIN_TYPE,
-    user: {
-        info: INIT_ACCOUNT,
-        error: '',
-    },
+    userData: {},
     cart: {
         data: INIT_CART,
         isOpen: false,
@@ -37,35 +31,13 @@ const reducer = (state, { type, payload }) => {
             }
         case LOGIN_SUCCESS:
             localStorage.setItem('user', JSON.stringify(payload))
-            return {
-                ...state,
-                user: {
-                    info: payload,
-                    error: ''
-                }
-            }
+            return { ...state, loading: false, userData: payload };
         case LOGIN_FAILED:
             localStorage.removeItem('user')
-            localStorage.removeItem('loginType')
-            return {
-                ...state,
-                loading: false,
-                user: {
-                    info: {},
-                    error: 'Login failed'
-                }
-            }
+            return state
         case LOGOUT: {
             localStorage.removeItem('user')
-            localStorage.removeItem('loginType')
-            return {
-                ...state,
-                loginType: '',
-                user: {
-                    info: INIT_ACCOUNT,
-                    error: ''
-                }
-            }
+            return { ...state, loading: false, userData: {} }
         }
         case TOGGLE_CART:
             return {
@@ -162,12 +134,7 @@ const reducer = (state, { type, payload }) => {
                     isOpen: true
                 }
             }
-        case SET_LOGIN_TYPE:
-            localStorage.setItem('loginType', payload)
-            return {
-                ...state,
-                loginType: payload
-            }
+
 
         default:
             return state

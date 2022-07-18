@@ -45,7 +45,7 @@ export const loginFailed = (payload) => {
 
 export const logout = (payload) => {
     return {
-        type: LOGIN_FAILED,
+        type: LOGOUT,
         payload
     }
 }

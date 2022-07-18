@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { faFacebook } from '@fortawesome/free-brands-svg-icons'
 import { toast } from 'react-toastify';
 
-import { loginStart, loginSuccess, loginFailed, setLoginType } from '../../store/actions'
+import { loginStart, loginSuccess, loginFailed } from '../../store/actions'
 import httpRequest from '../../utils/httpRequest'
 import { LogoIcon } from '../../components/Icons'
 import GoogleIcon from '../../assets/img/google.png'
@@ -16,18 +16,13 @@ import styles from './Login.module.scss';
 const cl = classNames.bind(styles);
 
 function Login() {
+  const [profile, setProfile] = useState(JSON.parse(localStorage.getItem('user')) ?? null)
   const navigate = useNavigate()
   const [state, dispatch] = useStore()
 
   useEffect(() => {
-    if (Object.keys(state.user.info).length > 0) {
-      const timeoutId = setTimeout(() => {
-        navigate('/')
-        return
-      }, 1000)
-
-      return () => clearTimeout(timeoutId)
-    }
+    if (profile)
+      navigate('/')
   }, [])
 
   const [user, setUser] = useState({ username: '', password: '' })
@@ -47,20 +42,18 @@ function Login() {
       dispatch(loginFailed(res.data.message))
     else {
       toast.success('Login successfully')
-      dispatch(loginSuccess(res.data.details))
-      dispatch(setLoginType('vanilla'))
+      console.log(res.data.details)
+      dispatch(loginSuccess(res.data))
       navigate('/')
     }
   }
 
   const handleLoginGoogle = () => {
-    dispatch(setLoginType('google'))
-    window.open('http://localhost:3006/google', '_self')
+    window.open('http://localhost:3006/auth/google', '_self')
   }
 
   const handleLoginFacebook = () => {
-    dispatch(setLoginType('facebook'))
-    window.open('http://localhost:3006/facebook', '_self')
+    window.open('http://localhost:3006/auth/facebook', '_self')
   }
 
   return (
@@ -78,6 +71,7 @@ function Login() {
           <span className={cl('line-text')}>OR</span>
         </div>
         <div className={cl('socials')}>
+
           <Button onClick={handleLoginGoogle}><img className={cl('icon')} src={GoogleIcon} alt="google" />Login with Google</Button>
           <Button onClick={handleLoginFacebook} leftIcon={faFacebook}>Login with Facebook</Button>
         </div>
