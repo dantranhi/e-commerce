@@ -63,7 +63,7 @@ class OrderController {
     // [PUT] /order/:id
     async cancelOrder(req, res, next) {
         try {
-            await Order.findByIdAndUpdate(req.params.id, req.body)
+            await Order.findByIdAndUpdate(req.params.orderId, req.body)
             res.json({ success: true, message: 'Order cancelled successfully' })
         } catch (error) {
             next(error)

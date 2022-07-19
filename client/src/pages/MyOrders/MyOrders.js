@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Divider, Typography, Button, Popconfirm } from 'antd'
 import { toast } from 'react-toastify'
 
+import {useStore} from '../../store/UserContext'
 import Order from '../../components/Order'
 import useFetch from '../../hooks/useFetch'
 import formatCurrency from '../../utils/formatCurrency'
@@ -17,7 +18,7 @@ const cl = classNames.bind(styles);
 function MyOrders() {
     const [cancelLoading, setCancelLoading] = useState([])
     const [profile, setProfile] = useState(JSON.parse(localStorage.getItem('user')) ?? null)
-    const { data: myOrders, loading, reFetch } = useFetch(`/order/user/${profile._id}`)
+    const { data: myOrders, loading, reFetch } = useFetch(`/order/user/${profile.details._id}`)
     const { data: products, loading: productsLoading } = useFetch('/product')
 
     const handleCancelOrder = async (index, orderId) => {
@@ -28,7 +29,8 @@ function MyOrders() {
                 return newState
             })
 
-            const res = await httpRequest.put(`/order/${orderId}`, { status: 'Cancelled' })
+            const res = await httpRequest.put(`/order/${profile.details._id}/${orderId}`, { status: 'Cancelled' })
+            console.log(res)
             if (res.data.success) {
                 toast.success(res.data.message)
                 setCancelLoading(prev => {

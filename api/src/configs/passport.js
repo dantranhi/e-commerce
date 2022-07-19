@@ -55,7 +55,7 @@ function initializePassport(passport) {
                             email: profile.emails[0].value,
                             // name: profile.name.familyName + ' ' + profile.name.givenName,
                             username: profile.name.familyName + ' ' + profile.name.givenName,
-                            password: hashedPassword,
+                            // password: hashedPassword,
                             image: profile.photos[0].value
                         })
                             .save()
@@ -87,7 +87,7 @@ function initializePassport(passport) {
                                 new User({
                                     facebookId: profile.id,
                                     username: profile.displayName,
-                                    password: hashedPassword,
+                                    // password: hashedPassword,
                                     image: profile.photos[0].value
                                 })
                                     .save()

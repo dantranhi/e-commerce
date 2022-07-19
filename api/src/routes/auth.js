@@ -18,6 +18,13 @@ router.get('/google/callback', passport.authenticate('google', {
     failureRedirect: "auth/login/failed",
 }))
 
+router.get('/facebook', passport.authenticate('facebook', { scope: 'email' }))
+
+router.get('/facebook/callback', passport.authenticate('facebook', {
+    successRedirect: CLIENT_URL,
+    failureRedirect: "auth/login/failed",
+}))
+
 router.get("/login/success", (req, res) => {
     if (req.user) {
         res.status(200).json({

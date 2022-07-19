@@ -68,6 +68,7 @@ function ProductList() {
                 reFetch()
             }
         } catch (error) {
+            console.log(error)
             toast.error("Can't update order status")
         }
     }

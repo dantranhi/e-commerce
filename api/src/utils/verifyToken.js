@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { createError } from './error.js'
+import User from '../models/User.js'
 
 function extractToken(req){
     if (req.headers.authorization && req.headers.authorization.split(' ')[0]==='Bearer')
@@ -9,10 +10,15 @@ function extractToken(req){
 
 export const verifyToken = (req, res, next) => {
     const token = req.cookies.access_token
+    if (req.user) {
+        console.log("Log in with oauth")
+        return next()
+    }
     if (!token) {
         console.log('Not have token')
         return next(createError(401, "You are not authenticated!"))
     }
+    
 
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
         if (err)
@@ -23,9 +29,10 @@ export const verifyToken = (req, res, next) => {
 }
 
 export const verifyUser = (req, res, next) => {
-    verifyToken(req, res, () => {
+    verifyToken(req, res, async () => {
+        const user = await User.findById(req.params.id)
         if (req.user) {
-            if (req.user?.id === req.params.id || req.user?.isAdmin)
+            if ((user && (user?.googleId===req.user.id || user?.facebookId===req.user.id)) || req.user?.id === req.params.id || req.user?.isAdmin)
                 next()
         } else {
             return next(createError(403, 'You do not have permission to access this'))
