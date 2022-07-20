@@ -20,7 +20,6 @@ const { RangePicker } = DatePicker
 
 
 function PromotionForm({ edit }) {
-    console.log(edit)
     let url = '/promotion/periods'
     let editUrl = `/promotion/periods/${edit}`
     const [errors, setErrors] = useState([])
@@ -40,6 +39,7 @@ function PromotionForm({ edit }) {
     const { data: allProducts } = useFetch('/product')
 
     const { data: allPromotionPeriods } = useFetch(!!edit ? editUrl : url)
+    console.log(allPromotionPeriods)
 
     const { data: promotionData, error, loading } = useFetch(`/promotion/${edit}`, !!edit)
     if (error) console.log('Error while fetch Promotion data: ' + error)
@@ -104,7 +104,6 @@ function PromotionForm({ edit }) {
 
 
     function onDateChange(dates, dateStrings) {
-        console.log(dates, dateStrings);
         if (dates) {
             setFormFields(prev => ({
                 ...prev,
@@ -125,7 +124,7 @@ function PromotionForm({ edit }) {
         }
         const tooLate = formFields.startEndDate[0] && current.diff(formFields.startEndDate[0], 'days') > 7;
         const tooEarly = formFields.startEndDate[1] && formFields.startEndDate[1].diff(current, 'days') > 7;
-        return !!allPromotionPeriods.find(d => current.isBetween(d[0], d[1])) || !!tooEarly || !!tooLate;
+        return current < moment().endOf('day') || !!allPromotionPeriods.find(d => current.isBetween(d[0], d[1])) || !!tooEarly || !!tooLate;
     };
 
     const handleSubmit = async (e) => {
@@ -137,7 +136,6 @@ function PromotionForm({ edit }) {
             if (!edit) {
                 const res = await httpRequest.post('/promotion/create', newPromotion)
                 if (!res.data.success) {
-                    console.log(res.data.errors)
                     setErrors(res.data.errors)
                 }
                 else {
@@ -153,7 +151,6 @@ function PromotionForm({ edit }) {
                 }
                 if (res.data.errors) {
                     setErrors(res.data.errors)
-                    console.log(res.data)
                 }
             }
         }

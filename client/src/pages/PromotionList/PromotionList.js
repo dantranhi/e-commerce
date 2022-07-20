@@ -16,7 +16,6 @@ const { Title } = Typography
 
 function PromotionList() {
     const { data: promotionData, loading, reFetch } = useFetch('/promotion')
-    console.log(promotionData)
 
     const confirm = async (e, id) => {
         try {

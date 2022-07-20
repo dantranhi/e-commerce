@@ -48,11 +48,17 @@ function Menu() {
     setProfile(JSON.parse(localStorage.getItem('user')));
   }, [state.userData]);
 
-
   return (
     <ul className={cl('wrapper')}>
       {profile &&
-        <li>Hello {profile.details.username}</li>
+        <li className={cl('profile-wrapper')}>
+          <div className={cl('avatar-wrapper')}>
+            <img src={profile.details?.photos?.[0]?.url || profile.details?.image} alt="" className={cl('avatar')} />
+          </div>
+          <div className={cl('name')}>
+            Hello {profile.details.username}
+          </div>
+        </li>
       }
       {profile && profile.details.isAdmin && <li>
         <Link to='/admin' className={cl('link')}>
@@ -62,13 +68,9 @@ function Menu() {
       {profile && <Link to={`/order/my-orders/${profile.details._id}`} className={cl('link')}>
         <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faClipboardList} /></span> Orders
       </Link>}
+
       <li>
-        <Link to='/' className={cl('link')}>
-          <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faCartShopping} /></span> Cart
-        </Link>
-      </li>
-      <li>
-        <Link to='/' className={cl('link')}>
+        <Link to={`/profile/${profile?.details._id}`} className={cl('link')}>
           <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faUser} /></span> Profile
         </Link>
       </li>

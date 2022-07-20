@@ -108,6 +108,7 @@ const reducer = (state, { type, payload }) => {
                 }
             }
         case DELETE_CART:
+            localStorage.removeItem('userCart')
             return {
                 ...state,
                 cart: {

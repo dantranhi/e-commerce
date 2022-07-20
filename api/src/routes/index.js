@@ -3,6 +3,7 @@ import authRouter from './auth.js'
 import userRouter from './user.js'
 import orderRouter from './order.js'
 import promotionRouter from './promotion.js'
+import profileRouter from './profile.js'
 
 const router = (app) => {
     app.use('/product', productRouter)
@@ -10,6 +11,7 @@ const router = (app) => {
     app.use('/promotion', promotionRouter)
     app.use('/user', userRouter)
     app.use('/order', orderRouter)
+    app.use('/profile', profileRouter)
 
 
     

@@ -42,7 +42,6 @@ function Login() {
       dispatch(loginFailed(res.data.message))
     else {
       toast.success('Login successfully')
-      console.log(res.data.details)
       dispatch(loginSuccess(res.data))
       navigate('/')
     }

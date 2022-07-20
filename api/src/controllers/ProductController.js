@@ -110,7 +110,6 @@ class ProductController {
             const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body)
             res.json({ success: true, message: 'Product updated successfully' })
         } catch (error) {
-            console.log(error)
             next(error)
         }
     }

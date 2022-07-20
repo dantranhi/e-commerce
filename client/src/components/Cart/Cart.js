@@ -14,6 +14,7 @@ const cl = classNames.bind(styles);
 function Cart({ onClose }) {
   const [state] = useStore()
   const [totalPrice, setTotalPrice] = useState('')
+  const user = JSON.parse(localStorage.getItem('user')).details
 
   const calculateTotal = () => {
     let total = state.cart.data.reduce((accumulate, curValue, curIndex) => {
@@ -42,7 +43,7 @@ function Cart({ onClose }) {
         </ul>
         <div className={cl('footer')}>
           <div className={cl('total')}>Total: {formatCurrency(totalPrice)}</div>
-          <Link to={`/order/create`} className={cl('check-out')}>Check out</Link>
+          <Link to={`/order/${user._id}`} className={cl('check-out')}>Check out</Link>
         </div>
       </div>
     </div>

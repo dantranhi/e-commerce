@@ -1,0 +1,55 @@
+.heading{
+    margin-block: 2rem;
+    text-align: center;
+}
+
+.form{
+    display: grid;
+    width: 100%;
+    max-width: 600px;
+    margin-inline: auto;
+    padding-inline: 1rem;
+    // grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 2.5rem;
+}
+
+.group {
+    max-height: 212px;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: 40px 40px;
+    row-gap: 10px;
+    place-items: center stretch; 
+
+    > label{
+        min-width: 120px;
+    }
+
+}
+
+.submit{
+    width: 160px;
+    margin-inline: auto;
+}
+
+.new{
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 0.5rem;
+    border: 1px dashed #c7c7c7;
+
+    .new-title{
+        font-weight: 500;
+        color: #333;
+        font-size: 1.25rem;
+    }
+
+    > a{
+        flex: 1;
+        text-align: right;
+        font-size: 1rem;
+        color: rgb(20, 184, 184);
+    }
+}

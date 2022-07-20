@@ -7,7 +7,8 @@ const router = express.Router();
 
 router.get('/', PromotionController.getAll)
 router.get('/type', PromotionController.getAllTypes)
-router.get('/periods/:id', PromotionController.getAllPeriods)
+router.get('/periods/:id', PromotionController.getAllPeriodsWithoutSelf)
+router.get('/periods', PromotionController.getAllPeriods)
 router.get('/:id', PromotionController.get)
 router.post('/create', verifyAdmin, ...promotionValidator, PromotionController.create)
 router.put('/:id', verifyAdmin, ...promotionValidator, PromotionController.update)

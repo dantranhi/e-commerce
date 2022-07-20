@@ -18,7 +18,6 @@ class UserController {
 
     // [PATCH] /user/:id
     async editRole(req, res, next) {
-        console.log(req.body.isAdmin)
         try {
             const updatedUser = await User.findByIdAndUpdate(req.params.id, { $set: { isAdmin: req.body.isAdmin } })
             res.json({ success: true, message: "User's role changed successfully", updatedUser })

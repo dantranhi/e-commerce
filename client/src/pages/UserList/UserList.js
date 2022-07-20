@@ -15,9 +15,6 @@ function UserList() {
     const [currentUser] = useState(()=>JSON.parse(localStorage.getItem('user')))
     const { data: users, reFetch } = useFetch('/user')
 
-    console.log(currentUser)
-
-
     const handleChangeRole = async (userId, value) => {
         const res = await httpRequest.patch(`/user/${userId}`, { isAdmin: value })
         if (res.data.success) {

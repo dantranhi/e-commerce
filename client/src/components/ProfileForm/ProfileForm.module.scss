@@ -1,0 +1,30 @@
+.form{
+    display: grid;
+    width: 100%;
+    max-width: 600px;
+    margin-inline: auto;
+    padding-inline: 1rem;
+    // grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 2.5rem;
+}
+
+.group {
+    max-height: 212px;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: 40px 40px;
+    row-gap: 10px;
+    place-items: center stretch; 
+
+    > label{
+        min-width: 120px;
+        font-weight: 500;
+        font-size: 1rem;
+    }
+
+}
+
+.submit{
+    width: 160px;
+    margin-inline: auto;
+}

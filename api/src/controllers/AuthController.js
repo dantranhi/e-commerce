@@ -63,7 +63,6 @@ class AuthController {
             res.clearCookie('access_token')
             res.json({ success: true, message: 'Logged out' })
         } catch (error) {
-            console.log(error)
             res.json({ success: false, message: 'An error has occurred' })
         }
     }

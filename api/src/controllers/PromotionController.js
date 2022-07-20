@@ -31,9 +31,16 @@ class PromotionController {
         res.status(200).json(types)
     }
 
+    // [GET] /promotion/periods/:id
+    async getAllPeriodsWithoutSelf(req, res, next) {
+        const promotions = await Promotion.find({ _id: { $ne: req.params.id } })
+        const periods = promotions.map(p => p.startEndDate)
+        res.status(200).json(periods)
+    }
+
     // [GET] /promotion/periods
     async getAllPeriods(req, res, next) {
-        const promotions = await Promotion.find({_id: {$ne: req.params.id}})
+        const promotions = await Promotion.find()
         const periods = promotions.map(p => p.startEndDate)
         res.status(200).json(periods)
     }

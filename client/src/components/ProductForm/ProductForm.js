@@ -151,7 +151,6 @@ function ProductForm({ edit }) {
                     }
                     if (res.data.errors) {
                         setErrors(res.data.errors)
-                        console.log(res.data)
                     }
                 }
             }

@@ -22,6 +22,13 @@ export const userValidator = [
 
 export const orderValidator = [
     body('userAddress').notEmpty().withMessage('Địa chỉ người nhận là bắt buộc'),
+    body('fullName').notEmpty().withMessage('Vui lòng điền họ tên người nhận'),
     body('userPhone').matches(/(84|0[3|5|7|8|9])+([0-9]{8})\b/).withMessage('Số điện thoại không hợp lệ'),
     body('productList.*.quantity').isInt({ min: 1 }).withMessage('Số lượng không hợp lệ')
+]
+
+export const profileItemValidator = [
+    body('fullName').notEmpty().withMessage('Tên người nhận là bắt buộc'),
+    body('userPhone').matches(/(84|0[3|5|7|8|9])+([0-9]{8})\b/).withMessage('Số điện thoại không hợp lệ'),
+    body('userAddress').notEmpty().withMessage('Vui lòng nhập địa chỉ nhận hàng'),
 ]

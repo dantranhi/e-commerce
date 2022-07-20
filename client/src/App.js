@@ -29,7 +29,11 @@ function App() {
         dispatch(logout())
       }
     }
-    getUser();
+
+    const currentUser = JSON.parse(localStorage.getItem('user')) ?? null
+    if (!currentUser) {
+      getUser();
+    }
   }, []);
 
 

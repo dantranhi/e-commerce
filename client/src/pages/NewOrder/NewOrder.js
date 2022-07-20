@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
-import { Typography, Divider, Input, Space, Button } from 'antd'
+import { Typography, Divider, Input, Space, Button, Select } from 'antd'
 import classNames from 'classnames/bind';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
+import useFetch from '../../hooks/useFetch'
 import ValidateMessage from '../../components/ValidateMessage'
 import httpRequest from '../../utils/httpRequest'
 import Cart from '../../components/Cart'
@@ -15,14 +16,15 @@ import styles from './NewOrder.module.scss';
 const cl = classNames.bind(styles);
 
 const { Title } = Typography
+const { Option } = Select
 
 function NewOrder() {
-    const [profile, setProfile] = useState(JSON.parse(localStorage.getItem('user')) ?? null)
-    console.log(profile)
     const navigate = useNavigate()
+    const params = useParams()
+
+    const [profile, setProfile] = useState(JSON.parse(localStorage.getItem('user')) ?? null)
     const [showCart, setShowCart] = useState(false)
     const [errors, setErrors] = useState([])
-
 
     const [total, setTotal] = useState({
         temp: 0,
@@ -32,13 +34,21 @@ function NewOrder() {
 
     const [info, setInfo] = useState({
         userAddress: '',
-        userPhone: ''
+        userPhone: '',
+        fullName: ''
     })
+
     const [{ cart: { data }, user }, dispatch] = useStore()
+
+    const { data: allProfiles } = useFetch(`/profile/${params.id}`)
 
     useEffect(() => {
         if (!profile)
             navigate('/login')
+        if (data.length === 0) {
+            navigate('/')
+            toast.info('Your cart is empty!')
+        }
     }, [])
 
     useEffect(() => {
@@ -61,6 +71,11 @@ function NewOrder() {
         }))
     }
 
+    const handleChangeProfile = (profile) => {
+        const { _id, name, userId, ...obj } = JSON.parse(profile)
+        setInfo(obj)
+    }
+
     const handleOpenCart = () => {
         setShowCart(prev => !prev)
     }
@@ -78,7 +93,7 @@ function NewOrder() {
                 })),
                 ...total
             }
-            console.log(allData)
+
             const res = await httpRequest.post(`/order/${profile.details._id}/create`, allData)
             if (res.data.success) {
                 toast.success(res.data.message)
@@ -101,16 +116,34 @@ function NewOrder() {
                     <div className="col l-6 m-12 c-12">
                         <form onSubmit={handleSubmitOrder} className={cl('form')}>
                             <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+                                <Input name="fullName" size="large" placeholder="Tên người nhận" value={info.fullName} onChange={(e) => handleChangeForm(e.target)} />
+                                <ValidateMessage name="fullName" errors={errors}></ValidateMessage>
                                 <Input name="userAddress" size="large" placeholder="Địa chỉ" value={info.userAddress} onChange={(e) => handleChangeForm(e.target)} />
                                 <ValidateMessage name="userAddress" errors={errors}></ValidateMessage>
                                 <Input name="userPhone" size="large" placeholder="Số điện thoại" value={info.userPhone} onChange={(e) => handleChangeForm(e.target)} />
                                 <ValidateMessage name="userPhone" errors={errors}></ValidateMessage>
+                                <div>
+                                    <Select
+                                        showSearch
+                                        placeholder="Or select a profile"
+                                        optionFilterProp="children"
+                                        onChange={handleChangeProfile}
+                                        filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
+                                    >
+                                        {
+                                            allProfiles && allProfiles.map(item => (
+                                                <Option key={item._id} value={JSON.stringify(item)}>{item.name}</Option>
+                                            ))
+                                        }
+                                    </Select>
+                                </div>
                                 <div className={cl('nav-links')}>
                                     <Button onClick={handleOpenCart}>Giỏ hàng</Button>
                                     <Button type="primary" htmlType="submit">
                                         Thanh toán
                                     </Button>
                                 </div>
+
                             </Space>
                         </form>
                     </div>

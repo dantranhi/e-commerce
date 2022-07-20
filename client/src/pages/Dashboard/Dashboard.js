@@ -9,7 +9,6 @@ import useFetch from '../../hooks/useFetch'
 function Dashboard() {
     const { data: productData, loading: productLoading } = useFetch('/product')
     const { data: promotionData, loading: promotionLoading } = useFetch('/promotion')
-    console.log()
 
     return (
         <div>

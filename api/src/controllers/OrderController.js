@@ -1,6 +1,7 @@
 import { validationResult } from 'express-validator'
 
 import Order from '../models/Order.js'
+import ProfileItem from '../models/ProfileItem.js'
 import Status from '../models/Status.js'
 
 class OrderController {
@@ -13,6 +14,20 @@ class OrderController {
         try {
             const order = new Order(req.body)
             await order.save()
+            const isExistedProfile = await ProfileItem.findOne({
+                fullName: req.body.fullName,
+                userAddress: req.body.userAddress,
+                userPhone: req.body.userPhone
+            })
+            if (!isExistedProfile) {
+                const newProfile = new ProfileItem({
+                    userId: req.params.id,
+                    fullName: req.body.fullName,
+                    userAddress: req.body.userAddress,
+                    userPhone: req.body.userPhone
+                })
+                await newProfile.save()
+            }
             res.json({ success: true, message: 'Order created successfully', data: order })
         } catch (error) {
             next(error)
