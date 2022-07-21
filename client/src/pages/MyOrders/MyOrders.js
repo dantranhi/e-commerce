@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Divider, Typography, Button, Popconfirm } from 'antd'
 import { toast } from 'react-toastify'
 
-import {useStore} from '../../store/UserContext'
+import AnimatedLoading from '../../components/Icons/AnimatedLoading'
 import Order from '../../components/Order'
 import useFetch from '../../hooks/useFetch'
 import formatCurrency from '../../utils/formatCurrency'
@@ -92,6 +92,7 @@ function MyOrders() {
                         </Order.List>
                     </Order>
                 ))}
+                {loading && <div className="full center"><AnimatedLoading width='140px' height='140px' /></div>}
             </div>
         </div>
     )

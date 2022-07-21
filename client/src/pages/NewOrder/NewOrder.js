@@ -40,7 +40,7 @@ function NewOrder() {
 
     const [{ cart: { data }, user }, dispatch] = useStore()
 
-    const { data: allProfiles } = useFetch(`/profile/${params.id}`)
+    const { data: allProfiles } = useFetch(`/profile/${params.id}`, params.id!=='undefined')
 
     useEffect(() => {
         if (!profile)

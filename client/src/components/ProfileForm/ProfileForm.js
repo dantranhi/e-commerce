@@ -69,7 +69,7 @@ function ProfileForm(props) {
                 <div className={cl('group')}>
                     <label className={cl('label')} htmlFor="profileName">Profile name: </label>
                     <Input type="text" id="profileName" name="name" placeholder="Profile name" value={formData.name} onChange={(e) => handleChange(e.target)} />
-                    <ValidateMessage name='fullName' errors={errors}></ValidateMessage>
+                    <ValidateMessage name='name' errors={errors}></ValidateMessage>
                 </div>
                 <div className={cl('group')}>
                     <label className={cl('label')} htmlFor="name">Full name: </label>

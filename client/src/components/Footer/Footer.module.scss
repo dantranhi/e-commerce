@@ -1,0 +1,149 @@
+.outer {
+    background-color: var(--primary);
+    color: var(--white);
+    padding: 1rem;
+}
+
+.inner {
+    
+}
+
+.col-wrapper {
+    padding-block: 1.5rem;
+    padding-inline: 10px;
+
+    &:first-child {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+    }
+}
+
+.logo-wrapper {
+    height: 80px;
+    width: 100%;
+}
+
+.logo-img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.slogan {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.1rem;
+}
+
+.socials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.social-wrapper {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: #fff;
+    border: 2px solid currentColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+        color: var(--secondary);
+    }
+
+}
+
+.heading {
+    width: 100%;
+    text-align: left;
+    font-family: 'Kaushan Script', cursive;
+    font-size: 1.8rem;
+    font-weight: 500;
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: calc(100% + 2px);
+        left: 0;
+        width: 60px;
+        height: 3px;
+        border-radius: 2px;
+        background-color: var(--secondary);
+    }
+}
+
+.list {
+    width: 100%;
+    padding-left: 0;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.item-wrapper {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    transition: color 250ms ease-in-out;
+
+    &:hover {
+        color: var(--secondary);
+    }
+}
+
+.item-icon {
+    font-size: 1rem;
+    color: inherit;
+}
+
+.item-content {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.payment-list{
+    width: 100%;
+    margin-top: 1rem;
+    display: flex;
+    justify-content:flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+
+.payment-wrapper {
+    width: 50px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, .1);
+
+    > .payment-icon {
+        fill: #a0a0a0;
+    }
+
+    &:hover {
+        background-color: var(--secondary);
+
+        > .payment-icon {
+            fill: #fff;
+        }
+    }
+}
+
+@media only screen and (max-width: 739px) {
+
+}

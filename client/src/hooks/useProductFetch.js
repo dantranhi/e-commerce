@@ -16,28 +16,33 @@ function useProductFetch(query, pageNumber) {
         setLoading(true)
         setError(false)
         let cancel
-        axios({
-            method: 'GET',
-            url: 'http://localhost:3006/api/product/grid',
-            params: { q: query, page: pageNumber, limit: 3 },
-            withCredentials: false,
-            cancelToken: new axios.CancelToken(c => cancel = c)
-        })
-            .then(res => {
-                setProducts(prev => {
-                    return [...prev, ...res.data.data]
+        const debounceId = setTimeout(() => {
+            axios({
+                method: 'GET',
+                url: 'http://localhost:3006/product/grid',
+                params: { q: query, page: pageNumber, limit: 3 },
+                withCredentials: false,
+                cancelToken: new axios.CancelToken(c => cancel = c)
+            })
+                .then(res => {
+                    setProducts(prev => {
+                        return [...prev, ...res.data.data]
+                    })
+    
+                    setHasMore(res.data.currentPage.page < res.data.pages)
+                    setLoading(false)
                 })
-
-                setHasMore(res.data.currentPage.page < res.data.pages)
-                setLoading(false)
-            })
-            .catch(e => {
-                if (axios.isCancel(e)) return
-                setError(true)
-            })
+                .catch(e => {
+                    if (axios.isCancel(e)) return
+                    setError(true)
+                })
+        }, 500)
 
 
-        return () => cancel()
+        return () => {
+            if (typeof cancel !=='undefined') cancel()
+            clearTimeout(debounceId)
+        }
     }, [query, pageNumber])
     return [products, loading, error, hasMore]
 }

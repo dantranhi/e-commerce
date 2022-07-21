@@ -1,11 +1,13 @@
 import { useState, useRef, useCallback } from 'react'
 import { Input, Typography, Space } from 'antd'
 import { SearchOutlined } from '@ant-design/icons';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import useProductFetch from '../../hooks/useProductFetch';
 import ProductItem from '../../components/ProductItem'
 import classNames from 'classnames/bind';
+import AnimatedLoading from '../../components/Icons/AnimatedLoading'
+
 import styles from './SearchProduct.module.scss';
 const cl = classNames.bind(styles);
 const { Title } = Typography
@@ -53,7 +55,7 @@ function SearchProduct() {
                                 return <Link to={`/product/${item._id}`} key={item._id} className={`col l-4 m-6 c-12 mt-4`}><ProductItem data={item} ></ProductItem></Link>
                             })}
                         </div>
-                        {loading && <div>Loading...</div>}
+                        {loading && <div className="full center"><AnimatedLoading width='140px' height='140px'/></div>}
                         {error && <div>Error</div>}
                     </Space>
 

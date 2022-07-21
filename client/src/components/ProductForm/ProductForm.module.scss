@@ -8,7 +8,7 @@
 }
 
 .title {
-    padding-block: 40px;
+    padding-block: var(--content-block-pad);
     text-align: center;
     font-size: 2.4rem;
     font-family: 'Nunito', sans-serif;
