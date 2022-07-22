@@ -1,3 +1,7 @@
+.wrapper{
+    padding-block: var(--content-block-pad);
+}
+
 .heading{
     margin-block: 2rem;
     text-align: center;
@@ -53,3 +57,10 @@
         color: rgb(20, 184, 184);
     }
 }
+
+@media only screen and (max-width: 739px){
+    .wrapper{
+        padding-inline: 1rem;
+    }
+}
+    

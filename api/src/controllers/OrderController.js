@@ -1,8 +1,10 @@
 import { validationResult } from 'express-validator'
 
 import Order from '../models/Order.js'
+import User from '../models/User.js'
 import ProfileItem from '../models/ProfileItem.js'
 import Status from '../models/Status.js'
+import Notification from '../models/Notification.js'
 
 class OrderController {
     // [POST] /order/:id/create
@@ -14,6 +16,15 @@ class OrderController {
         try {
             const order = new Order(req.body)
             await order.save()
+            const buyer = await User.findById(req.params.id)
+            console.log(buyer._doc)
+            const newNotification = new Notification({
+                content: `User ${req.params.id} has created an order. Check it out!`,
+                for: 'Admin',
+                type: 'order',
+                photo: buyer.photos?.[0]?.url
+            })
+            await newNotification.save()
             const isExistedProfile = await ProfileItem.findOne({
                 fullName: req.body.fullName,
                 userAddress: req.body.userAddress,

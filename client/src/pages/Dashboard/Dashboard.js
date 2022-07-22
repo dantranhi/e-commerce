@@ -34,7 +34,9 @@ function Dashboard() {
                         </Overview>
                     </div>
                     <div className="col l-3 m-4 c-12">
-                        <NotificationSidebar></NotificationSidebar>
+                        <NotificationSidebar>
+                            
+                        </NotificationSidebar>
                     </div>
                 </div>
             </div>

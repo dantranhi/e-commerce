@@ -5,6 +5,7 @@ import orderRouter from './order.js'
 import promotionRouter from './promotion.js'
 import profileRouter from './profile.js'
 import revenueRouter from './revenue.js'
+import notificationRouter from './notification.js'
 
 const router = (app) => {
     app.use('/product', productRouter)
@@ -14,9 +15,10 @@ const router = (app) => {
     app.use('/order', orderRouter)
     app.use('/profile', profileRouter)
     app.use('/revenue', revenueRouter)
+    app.use('/notification', notificationRouter)
 
 
-    
+
 
     // app.get('/api/login/success', (req, res, next) => {
     //     if (req.session.user) {

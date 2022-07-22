@@ -30,19 +30,21 @@ function Profile() {
   }
 
   return (
-    <div className="grid wide">
-      <Title>Profiles</Title>
-      <div className="row">
-        {profileItems.map((item, index) => (
-          <div key={item._id} className="col l-4 m-3 c-6">
-            <ProfileItem onDeleteProfile={handleDeleteProfile} index={index} data={item}>
-            </ProfileItem>
-          </div>
-        ))}
-        <div className="col l-4 m-3 c-6">
-          <div className={cl('new')}>
-            <div className={cl('new-title')}>New profile</div>
-            <Link to={`/profile/${params.userId}/create`}>Create</Link>
+    <div className={cl('wrapper')}>
+      <div className="grid wide">
+        <Title>Profiles</Title>
+        <div className="row">
+          {profileItems.map((item, index) => (
+            <div key={item._id} className="col l-4 m-6 c-12">
+              <ProfileItem onDeleteProfile={handleDeleteProfile} index={index} data={item}>
+              </ProfileItem>
+            </div>
+          ))}
+          <div className="col l-4 m-6 c-12">
+            <Link to={`/profile/${params.userId}/create`} className={cl('new')}>
+              <div className={cl('new-title')}>New profile</div>
+              <div>Create</div>
+            </Link>
           </div>
         </div>
       </div>
