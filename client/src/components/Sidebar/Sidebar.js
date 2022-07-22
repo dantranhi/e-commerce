@@ -35,6 +35,8 @@ function Sidebar({ children }) {
     }
     return (
         <aside onClick={() => setShow(prev => !prev)} className={cl('wrapper', { minimized: !show })}>
+            <div className={cl('background')}>
+            </div >
             <div onClick={(e) => e.stopPropagation()} className={cl('panel')}>
                 <div className={cl('top')}>
                     <div className={cl('info')}>
@@ -67,6 +69,7 @@ function Sidebar({ children }) {
                 e.stopPropagation()
                 setShow(prev => !prev)
             }} className={cl('expand-btn', { hidden: show })}><FontAwesomeIcon icon={faChevronRight} /></button>
+
         </aside>
     )
 

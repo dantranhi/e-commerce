@@ -40,7 +40,7 @@ function NewOrder() {
 
     const [{ cart: { data }, user }, dispatch] = useStore()
 
-    const { data: allProfiles } = useFetch(`/profile/${params.id}`, params.id!=='undefined')
+    const { data: allProfiles } = useFetch(`/profile/${params.id}`, params.id !== 'undefined')
 
     useEffect(() => {
         if (!profile)
@@ -88,6 +88,8 @@ function NewOrder() {
                 ...info,
                 productList: data.map(item => ({
                     productId: item._id,
+                    type: item.type,
+                    brand: item.brand,
                     quantity: item.amount,
                     currentPrice: item.price,
                 })),

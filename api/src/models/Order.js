@@ -5,10 +5,12 @@ const OrderSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    fullName: { type: String, required: true},
+    fullName: { type: String, required: true },
     productList: [
         {
             productId: { type: String, required: true },
+            brand: { type: String, required: true },
+            type: { type: String, required: true },
             quantity: { type: Number, required: true },
             currentPrice: { type: Number, required: true },
         }

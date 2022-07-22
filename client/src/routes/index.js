@@ -10,6 +10,8 @@ import NewOrder from '../pages/NewOrder'
 import OrderList from '../pages/OrderList'
 import MyOrders from '../pages/MyOrders'
 
+import Revenue from '../pages/Revenue'
+
 import Dashboard from '../pages/Dashboard'
 import Home from '../pages/Home'
 import Detail from '../pages/Detail'
@@ -37,6 +39,7 @@ const routes = [
     { path: '/admin/promotion', component: PromotionList, layout: AdminLayout },
     { path: '/admin/order', component: OrderList, layout: AdminLayout },
     { path: '/admin/user', component: UserList, layout: AdminLayout },
+    { path: '/admin/revenue', component: Revenue, layout: AdminLayout },
     { path: '/admin', component: Dashboard, layout: AdminLayout },
     { path: '/login', component: Login, layout: null },
     { path: '/register', component: Register, layout: null },

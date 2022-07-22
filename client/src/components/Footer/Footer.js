@@ -22,7 +22,7 @@ function Footer() {
                                 <div className={cl('logo-wrapper')}>
                                     <LogoIcon className={cl('logo-img')}></LogoIcon>
                                 </div>
-                                <div className={cl('slogan')}>"embrace your choices - we do"</div>
+                                <div className={cl('slogan')}>"embrace your choices <br/>- we do"</div>
                                 <div className={cl('socials')}>
                                     <a href='https://facebook.com' className={cl('social-wrapper')}>
                                         <FontAwesomeIcon className={cl('social-icon')} icon={faFacebookF} />

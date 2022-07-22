@@ -1,0 +1,33 @@
+.wrapper {
+    padding-block: var(--content-block-pad);
+}
+
+.filters {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.type {
+    flex: 1;
+}
+
+.brand {
+    flex: 1;
+}
+
+.time {
+    flex: 1;
+}
+
+.table {
+    margin-top: var(--content-block-pad);
+}
+
+.total-revenue {
+    margin-top: 20px;
+    text-align: right;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
