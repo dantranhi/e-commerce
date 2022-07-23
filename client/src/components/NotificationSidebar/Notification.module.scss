@@ -34,12 +34,12 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding-inline: 6px;
-    min-height: 80px;
-    max-height: 120px;
+    padding: 6px;
+    height: fit-content;
     overflow-y: auto;
     cursor: pointer;
     border-radius: .5rem;
+    color: unset;
 
     &:hover {
         background-color: #f6f6f6;

@@ -8,9 +8,25 @@ class NotificationController {
     async getNotification(req, res, next) {
         try {
             const user = await User.findById(req.params.id)
-            const notifications = await Notification.find({
-                $or: [{ for: user.isAdmin ? 'Admin' : user._id }, { for: 'User' }]
-            })
+            let temp
+            if (user.isAdmin) {
+                temp = await Notification.find({
+                    status: {
+                        $elemMatch: { for: 'Admin' }
+                    }
+                }).sort({ createdAt: 'desc' })
+            }
+            else {
+                temp = await Notification.find({
+                    status: {
+                        $elemMatch: { for: user._id }
+                    }
+                }).sort({ createdAt: 'desc' })
+            }
+            const notifications = temp.map(item => ({
+                ...item._doc,
+                status: [...item._doc.status].filter(a => a.for === (user.isAdmin ? 'Admin' : user._id))
+            }))
             res.json({ success: true, data: notifications })
         } catch (error) {
             next(error)
@@ -20,13 +36,27 @@ class NotificationController {
     // [PATCH] /notification/:id/:notificationId
     async updateStatus(req, res, next) {
         try {
+            Notification.updateOne({ 'status._id': req.params.notificationId }, {
+                '$set': {
+                    'status.$.isRead': true
+                }
+            }, function (err) { })
+            res.json({ success: true, message: 'Read' })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    // [PUT] /notification/:id
+    async readAll(req, res, next) {
+        try {
             const user = await User.findById(req.params.id)
-            const notification = await Notification.findById(req.params.notificationId)
-            if ((user.isAdmin && notification.for === 'Admin') || (!user.isAdmin && notification.for !== 'Admin')) {
-                await Notification.findByIdAndUpdate(req.params.notificationId, { isRead: true })
-                res.json({ success: true, message: 'Readed' })
+            let notifications
+            if (user.isAdmin) {
+                notifications = await Notification.find({ for: 'Admin' })
             }
-            else res.json({ success: false, message: 'Something went wrong!' })
+
+
         } catch (error) {
             next(error)
         }

@@ -3,8 +3,9 @@ import cloudinary from 'cloudinary'
 
 import Product from '../models/Product.js'
 import Type from '../models/Type.js'
-import Brand from '../models/Brand.js'
 import { createError } from '../utils/error.js'
+import Brand from '../models/Brand.js'
+import Notification from '../models/Notification.js'
 
 class ProductController {
     // [GET] /product/grid
@@ -82,6 +83,15 @@ class ProductController {
                     await newBrand.save()
                 }
                 await savedProduct.save()
+
+                const newNotification = new Notification({
+                    content: `You have added a new product ${savedProduct.name}!`,
+                    for: 'Admin',
+                    type: 'product',
+                    photo: savedProduct.photos[0].url ?? ''
+                })
+                await newNotification.save()
+
                 return res.json(savedProduct)
             }
             else next(createError(400, 'This product is already existed'))

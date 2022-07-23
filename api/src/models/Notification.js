@@ -1,14 +1,19 @@
 import mongoose from 'mongoose';
 
 const NotificationSchema = mongoose.Schema({
-    isRead: { type: Boolean, default: false },
     content: {
         type: String,
         required: true
     },
-    type: { type: String, default: 'remind' }, // remind, product, order
-    for: { type: String, required: true }, // for: Admin, user, designate user
-    photo: { type: String }
+    type: { type: String, default: 'remind' },
+    status: [
+        {
+            for: { type: String, required: true },
+            isRead: { type: Boolean, default: false }
+        }
+    ],
+    photo: { type: String },
+    link: { type: String, required: true }
 }, { timestamps: true })
 
 export default mongoose.model('Notification', NotificationSchema)

@@ -7,7 +7,7 @@ import useFetch from '../../hooks/useFetch'
 import formatCurrency from '../../utils/formatCurrency'
 import classNames from 'classnames/bind';
 import styles from './ProductList.module.scss';
-import axios from 'axios';
+import httpRequest from '../../utils/httpRequest'
 const cl = classNames.bind(styles);
 const { Title } = Typography;
 
@@ -16,7 +16,7 @@ function ProductList() {
 
     const confirm = async (e, id) => {
         try {
-            const res = await axios.delete(`/product/${id}`)
+            const res = await httpRequest.delete(`/product/${id}`)
             if (res.data.success) {
                 toast.success(res.data.message);
                 reFetch()

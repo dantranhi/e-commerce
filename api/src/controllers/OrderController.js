@@ -17,14 +17,18 @@ class OrderController {
             const order = new Order(req.body)
             await order.save()
             const buyer = await User.findById(req.params.id)
-            console.log(buyer._doc)
+
             const newNotification = new Notification({
                 content: `User ${req.params.id} has created an order. Check it out!`,
-                for: 'Admin',
+                status: [
+                    {for: 'Admin'}
+                ],
                 type: 'order',
-                photo: buyer.photos?.[0]?.url
+                photo: buyer.photos?.[0]?.url,
+                link: '/admin/order'
             })
             await newNotification.save()
+
             const isExistedProfile = await ProfileItem.findOne({
                 fullName: req.body.fullName,
                 userAddress: req.body.userAddress,
