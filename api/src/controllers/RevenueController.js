@@ -15,7 +15,7 @@ class RevenueController {
                     $elemMatch: {
                         ...filter
                     }
-                }
+                }, status: 'Delivered'
             })
 
             const filteredOrders = orders.map(order => {
@@ -29,6 +29,31 @@ class RevenueController {
                 return newOrder
             })
             res.json({ success: true, data: filteredOrders })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    // [GET] /revenue/chart
+    async getRevenueChart(req, res, next) {
+        try {
+            let gap = 0
+            let data = []
+            while (gap < 6) {
+                const r = await Order.find({
+                    status: 'Delivered', updatedAt: {
+                        $gte: moment().subtract(gap, 'M').startOf('month'),
+                        $lte: moment().subtract(gap, 'M').endOf('month')
+                    }
+                })
+                const total = r.reduce((accumulator, item) => {
+                    return accumulator + item.totalPrice - item.delivery
+                }, 0)
+                data.push({ total, month: moment().subtract(gap, 'M').format('MMMM') })
+                gap++
+            }
+            res.json({ success: true, data: data.reverse() })
+
         } catch (error) {
             next(error)
         }

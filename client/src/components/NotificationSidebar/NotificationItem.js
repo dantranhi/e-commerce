@@ -6,6 +6,7 @@ import formatDate from '../../utils/formatDate'
 import productImg from '../../assets/img/box.png'
 import infoImg from '../../assets/img/info.png'
 import orderImg from '../../assets/img/shopping.png'
+import promotionImg from '../../assets/img/tag.png'
 
 import styles from './Notification.module.scss';
 const cl = classNames.bind(styles);
@@ -21,11 +22,12 @@ function NotificationItem({ data, onRead }) {
         case 'order':
             iconImg = orderImg
             break;
+        case 'promotion':
+            iconImg = promotionImg
+            break;
         default:
             iconImg = infoImg
     }
-
-    console.log(data)
 
     return (
         <Link to={data.link} onClick={()=>onRead(data.status[0]._id, data.status[0].isRead)} className={cl('item-wrapper', { read: data.status[0].isRead })}>

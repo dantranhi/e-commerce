@@ -1,4 +1,6 @@
 import Promotion from '../models/Promotion.js'
+import User from '../models/User.js'
+import Notification from '../models/Notification.js'
 import { validationResult } from 'express-validator'
 
 import PromotionType from '../models/PromotionType.js'
@@ -66,6 +68,21 @@ class PromotionController {
             }
             const promotion = new Promotion(req.body)
             await promotion.save()
+
+            const temp = await User.find()
+            const users = temp.map(t=>({
+                for: t._id,
+                isRead: false
+            }))
+            const newNotification = new Notification({
+                content: `A new promotion coming soon. Check out now!`,
+                status: users,
+                type: 'promotion',
+                // photo: buyer.photos?.[0]?.url,
+                link: '/promotion'
+            })
+            await newNotification.save()
+
             res.status(200).json({ success: true, message: 'Promotion created successfully' })
         } catch (e) {
             next(e)

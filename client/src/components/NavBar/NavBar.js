@@ -9,13 +9,17 @@ import { useStore } from '../../store/UserContext'
 import { LogoIcon } from '../Icons/Icons'
 import UserMenu from '../UserMenu'
 import Cart from '../Cart'
+import Notification from '../NotificationSidebar/Notification'
+
+
 import styles from './NavBar.module.scss';
 
 const cl = classNames.bind(styles);
 
 function NavBar() {
+  const user = JSON.parse(localStorage.getItem('user')) ?? null
   const [state, dispatch] = useStore()
-  
+
   const handleOpenCart = () => {
     dispatch(toggleCart())
   }
@@ -48,8 +52,11 @@ function NavBar() {
         <div className={cl('function')}>
           <div className={cl('cart')}>
             <FontAwesomeIcon onClick={handleOpenCart} className={cl('icon')} icon={faCartShopping} />
-          <span className={cl('cart-number')}>{state.cart.data.length}</span>
+            <span className={cl('cart-number')}>{state.cart.data.length}</span>
           </div>
+          {user && <div className={cl('notification')}>
+            <Notification></Notification>
+          </div>}
           <UserMenu>
             <div className={cl('user')}>
               <FontAwesomeIcon className={cl('icon')} icon={faUser} />

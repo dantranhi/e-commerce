@@ -85,10 +85,13 @@ class ProductController {
                 await savedProduct.save()
 
                 const newNotification = new Notification({
-                    content: `You have added a new product ${savedProduct.name}!`,
-                    for: 'Admin',
+                    content: `You have added new product: ${savedProduct.name}`,
+                    status: [
+                        {for: 'Admin'}
+                    ],
                     type: 'product',
-                    photo: savedProduct.photos[0].url ?? ''
+                    photo: savedProduct.photos[0].url,
+                    link: '/admin/product'
                 })
                 await newNotification.save()
 

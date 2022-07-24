@@ -1,7 +1,7 @@
 import React from 'react'
 import { Space, Table, Popconfirm, Typography, Button } from 'antd'
 import { toast } from 'react-toastify'
-import axios from 'axios'
+import httpRequest from '../../utils/httpRequest'
 
 
 import { Link } from 'react-router-dom'
@@ -19,7 +19,7 @@ function PromotionList() {
 
     const confirm = async (e, id) => {
         try {
-            const res = await axios.delete(`/promotion/${id}`)
+            const res = await httpRequest.delete(`/promotion/${id}`)
             if (res.data.success) {
                 toast.success(res.data.message);
                 reFetch()

@@ -12,9 +12,7 @@ function UserMenu({ children }) {
     return (
         <Tippy
             interactive
-            // trigger="click"
-            delay={[0, 900]}
-            animation='scale-subtle'
+            trigger="click"
             placement="bottom-end"
             render={(attrs) => (
                 <div className={cl('menu')} tabIndex="-1" {...attrs}>

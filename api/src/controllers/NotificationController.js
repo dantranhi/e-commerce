@@ -1,9 +1,7 @@
 import Notification from '../models/Notification.js'
 import User from '../models/User.js'
 
-
 class NotificationController {
-
     // [GET] /notification/:id
     async getNotification(req, res, next) {
         try {
@@ -23,10 +21,14 @@ class NotificationController {
                     }
                 }).sort({ createdAt: 'desc' })
             }
-            const notifications = temp.map(item => ({
-                ...item._doc,
-                status: [...item._doc.status].filter(a => a.for === (user.isAdmin ? 'Admin' : user._id))
-            }))
+            const notifications = temp.map(item => {
+                const destination = user.isAdmin ? 'Admin' : req.params.id
+                console.log(destination)
+                return ({
+                    ...item._doc,
+                    status: [...item._doc.status].filter(a => a.for === destination)
+                })
+            })
             res.json({ success: true, data: notifications })
         } catch (error) {
             next(error)
@@ -51,12 +53,21 @@ class NotificationController {
     async readAll(req, res, next) {
         try {
             const user = await User.findById(req.params.id)
-            let notifications
             if (user.isAdmin) {
-                notifications = await Notification.find({ for: 'Admin' })
+                Notification.updateMany({ 'status.for': 'Admin' }, {
+                    '$set': {
+                        'status.$.isRead': true
+                    }
+                }, function (err) { })
             }
-
-
+            else {
+                Notification.updateMany({ 'status.for': req.params.id }, {
+                    '$set': {
+                        'status.$.isRead': true
+                    }
+                }, function (err) { })
+            }
+            res.json({ success: true, message: 'Read all' })
         } catch (error) {
             next(error)
         }

@@ -6,6 +6,7 @@ import { verifyAdmin } from '../utils/verifyToken.js'
 const router = express.Router();
 
 router.get('/', verifyAdmin, RevenueController.getRevenue)
+router.get('/chart', RevenueController.getRevenueChart)
 
 
 
