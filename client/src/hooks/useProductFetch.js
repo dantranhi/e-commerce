@@ -19,7 +19,7 @@ function useProductFetch(query, pageNumber) {
         const debounceId = setTimeout(() => {
             axios({
                 method: 'GET',
-                url: 'http://localhost:3006/product/grid',
+                url: 'https://ecommerce-dantocthang.herokuapp.com/product/grid',
                 params: { q: query, page: pageNumber, limit: 3 },
                 withCredentials: false,
                 cancelToken: new axios.CancelToken(c => cancel = c)

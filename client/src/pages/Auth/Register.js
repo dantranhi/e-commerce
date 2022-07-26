@@ -51,11 +51,11 @@ function Register() {
     }
 
     const handleLoginGoogle = () => {
-        window.open('http://localhost:3006/google', '_self')
+        window.open('https://ecommerce-dantocthang.herokuapp.com/google', '_self')
     }
 
     const handleLoginFacebook = () => {
-        window.open('http://localhost:3006/facebook', '_self')
+        window.open('https://ecommerce-dantocthang.herokuapp.com/facebook', '_self')
     }
 
     return (

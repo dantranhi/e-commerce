@@ -52,5 +52,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3006/api"
+  "proxy": "https://ecommerce-dantocthang.herokuapp.com"
 }

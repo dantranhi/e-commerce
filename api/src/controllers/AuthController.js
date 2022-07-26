@@ -17,6 +17,7 @@ class AuthController {
 
             const token = jwt.sign({ id: user._id, username: user.username, isAdmin: user.isAdmin }, process.env.JWT_SECRET, { expiresIn: '1h' })
             const { password, ...otherDetails } = user._doc;
+            req.user = otherDetails
             res.cookie("access_token", token).status(200).json({ details: { ...otherDetails }, token: token });
         }
         catch (err) {

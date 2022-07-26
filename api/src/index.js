@@ -18,19 +18,27 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
     methods: "GET,POST,PUT,DELETE,PATCH",
     credentials: true,
 }))
 app.use(cookieParser())
+app.set("trust proxy", 1);
 app.use(session({
     secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: true,
+    resave: true,
+    saveUninitialized: false,
     cookie: {
-        secure: false,
+        sameSite: "none",
+        secure: true,
+        // domain: "https://ornate-pixie-d08df6.netlify.app",
+        httpOnly: true,
         maxAge: 4 * 3600 * 1000,
-    },
+    }
+    // cookie: {
+    //     secure: false,
+    //     maxAge: 4 * 3600 * 1000,
+    // },
 }))
 initializePassport(passport)
 app.use(passport.session());

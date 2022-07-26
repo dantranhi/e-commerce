@@ -42,7 +42,8 @@ function App() {
       <div className="app">
         <Routes>
           {routes.map((item, index) => {
-            // const redirectPages = ['/profile/:userId', '/order/:id']
+            // const paths = item.path.split('/')
+            // if (paths.includes('admin')) return <Navigate to="/dashboard" replace={true} />
             let Layout = DefaultLayout
             if (item.layout) Layout = item.layout
             if (item.layout === null) Layout = Fragment
