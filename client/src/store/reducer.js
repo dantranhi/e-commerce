@@ -1,10 +1,11 @@
+import { toast } from 'react-toastify'
 import { SET_LOADING, LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILED, LOGOUT, TOGGLE_CART, ADD_TO_CART, REMOVE_FROM_CART, ADD_ONE, SUB_ONE, CLEAR_CART_ERROR, DELETE_CART } from './constants'
 
 const INIT_CART = JSON.parse(localStorage.getItem('userCart')) ?? []
 
 export const INIT_STATE = {
     loading: false,
-    userData: {},
+    userData: JSON.parse(localStorage.getItem('user')) ?? {},
     cart: {
         data: INIT_CART,
         isOpen: false,
@@ -31,6 +32,7 @@ const reducer = (state, { type, payload }) => {
             }
         case LOGIN_SUCCESS:
             localStorage.setItem('user', JSON.stringify(payload))
+            // toast.success('Logging successfully')
             return { ...state, loading: false, userData: payload };
         case LOGIN_FAILED:
             localStorage.removeItem('user')

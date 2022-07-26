@@ -48,11 +48,11 @@ function Login() {
   }
 
   const handleLoginGoogle = () => {
-    window.open('https://ecommerce-dantocthang.herokuapp.com/auth/google', '_self')
+    window.open('http://localhost:5000/auth/google', '_self')
   }
 
   const handleLoginFacebook = () => {
-    window.open('https://ecommerce-dantocthang.herokuapp.com/auth/facebook', '_self')
+    window.open('http://localhost:5000/auth/facebook', '_self')
   }
 
   return (

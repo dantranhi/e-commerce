@@ -6,7 +6,8 @@ import { userValidator } from '../utils/dataValidator.js'
 
 
 const router = express.Router();
-const CLIENT_URL = "https://ornate-pixie-d08df6.netlify.app/";
+// const CLIENT_URL = "https://ornate-pixie-d08df6.netlify.app/";
+const CLIENT_URL = "http://localhost:3000";
 
 // Login Google
 router.get('/google', passport.authenticate('google', {

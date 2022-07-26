@@ -18,6 +18,7 @@ import './index.css';
 
 function App() {
   const [, dispatch] = useStore()
+
   useEffect(() => {
     const getUser = async () => {
       dispatch(setLoading(true))
@@ -42,12 +43,10 @@ function App() {
       <div className="app">
         <Routes>
           {routes.map((item, index) => {
-            // const paths = item.path.split('/')
-            // if (paths.includes('admin')) return <Navigate to="/dashboard" replace={true} />
             let Layout = DefaultLayout
             if (item.layout) Layout = item.layout
             if (item.layout === null) Layout = Fragment
-            let Page =  item.component
+            let Page = item.component
             return (
               <Route key={index} path={item.path} element={(
                 <Layout>
