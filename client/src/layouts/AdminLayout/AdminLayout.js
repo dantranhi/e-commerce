@@ -12,7 +12,7 @@ const cl = classNames.bind(styles);
 function AdminLayout({ children }) {
     const [state] = useStore()
     const isAdmin = state?.userData?.details?.isAdmin
-    console.log(isAdmin)
+
     if (!isAdmin) {
         return <Navigate to='/login' replace />;
     }

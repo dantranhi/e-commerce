@@ -55,14 +55,14 @@ mongoose.connect(process.env.MONGO, { useNewUrlParser: true, useUnifiedTopology:
 
 
 router(app)
-app.use((err, req, res, next) => {
-    const errStatus = err.status || 500
-    const errMessage = err.message
-    res.status(errStatus).json({
-        success: false,
-        status: errStatus,
-        message: errMessage,
-        stack: err.stack,
+    app.use((err, req, res, next) => {
+        const errStatus = err.status || 500
+        const errMessage = err.message
+        res.status(errStatus).json({
+            success: false,
+            status: errStatus,
+            message: errMessage,
+            stack: err.stack,
+        })
     })
-})
 app.listen(port, function () { console.log('listening on port ' + port) })

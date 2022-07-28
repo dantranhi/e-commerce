@@ -12,11 +12,10 @@ import styles from './Dashboard.module.scss';
 const cl = classNames.bind(styles);
 
 function Dashboard() {
-    const { data: productData, loading: productLoading } = useFetch('/product')
-    const { data: promotionData, loading: promotionLoading } = useFetch('/promotion')
-    const { data: revenueData, loading: revenueLoading } = useFetch('/revenue?time=1M')
-    const { data: chartData, loading: chartLoading } = useFetch('/revenue/chart')
-    console.log(chartData)
+    const { data: productData } = useFetch('/product')
+    const { data: promotionData } = useFetch('/promotion')
+    const { data: revenueData } = useFetch('/revenue?time=1M')
+    const { data: chartData } = useFetch('/revenue/chart')
 
     return (
         <div>

@@ -1,5 +1,6 @@
 .wrapper{
     margin-top: 2rem;
+    font-family: 'Nunito', sans-serif;
 }
 
 
@@ -13,3 +14,36 @@
     align-items: center;
     justify-content: space-between;
 }
+
+.payment-method{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-content: flex-start;
+    font-size: .9rem;
+    font-weight: 500;
+}
+
+.payment-sign{
+    color: var(--secondary);
+    border: 1px solid currentColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 12px;
+    border-radius: 4px;
+}
+
+.payment-advance{
+    padding-block: 10px;
+    // display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 1rem;
+    display: none;
+
+    &.show{
+        display: flex;
+    }
+}
+

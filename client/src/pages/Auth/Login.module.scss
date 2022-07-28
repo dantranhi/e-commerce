@@ -2,7 +2,7 @@
     display: grid;
     grid-template-columns: 1fr 2fr;
     place-items: center;
-    background-color: #f1f5f9;
+    background-color: var(--primary-2);
     height: 100vh;
 
     * {
@@ -70,7 +70,7 @@
 .line-text{
     position: absolute;
     padding: 4px;
-    background-color: #f1f5f9;
+    background-color: var(--primary-2);
 }
 
 .socials{

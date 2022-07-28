@@ -56,7 +56,7 @@ function SearchProduct() {
                                 return <Link to={`/product/${item._id}`} key={item._id} className={`col l-4 m-6 c-6 mt-4`}><ProductItem data={item} ></ProductItem></Link>
                             })}
                         </div>
-                        {loading && <div className="full center"><AnimatedLoading width='140px' height='140px'/></div>}
+                        {loading && <div className="full center"><AnimatedLoading width='100px' height='100px'/></div>}
                         {error && <div>Error</div>}
                     </Space>
 

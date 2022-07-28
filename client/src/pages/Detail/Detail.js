@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import Slider from "react-slick";
 import { useParams } from 'react-router-dom'
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 import { useStore } from '../../store/UserContext'
 import { addToCart, clearCartError } from '../../store/actions'
@@ -8,8 +10,7 @@ import formatCurrency from '../../utils/formatCurrency';
 import useFetch from '../../hooks/useFetch'
 import MultiLevelNav from '../../components/MultiLevelNav'
 import Button from '../../components/Button'
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import AnimatedLoading from '../../components/Icons/AnimatedLoading'
 
 import classNames from 'classnames/bind';
 import styles from './Detail.module.scss';
@@ -54,7 +55,7 @@ function Detail() {
             <div className={cl('wrapper')}>
                 <div className='grid wide'>
                     {
-                        loading ? 'LOADING' : (
+                        loading ? <div className="full center"><AnimatedLoading width='100px' height='100px' /></div> : (
                             <div className={cl('inner')}>
                                 <div className={cl('img-list')}>
                                     <Slider className={cl('img-list')} {...settings}>

@@ -54,8 +54,9 @@ function MyOrders() {
                 <Title>My Orders</Title>
                 {!loading && myOrders.map((orderList, index) => (
                     <Order key={orderList._id}>
-                        <div className={cl('date')}>{formatDate(orderList.createdAt, 'DD-MM-YYYY')}</div>
-                        <div className={cl('code')}>Order ID: {orderList._id}</div>
+                        <div className={cl('address')}><span className={cl('address-label')}>Address: </span>{orderList.userAddress}</div>
+                        <div className={cl('user')}>{orderList.fullName} {`(${orderList.userPhone})`}</div>
+                        <div className={cl('date')}>{formatDate(orderList.createdAt, 'DD-MM-YYYY HH:mm:ss')}</div>
                         <Order.List>
                             {!productsLoading && orderList.productList.map(item => {
                                 const thisProduct = products.find(p => p._id === item.productId)
@@ -88,11 +89,11 @@ function MyOrders() {
                                 </Popconfirm>}
 
 
-                            {index !== myOrders.length - 1 && <Divider>+++++</Divider>}
+                            {/* {index !== myOrders.length - 1 && <Divider>+++++</Divider>} */}
                         </Order.List>
                     </Order>
                 ))}
-                {loading && <div className="full center"><AnimatedLoading width='140px' height='140px' /></div>}
+                {loading && <div className="full center"><AnimatedLoading width='100px' height='100px' /></div>}
             </div>
         </div>
     )

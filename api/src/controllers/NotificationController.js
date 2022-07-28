@@ -23,7 +23,7 @@ class NotificationController {
             }
             const notifications = temp.map(item => {
                 const destination = user.isAdmin ? 'Admin' : req.params.id
-                console.log(destination)
+
                 return ({
                     ...item._doc,
                     status: [...item._doc.status].filter(a => a.for === destination)

@@ -25,6 +25,7 @@ function NewOrder() {
     const [profile, setProfile] = useState(JSON.parse(localStorage.getItem('user')) ?? null)
     const [showCart, setShowCart] = useState(false)
     const [errors, setErrors] = useState([])
+    const [isShowPayMethod, setIsShowPayMethod] = useState(false)
 
     const [total, setTotal] = useState({
         temp: 0,
@@ -35,12 +36,13 @@ function NewOrder() {
     const [info, setInfo] = useState({
         userAddress: '',
         userPhone: '',
-        fullName: ''
+        fullName: '',
+        payMethod: 'Cash on delivery (COD)'
     })
 
     const [{ cart: { data }, user }, dispatch] = useStore()
 
-    const { data: allProfiles } = useFetch(`/profile/${params.id}`, params.id !== 'undefined')
+    const { data: allProfiles } = useFetch(`/profile/${params.id}`, params.id !== 'undefined' && params.id !== 'create')
 
     useEffect(() => {
         if (!profile)
@@ -55,14 +57,14 @@ function NewOrder() {
         let newTemp = data.reduce((accumulate, item) => {
             return accumulate + item.price * item.amount
         }, 0)
-        let delivery = newTemp >= 500000 ? 0 : 30000
+        let delivery = (newTemp >= 500000 || info.payMethod!=='Cash on delivery (COD)') ? 0 : 30000
         let sum = newTemp + delivery
         setTotal({
             temp: newTemp,
             delivery: delivery,
             totalPrice: sum
         })
-    }, [data])
+    }, [data, info.payMethod])
 
     const handleChangeForm = ({ name, value }) => {
         setInfo(prev => ({
@@ -73,7 +75,15 @@ function NewOrder() {
 
     const handleChangeProfile = (profile) => {
         const { _id, name, userId, ...obj } = JSON.parse(profile)
-        setInfo(obj)
+        setInfo({...obj, payMethod: 'Cash on delivery (COD)'})
+    }
+
+    const handleChangePaymentMethod = (method) =>{
+        setInfo(prev=>({
+            ...prev,
+            payMethod: method
+        }))
+        setIsShowPayMethod(false)
     }
 
     const handleOpenCart = () => {
@@ -157,6 +167,17 @@ function NewOrder() {
                                         <Order.Item key={item._id} data={item}></Order.Item>
                                     ))
                                 }
+                                <Divider />
+                                <div className={cl('payment-method')}>
+                                    <span>Payment method: {info.payMethod} </span>
+                                    {info.payMethod === 'Cash on delivery (COD)' && <span className={cl('payment-sign')}>Default</span>}
+                                    <Button type='link' onClick={()=>setIsShowPayMethod(prev=>!prev)}>Change</Button>
+                                </div>
+                                <div className={cl('payment-advance', {show: isShowPayMethod})}>
+                                    <Button onClick={()=>handleChangePaymentMethod('Credit Card')}>Credit Card</Button>
+                                    <Button onClick={()=>handleChangePaymentMethod('E-Wallet')}>E-Wallet</Button>
+                                    <Button onClick={()=>handleChangePaymentMethod('Cash on delivery (COD)')}>Cash on delivery (COD)</Button>
+                                </div>
                                 <Divider />
                                 <Order.Summary title='Tạm tính'>{formatCurrency(total.temp)}</Order.Summary>
                                 +
