@@ -1,19 +1,15 @@
 import React from 'react'
-import styles from './Home.module.scss';
 
 import Hero from '../../components/Hero'
 import Featured from '../../components/Featured'
-
-
-import classNames from 'classnames/bind';
-const cl = classNames.bind(styles);
+import Intro from '../../components/Intro'
 
 function Home() {
     return (
         <>
             <Hero></Hero>
+            <Intro></Intro>
             <Featured></Featured>
-
         </>
     )
 }
