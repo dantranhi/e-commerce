@@ -11,6 +11,34 @@
     
 }
 
+.filter-title{
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-family: 'Kaushan Script', cursive;
+    letter-spacing: 2px;
+    color: var(--secondary);
+
+}
+
+.filter-type{
+
+}
+
+.filter-subheading{
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.filter-type-item{
+    font-size: 1rem;
+}
+
+
+.filter-type-list{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 @media only screen and (max-width: 739px){
     .wrapper{
         padding-inline: 1rem;

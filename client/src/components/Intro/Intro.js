@@ -51,7 +51,7 @@ function Intro() {
     return (
         <div className={cl('outer-wrapper')}>
             <div className="grid wide">
-                <div className="row">
+                <div className="row" style={{'position': 'relative'}}>
                     <div className="col l-6 m-6 c-12">
                         <div className={cl('left', {hidden: showComputer})}>
                             {data.map((item, index) => {
@@ -67,8 +67,14 @@ function Intro() {
                             })}
                         </div>
                     </div>
-                    <div onClick={() => setShowComputer(true)} className={cl('computer', {hidden: showComputer})}>
+                    <div onClick={() => setShowComputer(prev=>!prev)} className={cl('computer', {animate: showComputer})}>
                         <img src={pcImg} alt="" className={cl('computer-icon')} />
+                        <div className={cl('computer-info', {animate: showComputer})}>
+                            <div className={cl('computer-heading')}>Fully functional computer</div>
+                            <div className={cl('computer-desc')}>
+                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Placeat architecto neque harum, iste autem at, quos magnam beatae quis non doloribus dolorum praesentium porro eius iure. Vitae at incidunt libero consectetur distinctio, ratione voluptas et, alias, dolorem ea itaque quas.
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

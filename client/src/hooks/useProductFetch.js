@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 // import httpRequest from '../utils/httpRequest'
 import axios from 'axios'
 
-function useProductFetch(query, pageNumber) {
+function useProductFetch(query, pageNumber = 1, queries) {  
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
     const [products, setProducts] = useState([])
@@ -10,7 +10,7 @@ function useProductFetch(query, pageNumber) {
 
     useEffect(() => {
         setProducts([])
-    }, [query])
+    }, [query, queries])
 
     useEffect(() => {
         setLoading(true)
@@ -21,7 +21,7 @@ function useProductFetch(query, pageNumber) {
                 method: 'GET',
                 url: 'http://localhost:5000/product/grid',
                 // url: 'https://ecommerce-dantocthang.herokuapp.com/product/grid',
-                params: { q: query, page: pageNumber, limit: 3 },
+                params: { q: query, page: pageNumber, limit: 6, ...queries },
                 withCredentials: false,
                 cancelToken: new axios.CancelToken(c => cancel = c)
             })
@@ -29,7 +29,7 @@ function useProductFetch(query, pageNumber) {
                     setProducts(prev => {
                         return [...prev, ...res.data.data]
                     })
-    
+
                     setHasMore(res.data.currentPage.page < res.data.pages)
                     setLoading(false)
                 })
@@ -41,10 +41,10 @@ function useProductFetch(query, pageNumber) {
 
 
         return () => {
-            if (typeof cancel !=='undefined') cancel()
+            if (typeof cancel !== 'undefined') cancel()
             clearTimeout(debounceId)
         }
-    }, [query, pageNumber])
+    }, [query, pageNumber, queries])
     return [products, loading, error, hasMore]
 }
 
