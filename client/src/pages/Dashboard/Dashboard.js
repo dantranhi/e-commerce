@@ -1,6 +1,6 @@
 import React from 'react'
 import { faDesktop, faHandHoldingDollar, faPercent } from '@fortawesome/free-solid-svg-icons';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import moment from 'moment';
 
 import Overview from '../../components/Overview'
@@ -43,7 +43,7 @@ function Dashboard() {
                             <div className="row">
                                 <div className="col l-12 m-12 c-12">
                                     <ResponsiveContainer className={cl('chart')} width="100%" height={400}>
-                                        <LineChart width={600} height={400} className={cl('chart')} data={chartData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+                                        <LineChart width={600} height={400} className={cl('chart')} data={chartData} margin={{ top: 5, right: 20, bottom: 5, left: 20 }}>
                                             <Line type="monotone" dataKey="total" name="Revenue" stroke="#8884d8" />
                                             {/* <CartesianGrid stroke="#ccc" strokeDasharray="5 5" /> */}
                                             <XAxis dataKey="month" />

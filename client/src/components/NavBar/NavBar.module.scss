@@ -45,12 +45,13 @@
     width: min(100%, 170px);
     display: flex;
     place-items: center;
+    justify-content: center;
     flex: 1;
 }
 
 .logo-img {
-    height: 100%;
-    width: 100%;
+    height: var(--header-height);
+    width: var(--header-height);
     object-fit: cover;
 }
 
@@ -85,6 +86,7 @@
 .icon {
     color: #fff;
     font-size: 1.5rem;
+    cursor: pointer;
 }
 
 .user {
@@ -175,8 +177,8 @@
     }
 
     .logo-img {
-        height: fit-content;
-        width: fit-content;
+        height: var(--header-height);
+        width: var(--header-height);
     }
 
     .mobile-bars {

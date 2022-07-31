@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 // import httpRequest from '../utils/httpRequest'
 import axios from 'axios'
 
-function useProductFetch(query, pageNumber = 1, queries) {  
+function useProductFetch(query, pageNumber = 1, queries, priceRange, sort) {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
     const [products, setProducts] = useState([])
@@ -10,7 +10,7 @@ function useProductFetch(query, pageNumber = 1, queries) {
 
     useEffect(() => {
         setProducts([])
-    }, [query, queries])
+    }, [query, queries, priceRange, sort])
 
     useEffect(() => {
         setLoading(true)
@@ -21,7 +21,14 @@ function useProductFetch(query, pageNumber = 1, queries) {
                 method: 'GET',
                 url: 'http://localhost:5000/product/grid',
                 // url: 'https://ecommerce-dantocthang.herokuapp.com/product/grid',
-                params: { q: query, page: pageNumber, limit: 6, ...queries },
+                params: {
+                    q: query,
+                    page: pageNumber,
+                    limit: 6, ...queries,
+                    minprice: priceRange[0],
+                    maxprice: priceRange[1],
+                    sort: sort
+                },
                 withCredentials: false,
                 cancelToken: new axios.CancelToken(c => cancel = c)
             })
@@ -44,7 +51,7 @@ function useProductFetch(query, pageNumber = 1, queries) {
             if (typeof cancel !== 'undefined') cancel()
             clearTimeout(debounceId)
         }
-    }, [query, pageNumber, queries])
+    }, [query, pageNumber, queries, priceRange, sort])
     return [products, loading, error, hasMore]
 }
 

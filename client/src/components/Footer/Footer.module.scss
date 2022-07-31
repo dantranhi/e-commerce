@@ -23,11 +23,14 @@
 .logo-wrapper {
     height: 80px;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .logo-img {
-    height: 100%;
-    width: 100%;
+    height: var(--header-height);
+    width: var(--header-height);
     object-fit: cover;
 }
 

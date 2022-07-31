@@ -11,12 +11,12 @@ const { Title } = Typography
 function EditProfile() {
     const params = useParams()
     return (
-        <>
+        <div className={cl('wrapper')}>
             <div className="grid wide">
                 <Title className={cl('heading')}>Edit Profile</Title>
                 <ProfileForm userId={params.userId} profileId={params.id}></ProfileForm>
             </div>
-        </>
+        </div>
     )
 }
 

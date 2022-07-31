@@ -2,10 +2,10 @@ import { useState, useEffect, useCallback } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGear, faCartShopping, faUser, faArrowRightFromBracket, faArrowRightToBracket, faClipboardList } from '@fortawesome/free-solid-svg-icons'
+import { faGear, faUser, faArrowRightFromBracket, faArrowRightToBracket, faClipboardList } from '@fortawesome/free-solid-svg-icons'
 import decode from 'jwt-decode';
 
-
+import defaultAvatar from '../../assets/img/default-avatar.png'
 import httpRequest, { get } from '../../utils/httpRequest'
 import { logout } from '../../store/actions'
 import { useStore } from '../../store/UserContext'
@@ -53,7 +53,7 @@ function Menu() {
       {profile &&
         <li className={cl('profile-wrapper')}>
           <div className={cl('avatar-wrapper')}>
-            <img src={profile.details?.photos?.[0]?.url || profile.details?.image} alt="" className={cl('avatar')} />
+            <img src={profile.details?.photos?.[0]?.url || profile.details?.image || defaultAvatar} alt="" className={cl('avatar')} />
           </div>
           <div className={cl('name')}>
             Hello {profile.details.username}

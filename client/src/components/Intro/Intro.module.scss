@@ -108,7 +108,10 @@
     color: var(--secondary);
 }
 
-.computer-desc {}
+.computer-desc {
+    font-size: 1rem;
+    font-weight: 600;
+}
 
 
 .item-image {
@@ -146,5 +149,25 @@
 }
 
 .item-desc {
-    font-size: .9rem;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+@media only screen and (max-width: 739px) {
+    .item-info{
+        gap: 0;
+        padding-right: 0;
+
+        &.reverse{
+            padding-left: 0;
+        }
+    }
+
+    .computer{
+        display: none;
+    }
+
+    .right{
+        margin-top: 32px;
+    }
 }

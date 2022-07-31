@@ -3,7 +3,8 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebookF, faGithubAlt, faInstagram, faYoutube } from '@fortawesome/free-brands-svg-icons'
 
-import { LogoIcon } from '../Icons'
+// import { LogoIcon } from '../Icons'
+import LogoIcon from '../../assets/img/logo.png'
 import { VisaIcon, PaypalIcon, MasterCardIcon, AtmIcon } from '../Icons';
 import FooterItem from './FooterItem'
 
@@ -20,9 +21,10 @@ function Footer() {
                         <div className="col l-3 m-4 c-6">
                             <div className={cl('col-wrapper')}>
                                 <div className={cl('logo-wrapper')}>
-                                    <LogoIcon className={cl('logo-img')}></LogoIcon>
+                                    {/* <LogoIcon className={cl('logo-img')}></LogoIcon> */}
+                                    <img src={LogoIcon} alt="" className={cl('logo-img')} />
                                 </div>
-                                <div className={cl('slogan')}>"embrace your choices <br/>- we do"</div>
+                                <div className={cl('slogan')}>"embrace your choices"</div>
                                 <div className={cl('socials')}>
                                     <a href='https://facebook.com' className={cl('social-wrapper')}>
                                         <FontAwesomeIcon className={cl('social-icon')} icon={faFacebookF} />

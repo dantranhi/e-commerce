@@ -6,7 +6,8 @@ import { faCartShopping, faUser, faBars, faXmark } from '@fortawesome/free-solid
 
 import { toggleCart } from '../../store/actions'
 import { useStore } from '../../store/UserContext'
-import { LogoIcon } from '../Icons/Icons'
+// import { LogoIcon } from '../Icons/Icons'
+import LogoIcon from '../../assets/img/logo.png'
 import UserMenu from '../UserMenu'
 import Cart from '../Cart'
 import Notification from '../NotificationSidebar/Notification'
@@ -47,7 +48,7 @@ function NavBar() {
           </div>
         </label>
         <div className={cl('logo')}>
-          <LogoIcon width='140px' height='80px' className={cl('logo-img')} ></LogoIcon>
+          <img src={LogoIcon} alt="" className={cl('logo-img')} />
         </div>
         <div className={cl('function')}>
           <div className={cl('cart')}>

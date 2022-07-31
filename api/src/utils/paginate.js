@@ -7,13 +7,31 @@ function paginate(model, perPage = 12) {
         let otherSearchProperties = {
             type: req.query?.type?.split(','),
             brand: req.query?.brand?.split(','),
+            minprice: Number(req.query?.minprice),
+            maxprice: Number(req.query?.maxprice),
+            sort: req.query?.sort ?? 'default'
         }
+
         let queries = {}
+        let priceRange = {}
+        let sortMethod = {}
         if (otherSearchProperties.type && otherSearchProperties.type[0] !== '') queries.type = {
             '$in': otherSearchProperties.type
         }
         if (otherSearchProperties.brand && otherSearchProperties.brand[0] !== '') queries.brand = {
             '$in': otherSearchProperties.brand
+        }
+        if (!isNaN(otherSearchProperties.minprice)) priceRange.minprice = otherSearchProperties.minprice
+        if (!isNaN(otherSearchProperties.maxprice)) priceRange.maxprice = otherSearchProperties.maxprice
+        switch (otherSearchProperties.sort) {
+            case 'price-asc':
+                sortMethod = { price: 'asc' }
+                break
+            case 'price-desc':
+                sortMethod = { price: 'desc' }
+                break
+            default:
+                sortMethod = {}
         }
 
         if (isNaN(page)) page = 1;
@@ -53,29 +71,45 @@ function paginate(model, perPage = 12) {
         try {
             //Search
             if (q && q !== '') {
-                console.log(q)
                 if (Object.keys(queries).length > 0) {
-                    console.log('ok')
                     result.data = await model.find({
                         name: { $regex: new RegExp(q, 'i') },
-                        ...queries
-                    }).limit(limit).skip(startIndex)
+                        ...queries,
+                        $and: [
+                            { price: { $gte: priceRange.minprice } },
+                            { price: { $lte: priceRange.maxprice } },
+                        ]
+                    }).sort(sortMethod).limit(limit).skip(startIndex)
                 }
                 else {
                     result.data = await model.find({
                         name: { $regex: new RegExp(q, 'i') },
-                    }).limit(limit).skip(startIndex)
+                        $and: [
+                            { price: { $gte: priceRange.minprice } },
+                            { price: { $lte: priceRange.maxprice } },
+                        ]
+                    }).sort(sortMethod).limit(limit).skip(startIndex)
                 }
                 result.q = q
             }
             else if (Object.keys(queries).length > 0) {
                 result.data = await model.find({
-                    ...queries
-                }).limit(limit).skip(startIndex)
+                    ...queries,
+                    $and: [
+                        { price: { $gte: priceRange.minprice } },
+                        { price: { $lte: priceRange.maxprice } },
+                    ]
+                }).sort(sortMethod).limit(limit).skip(startIndex)
             }
+            else if (Object.keys(priceRange).length > 0) result.data = await model.find({
+                $and: [
+                    { price: { $gte: priceRange.minprice } },
+                    { price: { $lte: priceRange.maxprice } },
+                ]
+            }).sort(sortMethod).limit(limit).skip(startIndex)
             else result.data = await model.find().limit(limit).skip(startIndex)
+
             if ((q && q !== '') || Object.keys(queries).length > 0) {
-                console.log('fasdfasfsa')
                 result.pages = Math.ceil(result.data.length / limit) // Tổng số trang sau khi phân trang
             }
 
