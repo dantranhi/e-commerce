@@ -39,7 +39,6 @@ function PromotionForm({ edit }) {
     const { data: allProducts } = useFetch('/product')
 
     const { data: allPromotionPeriods } = useFetch(!!edit ? editUrl : url)
-    console.log(allPromotionPeriods)
 
     const { data: promotionData, error, loading } = useFetch(`/promotion/${edit}`, !!edit)
     if (error) console.log('Error while fetch Promotion data: ' + error)

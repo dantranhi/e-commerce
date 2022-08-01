@@ -40,16 +40,23 @@ function NewOrder() {
         payMethod: 'Cash on delivery (COD)'
     })
 
-    const [{ cart: { data }, user }, dispatch] = useStore()
+    const [{ cart: { data } }, dispatch] = useStore()
 
-    const { data: allProfiles } = useFetch(`/profile/${params.id}`, params.id !== 'undefined' && params.id !== 'create')
+    const { data: allProfiles } = useFetch(`/profile/${params.id}`, params.id !== 'undefined' && params.id === profile.details._id)
 
     useEffect(() => {
-        if (!profile)
+        if (!profile) {
             navigate('/login')
+            return
+        }
+        if (params.id !== profile.details._id) {
+            navigate('/ERROR')
+            return
+        }
         if (data.length === 0) {
             navigate('/')
             toast.info('Your cart is empty!')
+            return
         }
     }, [])
 
@@ -57,7 +64,7 @@ function NewOrder() {
         let newTemp = data.reduce((accumulate, item) => {
             return accumulate + item.price * item.amount
         }, 0)
-        let delivery = (newTemp >= 500000 || info.payMethod!=='Cash on delivery (COD)') ? 0 : 30000
+        let delivery = (newTemp >= 500000 || info.payMethod !== 'Cash on delivery (COD)') ? 0 : 30000
         let sum = newTemp + delivery
         setTotal({
             temp: newTemp,
@@ -75,11 +82,11 @@ function NewOrder() {
 
     const handleChangeProfile = (profile) => {
         const { _id, name, userId, ...obj } = JSON.parse(profile)
-        setInfo({...obj, payMethod: 'Cash on delivery (COD)'})
+        setInfo({ ...obj, payMethod: 'Cash on delivery (COD)' })
     }
 
-    const handleChangePaymentMethod = (method) =>{
-        setInfo(prev=>({
+    const handleChangePaymentMethod = (method) => {
+        setInfo(prev => ({
             ...prev,
             payMethod: method
         }))
@@ -171,12 +178,12 @@ function NewOrder() {
                                 <div className={cl('payment-method')}>
                                     <span>Payment method: {info.payMethod} </span>
                                     {info.payMethod === 'Cash on delivery (COD)' && <span className={cl('payment-sign')}>Default</span>}
-                                    <Button type='link' onClick={()=>setIsShowPayMethod(prev=>!prev)}>Change</Button>
+                                    <Button type='link' onClick={() => setIsShowPayMethod(prev => !prev)}>Change</Button>
                                 </div>
-                                <div className={cl('payment-advance', {show: isShowPayMethod})}>
-                                    <Button onClick={()=>handleChangePaymentMethod('Credit Card')}>Credit Card</Button>
-                                    <Button onClick={()=>handleChangePaymentMethod('E-Wallet')}>E-Wallet</Button>
-                                    <Button onClick={()=>handleChangePaymentMethod('Cash on delivery (COD)')}>Cash on delivery (COD)</Button>
+                                <div className={cl('payment-advance', { show: isShowPayMethod })}>
+                                    <Button onClick={() => handleChangePaymentMethod('Credit Card')}>Credit Card</Button>
+                                    <Button onClick={() => handleChangePaymentMethod('E-Wallet')}>E-Wallet</Button>
+                                    <Button onClick={() => handleChangePaymentMethod('Cash on delivery (COD)')}>Cash on delivery (COD)</Button>
                                 </div>
                                 <Divider />
                                 <Order.Summary title='Tạm tính'>{formatCurrency(total.temp)}</Order.Summary>

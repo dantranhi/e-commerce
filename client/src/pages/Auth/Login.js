@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 import { loginStart, loginSuccess, loginFailed } from '../../store/actions'
 import httpRequest from '../../utils/httpRequest'
-import { LogoIcon } from '../../components/Icons'
+import LogoIcon from '../../assets/img/logo-login.png'
 import GoogleIcon from '../../assets/img/google.png'
 import LoginHero from '../../assets/img/login-hero.jpg'
 import Button from '../../components/Button'
@@ -58,7 +58,7 @@ function Login() {
   return (
     <div className={cl('login')}>
       <div className={cl('left')}>
-        <LogoIcon className={cl('logo')} />
+        <img src={LogoIcon} alt="" className={cl('logo')} />
         <h3 className={cl('title')}>Welcome back</h3>
         <form className={cl('form')} onSubmit={handleSubmit}>
           <input className={cl('input')} type="text" autoComplete="on" id="username" placeholder="Enter your username" name="username" value={user.username} onChange={(e) => handleChangeInput(e.target)} />

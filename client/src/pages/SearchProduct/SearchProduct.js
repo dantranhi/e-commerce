@@ -180,7 +180,7 @@ function SearchProduct() {
                                             >
                                                 <Option value="default">Default</Option>
                                                 <Option value="price-asc">Price (Low to High)</Option>
-                                                <Option value="price-desc">Price (Low to High)</Option>
+                                                <Option value="price-desc">Price (High to Low)</Option>
                                             </Select>
                                         </div>
                                     </div>
@@ -192,9 +192,10 @@ function SearchProduct() {
                                         return <Link to={`/product/${item._id}`} key={item._id} className={`col l-4 m-6 c-6 mt-4`}><ProductItem data={item} ></ProductItem></Link>
                                     })}
                                 </div>
+                                {loading && <div className="full center"><AnimatedLoading width='100px' height='100px' /></div>}
                             </div>
                         </div>
-                        {loading && <div className="full center"><AnimatedLoading width='100px' height='100px' /></div>}
+                        
                         {error && <div>Error</div>}
                     </Space>
 

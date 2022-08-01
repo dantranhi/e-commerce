@@ -52,18 +52,20 @@ function Intro() {
         <div className={cl('outer-wrapper')}>
             <div className="grid wide">
                 <div className="row" style={{'position': 'relative'}}>
-                    <div className="col l-6 m-6 c-12">
+                    <div className="col l-6 m-12 c-12">
                         <div className={cl('left', {hidden: showComputer})}>
                             {data.map((item, index) => {
                                 if (index < data.length / 2) return <IntroItem key={item.name} {...item}></IntroItem>
+                                return <div key={item.name}></div>
                             })}
                         </div>
 
                     </div>
-                    <div className="col l-6 m-6 c-12">
+                    <div className="col l-6 m-12 c-12">
                         <div className={cl('right', {hidden: showComputer})}>
                             {data.map((item, index) => {
                                 if (index >= data.length / 2) return <IntroItem reverse key={item.name} {...item}></IntroItem>
+                                return <div key={item.name}></div>
                             })}
                         </div>
                     </div>

@@ -44,12 +44,21 @@ function NavBar() {
               <li>
                 <Link className={cl('mobile-link')} to='/'>Home</Link>
               </li>
+              <li>
+                <Link className={cl('mobile-link')} to='/product'>Products</Link>
+              </li>
+              <li>
+                <Link className={cl('mobile-link')} to='/about'>About</Link>
+              </li>
+              <li>
+                <Link className={cl('mobile-link')} to='/login'>Login</Link>
+              </li>
             </ul>
           </div>
         </label>
-        <div className={cl('logo')}>
+        <Link to='/' className={cl('logo')}>
           <img src={LogoIcon} alt="" className={cl('logo-img')} />
-        </div>
+        </Link>
         <div className={cl('function')}>
           <div className={cl('cart')}>
             <FontAwesomeIcon onClick={handleOpenCart} className={cl('icon')} icon={faCartShopping} />

@@ -13,6 +13,8 @@ const { Title } = Typography;
 
 function ProductList() {
     const { data: products, loading, reFetch } = useFetch('/product')
+    const { data: allBrands } = useFetch('/product/brand')
+    const { data: allTypes } = useFetch('/product/type')
 
     const confirm = async (e, id) => {
         try {
@@ -38,17 +40,32 @@ function ProductList() {
             title: 'Brand',
             dataIndex: 'brand',
             key: 'brand',
+            filters: allBrands.map(i => ({
+                text: i.name,
+                value: i.name,
+            })
+            ),
+            onFilter: (value, record) => record.brand.indexOf(value) === 0,
+
+
         },
         {
             title: 'Type',
             dataIndex: 'type',
             key: 'type',
+            filters: allTypes.map(i => ({
+                text: i.name,
+                value: i.name,
+            })
+            ),
+            onFilter: (value, record) => record.type.indexOf(value) === 0,
         },
         {
             title: 'Price',
             key: 'price',
             dataIndex: 'price',
             render: (price) => formatCurrency(price),
+            sorter: (a, b) => a.price - b.price,
         },
         {
             title: 'Action',
@@ -74,7 +91,7 @@ function ProductList() {
         <div className={cl('wrapper')}>
             <div className="grid ultrawide">
                 <Title level={2}>Product List</Title>
-                <Link className="redirect-link" to='/admin/product/create'>Add</Link>
+                <Link className={`redirect-link ${cl('link')}`} to='/admin/product/create'>Add</Link>
                 {loading ? 'LOADING' : (<Table columns={columns} dataSource={products} rowKey="_id" />)}
             </div>
         </div>

@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { faFacebook } from '@fortawesome/free-brands-svg-icons'
 import { toast } from 'react-toastify';
 
-import { LogoIcon } from '../../components/Icons'
+import LogoIcon from '../../assets/img/logo-login.png'
 import httpRequest from '../../utils/httpRequest'
 import GoogleIcon from '../../assets/img/google.png'
 import LoginHero from '../../assets/img/login-hero.jpg'
@@ -61,7 +61,7 @@ function Register() {
     return (
         <div className={cl('login')}>
             <div className={cl('left')}>
-                <LogoIcon className={cl('logo')} />
+                <img src={LogoIcon} alt="" className={cl('logo')} />
                 <h3 className={cl('title')}>Create an account</h3>
                 <form className={cl('form')} onSubmit={handleSubmit}>
                     <input className={cl('input')} type="text" autoComplete="on" id="username" placeholder="Enter your username" name="username" value={user.username} onChange={(e) => handleChangeInput(e.target)} />
@@ -81,6 +81,9 @@ function Register() {
                 <div className={cl('separator')}>
                     <span className={cl('line')}></span>
                     <span className={cl('line-text')}>OR</span>
+                </div>
+                <div className={cl('bottom')}>
+                    Already have an account? <Link to='/login' className={cl('signup')}>Sign in</Link>
                 </div>
                 <div className={cl('socials')}>
                     <Button onClick={handleLoginGoogle}><img className={cl('icon')} src={GoogleIcon} alt="google" />Login with Google</Button>

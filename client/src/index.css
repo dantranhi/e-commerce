@@ -2,7 +2,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Arima:wght@400;500;600&display=swap');
 
-:root{
+:root {
   --header-height: 90px;
   --hero-height: 660px;
   --primary: #0e1e29;
@@ -15,23 +15,23 @@
 }
 
 
-button{
+button {
   background-color: transparent;
   outline: none;
   border: none;
   padding: 0;
 }
 
-a{
+a {
   text-decoration: none;
 }
 
-ul{
+ul {
   padding-left: 0;
   list-style: none;
 }
 
-body, html{
+body, html {
   padding: 0;
   margin: 0;
   font-family: 'Nunito', sans-serif;
@@ -41,27 +41,27 @@ body * {
   box-sizing: border-box;
 }
 
-h1{
+h1 {
   margin: 0;
 }
 
-body, #root{
+body, #root {
   overflow-x: hidden;
 }
 
-#root{
+#root {
   height: 100%;
 }
 
-body{
+body {
   min-height: 100vh;
 }
 
-a:hover{
+a:hover {
   color: unset;
 }
 
-.full{
+.full {
   width: 100%;
   height: 100%;
   display: flex;
@@ -77,37 +77,42 @@ a:hover{
   overflow-x: auto;
 }
 
-.slick-dots li{
+.slick-dots li {
   width: 60px;
   height: 60px;
   border: 1px solid transparent;
   overflow: hidden;
 }
 
-.slick-dots li + li{
+.slick-dots li+li {
   margin-left: 8px;
 }
 
-li.slick-active{
+li.slick-active {
   border: 1px solid #0f1e28;
   border-radius: 4px;
 }
 
-.slick-thumb{
+.slick-thumb {
   text-align: center;
 }
 
-.redirect-link{
+.redirect-link {
   display: block;
   margin-block: 1rem;
-  color:#401563;
+  color: #401563;
   font-size: 1rem;
   font-weight: 500;
-
+  width: fit-content;
+  padding: 4px 20px;
+  transition: 250ms;
+  border-radius: 4px;
 }
 
-.redirect-link:hover{
-  text-decoration: dashed;
+.redirect-link:hover {
+  background-color: var(--primary);
+  color: var(--white);
+
 }
 
 /* Custom scrollbar */
@@ -123,7 +128,7 @@ li.slick-active{
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(45deg,#57c2c7, #c82657);
+  background: linear-gradient(45deg, #57c2c7, #c82657);
   border-radius: 2px;
 }
 
@@ -131,7 +136,3 @@ li.slick-active{
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(45deg, #c82657, #401563);
 }
-
-
-
-

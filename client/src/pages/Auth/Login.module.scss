@@ -21,13 +21,19 @@
 }
 
 .logo{
-    height: 100px;
-    width: 240px;
-    object-fit: cover;
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
 }
 
 .title{
-    margin: 0
+    margin: 0;
+    color: var(--secondary);
+    font-size: 1.4rem;
+    letter-spacing:1px;
+    font-weight: 600;
+    font-family: 'Kaushan Script', cursive;
+
 }
 
 .form{
@@ -115,5 +121,9 @@
 
     .right{
         display: none;
+    }
+
+    .form{
+        gap: 10px;
     }
 }

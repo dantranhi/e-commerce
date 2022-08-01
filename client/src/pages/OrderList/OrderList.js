@@ -2,6 +2,7 @@ import React from 'react'
 import { Space, Table, Popconfirm, Typography, Tag, Button, Select } from 'antd'
 import { toast } from 'react-toastify';
 import classNames from 'classnames/bind';
+import moment from 'moment';
 
 import httpRequest from '../../utils/httpRequest'
 import Order from '../../components/Order'
@@ -17,7 +18,7 @@ const { Option } = Select
 function ProductList() {
     const { data: orders, loading, reFetch } = useFetch('/order')
     const { data: products, loading: productsLoading } = useFetch('/product')
-    const { data: status } = useFetch('/order/status')
+    const { data: allStatus } = useFetch('/order/status')
 
 
     const confirmDeleteOrder = async (id) => {
@@ -45,14 +46,11 @@ function ProductList() {
             case 'Cancelled':
                 color = 'gray'
                 break
-            case 'Wrapped':
-                color = 'yellow'
-                break
             case 'Delivering':
                 color = '#57c2c7'
                 break
             case 'Delivered':
-                color = '#ffc6ff'
+                color = '#e54784'
                 break
             default:
                 color = 'white'
@@ -83,7 +81,9 @@ function ProductList() {
             title: 'Order date',
             dataIndex: 'createdAt',
             key: 'createdAt',
-            render: (date) => formatDate(date, 'DD-MM-YYYY')
+            render: (date) => formatDate(date, 'DD-MM-YYYY'),
+            sorter: (a, b) => moment(a.createdAt).diff(moment(b.createdAt)),
+
         },
         {
             title: 'Phone number',
@@ -104,12 +104,19 @@ function ProductList() {
                     {status.toUpperCase()}
                 </Tag>
             ),
+            filters: allStatus.map(i => ({
+                text: i.name,
+                value: i.name,
+            })
+            ),
+            onFilter: (value, record) => record.status.indexOf(value) === 0,
         },
         {
             title: 'Total',
             key: 'totalPrice',
             dataIndex: 'totalPrice',
             render: (price) => formatCurrency(price),
+            sorter: (a, b) => a.totalPrice - b.totalPrice,
         },
         {
             title: 'Action',
@@ -117,7 +124,7 @@ function ProductList() {
             render: (_, record) => (
                 <Space size="middle">
                     <Select defaultValue={record.status} style={{ width: 160 }} onChange={(value) => handleChangeStatus(value, record._id)}>
-                        {status.map(s => (
+                        {allStatus.map(s => (
                             <Option key={s._id} value={s.name}>{s.name}</Option>
                         ))}
 

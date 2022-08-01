@@ -23,6 +23,8 @@ import Profile from '../pages/Profile'
 import { EditProfile, NewProfile } from '../pages/Profile'
 import EditProduct from '../pages/EditProduct'
 
+import NotFound from '../pages/404'
+
 const routes = [
     { path: '/admin/product/create', component: NewProduct, layout: AdminLayout },
     { path: '/admin/product/:id', component: EditProduct, layout: AdminLayout },
@@ -44,6 +46,7 @@ const routes = [
     { path: '/login', component: Login, layout: null },
     { path: '/register', component: Register, layout: null },
     { path: '/', component: Home },
+    { path: '*', component: NotFound },
 ]
 
 export default routes

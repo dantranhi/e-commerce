@@ -1,14 +1,13 @@
 .form {
-
     font-family: 'Roboto', sans-serif;
-
-
 }
 
 .group {
-    margin-bottom: 2rem;   
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: .75rem; 
 }
-
 
 .content-row {
     display: grid;

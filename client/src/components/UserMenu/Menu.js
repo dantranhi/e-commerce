@@ -70,9 +70,9 @@ function Menu() {
       </Link>}
 
       <li>
-        <Link to={`/profile/${profile?.details._id}`} className={cl('link')}>
+        {profile && <Link to={`/profile/${profile?.details._id}`} className={cl('link')}>
           <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faUser} /></span> Profile
-        </Link>
+        </Link>}
       </li>
       {profile ? <li>
         <div onClick={handleLogout} className={cl('link')}>
