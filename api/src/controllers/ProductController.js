@@ -1,13 +1,20 @@
 import { validationResult } from 'express-validator'
 import cloudinary from 'cloudinary'
+import moment from 'moment'
 
 import Product from '../models/Product.js'
 import Type from '../models/Type.js'
 import { createError } from '../utils/error.js'
 import Brand from '../models/Brand.js'
-import Notification from '../models/Notification.js'
+import Promotion from '../models/Promotion.js'
+import {productCreation} from '../utils/createNotification.js'
 
 class ProductController {
+    async updatePrice(){
+        const currentTime = moment()
+        // const promotions = await Promotion.find({$and: [{startEndDate[0]}]})
+    }
+
     // [GET] /product/grid
     async getAllGrid(req, res, next) {
         try {
@@ -84,16 +91,7 @@ class ProductController {
                 }
                 await savedProduct.save()
 
-                const newNotification = new Notification({
-                    content: `You have added new product: ${savedProduct.name}`,
-                    status: [
-                        {for: 'Admin'}
-                    ],
-                    type: 'product',
-                    photo: savedProduct.photos[0].url,
-                    link: '/admin/product'
-                })
-                await newNotification.save()
+                productCreation(savedProduct)
 
                 return res.json(savedProduct)
             }

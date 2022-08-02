@@ -14,6 +14,8 @@ const PromotionSchema = mongoose.Schema({
         }
     ],
     comeWithOtherPromotion: { type: Boolean, required: true },
+    startDate: { type: Date, required: true },
+    endDate: { type: Date, required: true },
     startEndDate: [{
         type: Date
     }]

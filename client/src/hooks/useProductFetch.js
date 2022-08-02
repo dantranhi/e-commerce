@@ -24,7 +24,8 @@ function useProductFetch(query, pageNumber = 1, queries, priceRange, sort) {
                 params: {
                     q: query,
                     page: pageNumber,
-                    limit: 6, ...queries,
+                    limit: 6, 
+                    ...queries,
                     minprice: priceRange[0],
                     maxprice: priceRange[1],
                     sort: sort

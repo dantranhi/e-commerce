@@ -5,6 +5,7 @@ import { validationResult } from 'express-validator'
 
 import PromotionType from '../models/PromotionType.js'
 import { createError } from '../utils/error.js'
+import { promotionCreation } from '../utils/createNotification.js'
 
 class PromotionController {
     // [GET] /promotion
@@ -36,13 +37,14 @@ class PromotionController {
     // [GET] /promotion/periods/:id
     async getAllPeriodsWithoutSelf(req, res, next) {
         const promotions = await Promotion.find({ _id: { $ne: req.params.id } })
-        const periods = promotions.map(p => p.startEndDate)
+        const periods = promotions.map(p => ([p.startDate, p.endDate]))
         res.status(200).json(periods)
     }
 
     // [GET] /promotion/periods
     async getAllPeriods(req, res, next) {
         const promotions = await Promotion.find()
+        // const periods = promotions.map(p => ([p.startDate, p.endDate]))
         const periods = promotions.map(p => p.startEndDate)
         res.status(200).json(periods)
     }
@@ -69,8 +71,10 @@ class PromotionController {
             const promotion = new Promotion(req.body)
             await promotion.save()
 
+            promotionCreation(promotion)
+
             const temp = await User.find()
-            const users = temp.map(t=>({
+            const users = temp.map(t => ({
                 for: t._id,
                 isRead: false
             }))

@@ -40,6 +40,7 @@ function PromotionForm({ edit }) {
 
     const { data: allPromotionPeriods } = useFetch(!!edit ? editUrl : url)
 
+
     const { data: promotionData, error, loading } = useFetch(`/promotion/${edit}`, !!edit)
     if (error) console.log('Error while fetch Promotion data: ' + error)
     useEffect(() => {
@@ -123,13 +124,16 @@ function PromotionForm({ edit }) {
         }
         const tooLate = formFields.startEndDate[0] && current.diff(formFields.startEndDate[0], 'days') > 7;
         const tooEarly = formFields.startEndDate[1] && formFields.startEndDate[1].diff(current, 'days') > 7;
-        return current < moment().endOf('day') || !!allPromotionPeriods.find(d => current.isBetween(d[0], d[1])) || !!tooEarly || !!tooLate;
+        return current < moment().endOf('day') || !!allPromotionPeriods.find(d => current.isBetween(moment(d[0]), moment(d[1]))) || !!tooEarly || !!tooLate;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault()
 
         const newPromotion = { ...formFields }
+        newPromotion.startDate = newPromotion.startEndDate[0]
+        newPromotion.endDate = newPromotion.startEndDate[1]
+        console.log(newPromotion)
 
         try {
             if (!edit) {
@@ -175,12 +179,14 @@ function PromotionForm({ edit }) {
             <div className={cl('group')}>
                 <label className={cl('label')} htmlFor="name">Duration</label>
                 <RangePicker
+                    className={cl('range-picker')}
                     value={formFields.startEndDate}
                     onChange={onDateChange}
                     disabledDate={disabledDate}
                     onCalendarChange={(val) => setFormFields(prev => ({ ...prev, startEndDate: val }))}
                 />
-                <ValidateMessage name='startEndDate' errors={errors}></ValidateMessage>
+                <ValidateMessage name='startDate' errors={errors}></ValidateMessage>
+                <ValidateMessage name='endDate' errors={errors}></ValidateMessage>
             </div>
             <label className={cl('label')} htmlFor="content">Content</label>
             <div className={cl('group')}>

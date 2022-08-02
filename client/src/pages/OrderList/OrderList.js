@@ -1,4 +1,4 @@
-import React from 'react'
+import {useParams} from 'react-router-dom'
 import { Space, Table, Popconfirm, Typography, Tag, Button, Select } from 'antd'
 import { toast } from 'react-toastify';
 import classNames from 'classnames/bind';
@@ -16,6 +16,8 @@ const { Title } = Typography;
 const { Option } = Select
 
 function ProductList() {
+    const {orderId} = useParams()
+
     const { data: orders, loading, reFetch } = useFetch('/order')
     const { data: products, loading: productsLoading } = useFetch('/product')
     const { data: allStatus } = useFetch('/order/status')

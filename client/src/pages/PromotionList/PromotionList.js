@@ -39,16 +39,22 @@ function PromotionList() {
             render: (text, record) => <Link to={`/admin/promotion/${record._id}`}>{text}</Link>,
         },
         {
-            title: 'Start - end date',
-            dataIndex: 'startEndDate',
-            key: 'startEndDate',
-            render: (date, record) => formatDate(record.startEndDate[0], 'DD-MM-YYYY') + ' --> ' + formatDate(record.startEndDate[1], 'DD-MM-YYYY')
+            title: 'Start',
+            dataIndex: 'startDate',
+            key: 'startDate',
+            render: (date) => formatDate(date, 'DD-MM-YYYY')
+        },
+        {
+            title: 'End',
+            dataIndex: 'endDate',
+            key: 'endDate',
+            render: (date) => formatDate(date, 'DD-MM-YYYY')
         },
         {
             title: 'Stack with other promotions?',
             dataIndex: 'comeWithOtherPromotion',
             key: 'comeWithOtherPromotion',
-            render : (text) => String(text),
+            render: (text) => String(text).toUpperCase(),
         },
         {
             title: 'Action',

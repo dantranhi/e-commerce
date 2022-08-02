@@ -1,10 +1,10 @@
 import { validationResult } from 'express-validator'
 
 import Order from '../models/Order.js'
-import User from '../models/User.js'
+import Product from '../models/Product.js'
 import ProfileItem from '../models/ProfileItem.js'
 import Status from '../models/Status.js'
-import Notification from '../models/Notification.js'
+import { orderCreation } from '../utils/createNotification.js'
 
 class OrderController {
     // [POST] /order/:id/create
@@ -16,18 +16,9 @@ class OrderController {
         try {
             const order = new Order(req.body)
             await order.save()
-            const buyer = await User.findById(req.params.id)
 
-            const newNotification = new Notification({
-                content: `User ${req.params.id} has created an order. Check it out!`,
-                status: [
-                    {for: 'Admin'}
-                ],
-                type: 'order',
-                photo: buyer.photos?.[0]?.url,
-                link: '/admin/order'
-            })
-            await newNotification.save()
+            // Notification
+            orderCreation(order)
 
             const isExistedProfile = await ProfileItem.findOne({
                 fullName: req.body.fullName,
@@ -84,6 +75,13 @@ class OrderController {
     async updateStatus(req, res, next) {
         try {
             await Order.findByIdAndUpdate(req.params.id, req.body)
+            // if (req.body.status === 'Confirmed') {
+            //     const order = await Order.findById(req.params.id)
+            //     order.productList.forEach(async (p) => {
+            //         await Product.updateOne({_id: p.productId}, {stock: })
+                    
+            //     })
+            // }
             res.json({ success: true, message: 'Order status updated successfully' })
         } catch (error) {
             next(error)

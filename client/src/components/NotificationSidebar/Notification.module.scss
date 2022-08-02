@@ -1,3 +1,8 @@
+.wrapper{
+    max-height: 540px;
+    overflow-y: auto;
+}
+
 .outter-top{
     height: 100%;
     max-height: 60px;
@@ -48,6 +53,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: sticky;
+    top: -20px;
+    padding-top: 10px;
+    background-color: var(--white);
 }
 
 .title {

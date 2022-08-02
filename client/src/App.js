@@ -8,6 +8,8 @@ import { logout, loginSuccess, setLoading } from './store/actions'
 import { get } from './utils/httpRequest'
 import routes from './routes'
 import DefaultLayout from './layouts/DefaultLayout'
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
 import 'antd/dist/antd.min.css';
 import 'tippy.js/dist/tippy.css';
 import 'react-toastify/dist/ReactToastify.css';

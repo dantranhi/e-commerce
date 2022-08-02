@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import ProductItem from '../ProductItem'
 
 
+
 function FeaturedItems({ products }) {
     return (
         <>
