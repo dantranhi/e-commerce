@@ -75,9 +75,9 @@ function ProductList() {
 
     const columns = [
         {
-            title: 'User ID',
-            dataIndex: 'userId',
-            key: 'userId',
+            title: 'User name',
+            dataIndex: 'fullName',
+            key: 'fullName',
         },
         {
             title: 'Order date',

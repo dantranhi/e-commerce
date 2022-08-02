@@ -51,12 +51,6 @@ function PromotionList() {
             render: (date) => formatDate(date, 'DD-MM-YYYY')
         },
         {
-            title: 'Stack with other promotions?',
-            dataIndex: 'comeWithOtherPromotion',
-            key: 'comeWithOtherPromotion',
-            render: (text) => String(text).toUpperCase(),
-        },
-        {
             title: 'Action',
             key: 'action',
             render: (_, record) => (

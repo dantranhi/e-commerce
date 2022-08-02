@@ -10,7 +10,7 @@ const router = express.Router();
 router.get('/type', ProductController.getAllTypes)
 router.get('/brand', ProductController.getAllBrands)
 
-router.get('/grid', paginate(Product, 12), ProductController.getAllGrid)
+router.get('/grid', ProductController.updatePrice, paginate(Product, 12), ProductController.getAllGrid)
 router.get('/:id', ProductController.get)
 router.post('/create', verifyAdmin, ...productValidator, ProductController.create)
 router.put('/:id', verifyAdmin, ...productValidator, ProductController.update)

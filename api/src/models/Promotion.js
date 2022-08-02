@@ -8,17 +8,13 @@ const PromotionSchema = mongoose.Schema({
     content: [
         {
             productId: { type: String, required: true },
-            promotionType: { type: String, required: true },
-            promotionValue: { type: Number },
-            relateProductId: [String]
+            promotionPrice: { type: Number },
+            freeAttachments: [String],
+            discountValue: { type: Number }
         }
     ],
-    comeWithOtherPromotion: { type: Boolean, required: true },
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
-    startEndDate: [{
-        type: Date
-    }]
 }, { timestamps: true })
 
 export default mongoose.model('Promotion', PromotionSchema)

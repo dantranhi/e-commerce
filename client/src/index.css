@@ -97,7 +97,32 @@ li.slick-active {
   text-align: center;
 }
 
+.slick-arrow{
+  background-color: #d9d9d9;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  z-index: 10;
+}
 
+.slick-next{
+  right: 0;
+}
+
+.slick-prev{
+  left: 0;
+}
+
+.slick-arrow::before{
+  line-height: 1.5;
+}
+
+.slick-arrow:hover{
+  background-color: var(--secondary);
+}
 
 .redirect-link {
   display: block;

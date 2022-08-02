@@ -17,6 +17,10 @@ const ProductSchema = mongoose.Schema({
         type: Number,
         required: true
     },
+    oldPrice: {
+        type: Number,
+        default: 0
+    },
     type: {
         type: String,
         required: true
@@ -29,7 +33,7 @@ const ProductSchema = mongoose.Schema({
         {
             url: {
                 type: String
-            },  
+            },
             public_id: {
                 type: String
             }

@@ -7,18 +7,71 @@ import Type from '../models/Type.js'
 import { createError } from '../utils/error.js'
 import Brand from '../models/Brand.js'
 import Promotion from '../models/Promotion.js'
-import {productCreation} from '../utils/createNotification.js'
+import { productCreation } from '../utils/createNotification.js'
 
 class ProductController {
-    async updatePrice(){
-        const currentTime = moment()
-        // const promotions = await Promotion.find({$and: [{startEndDate[0]}]})
+    async updatePrice(req, res, next) {
+        const promotions = await Promotion.find({
+            startDate: { $lte: new Date() },
+            endDate: { $gte: new Date() }
+        })
+
+        for (let i = 0; i < promotions.length; i++) {
+            for (let j = 0; j < promotions[i].content.length; j++) {
+                const thisProduct = await Product.findById(promotions[i].content[j].productId)
+                if (thisProduct.price === thisProduct.oldPrice) {
+                    await Product.findByIdAndUpdate(thisProduct._id, {
+                        oldPrice: thisProduct.price,
+                        price: promotions[i].content[j].promotionPrice
+                    })
+                }
+            }
+        }
+
+        const products = await Product.find()
+        products.forEach(async p => {
+            const promotion = await Promotion.findOne({
+                content: {
+                    $elemMatch: { productId: p._id }
+                },
+                startDate: { $lte: new Date() },
+                endDate: { $gte: new Date() }
+            })
+            if (!promotion) {
+                const product = await Product.findById(p._id)
+                await Product.findByIdAndUpdate(p._id, { price: product.oldPrice })
+            }
+        })
+
+        next()
     }
 
     // [GET] /product/grid
     async getAllGrid(req, res, next) {
         try {
             const products = res.paginatedResult
+            // const calculatePromotion = await Promise.all(
+            //     products.data.map(async p => {
+            //         const promotion = await Promotion.findOne({
+            //             content: {
+            //                 $elemMatch: { productId: p._id }
+            //             },
+            //             startDate: { $lte: new Date() },
+            //             endDate: { $gte: new Date() }
+            //         })
+            //         if (promotion) {
+            //             const curPrice = promotion.content.find(i => i.productId == p._id)
+            //             const newP = { ...p }
+            //             newP._doc.oldPrice = p.price
+            //             newP._doc.price = curPrice.promotionPrice
+            //             console.log(newP)
+            //             return newP._doc
+            //         }
+            //         return p._doc
+            //     })
+            // )
+
+            // products.data = calculatePromotion
             res.json(products)
         } catch (error) {
             next(error)
@@ -137,7 +190,7 @@ class ProductController {
                 product.save()
                 res.json({ success: true, message: "Product's image deleted successfully" })
             }
-            else return res.json({success: false, message: 'Product id not exist'})
+            else return res.json({ success: false, message: 'Product id not exist' })
         } catch (error) {
             next(error)
         }

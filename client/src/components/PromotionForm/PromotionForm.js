@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Input, Select, InputNumber, DatePicker, Popconfirm, Checkbox, Button } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -20,6 +20,9 @@ const { RangePicker } = DatePicker
 
 
 function PromotionForm({ edit }) {
+    const oldPriceRef = useRef()
+    const newPriceRef = useRef()
+
     let url = '/promotion/periods'
     let editUrl = `/promotion/periods/${edit}`
     const [errors, setErrors] = useState([])
@@ -27,17 +30,15 @@ function PromotionForm({ edit }) {
         name: '',
         content: [{
             productId: undefined,
-            promotionType: undefined,
-            promotionValue: undefined,
-            relateProductId: []
+            promotionPrice: undefined,
+            freeAttachments: [],
+            discountValue: 0
         }],
-        startEndDate: [],
-        comeWithOtherPromotion: false
+        startDate: undefined,
+        endDate: undefined,
     })
 
-    const { data: allTypes } = useFetch('/promotion/type')
     const { data: allProducts } = useFetch('/product')
-
     const { data: allPromotionPeriods } = useFetch(!!edit ? editUrl : url)
 
 
@@ -48,7 +49,8 @@ function PromotionForm({ edit }) {
             setFormFields(
                 {
                     ...promotionData,
-                    startEndDate: [moment(promotionData.startEndDate[0]), moment(promotionData.startEndDate[1])]
+                    startDate: moment(promotionData.startDate),
+                    endDate: moment(promotionData.endDate),
                 })
         }
     }, [promotionData])
@@ -59,6 +61,7 @@ function PromotionForm({ edit }) {
             ...prev,
             [name]: checked ? checked : value
         }))
+
     }
 
 
@@ -68,9 +71,9 @@ function PromotionForm({ edit }) {
             if (!newState.content[index]) {
                 newState.content.push({
                     productId: undefined,
-                    promotionType: undefined,
-                    promotionValue: undefined,
-                    relateProductId: [],
+                    promotionPrice: undefined,
+                    freeAttachments: [],
+                    discountValue: 0
                 })
             }
             newState.content[index][customName] = value
@@ -78,15 +81,28 @@ function PromotionForm({ edit }) {
         })
     }
 
+    const handleCalculateDiscount = (rowIndex) =>{
+        const oldPrice = oldPriceRef.current.value
+        const newPrice = newPriceRef.current.value
+        let result
+        if (Number(newPrice)==0) result = 0
+        else result = parseFloat(oldPrice - newPrice) / oldPrice
+        setFormFields(prev => {
+            let newState = { ...prev }
+            newState.content[rowIndex].discountValue = Math.floor(result*100)
+            return newState
+        })
+    }
+
+
     const handleAddOneRow = (e) => {
         e.preventDefault()
         setFormFields(prev => {
             let newState = { ...prev }
             newState.content.push({
                 productId: undefined,
-                promotionType: undefined,
-                promotionValue: undefined,
-                relateProductId: [],
+                promotionPrice: undefined,
+                freeAttachments: [],
             })
             return newState
         })
@@ -107,33 +123,33 @@ function PromotionForm({ edit }) {
         if (dates) {
             setFormFields(prev => ({
                 ...prev,
-                startEndDate: dates
+                startDate: dates[0],
+                endDate: dates[1]
             }))
         }
         else {
             setFormFields(prev => ({
                 ...prev,
-                startEndDate: []
+                startDate: undefined,
+                endDate: undefined
             }))
         }
     }
 
     const disabledDate = (current) => {
-        if (!formFields.startEndDate || formFields.comeWithOtherPromotion) {
-            return false;
-        }
-        const tooLate = formFields.startEndDate[0] && current.diff(formFields.startEndDate[0], 'days') > 7;
-        const tooEarly = formFields.startEndDate[1] && formFields.startEndDate[1].diff(current, 'days') > 7;
-        return current < moment().endOf('day') || !!allPromotionPeriods.find(d => current.isBetween(moment(d[0]), moment(d[1]))) || !!tooEarly || !!tooLate;
+        // if (!formFields.startEndDate || formFields.comeWithOtherPromotion) {
+        //     return false;
+        // } 
+        // current < moment().endOf('day') || 
+        const tooLate = formFields.startDate && current.diff(formFields.startDate, 'days') > 14;
+        const tooEarly = formFields.endDate && formFields.endDate.diff(current, 'days') > 14;
+        return !!allPromotionPeriods.find(d => current.isBetween(moment(d[0]), moment(d[1]))) || !!tooEarly || !!tooLate;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault()
 
         const newPromotion = { ...formFields }
-        newPromotion.startDate = newPromotion.startEndDate[0]
-        newPromotion.endDate = newPromotion.startEndDate[1]
-        console.log(newPromotion)
 
         try {
             if (!edit) {
@@ -170,20 +186,13 @@ function PromotionForm({ edit }) {
                 <ValidateMessage name='name' errors={errors}></ValidateMessage>
             </div>
             <div className={cl('group')}>
-                <Checkbox
-                    name='comeWithOtherPromotion'
-                    checked={formFields.comeWithOtherPromotion}
-                    onChange={(e) => handleChangeForm(e.target)}
-                >Come with other promotions ?</Checkbox>
-            </div>
-            <div className={cl('group')}>
                 <label className={cl('label')} htmlFor="name">Duration</label>
                 <RangePicker
                     className={cl('range-picker')}
-                    value={formFields.startEndDate}
+                    value={[formFields.startDate, formFields.endDate]}
                     onChange={onDateChange}
                     disabledDate={disabledDate}
-                    onCalendarChange={(val) => setFormFields(prev => ({ ...prev, startEndDate: val }))}
+                    onCalendarChange={(val) => setFormFields(prev => ({ ...prev, startDate: val?.[0], endDate: val?.[1] }))}
                 />
                 <ValidateMessage name='startDate' errors={errors}></ValidateMessage>
                 <ValidateMessage name='endDate' errors={errors}></ValidateMessage>
@@ -210,45 +219,41 @@ function PromotionForm({ edit }) {
                             <ValidateMessage name={`content[${rowIndex}].productId`} errors={errors}></ValidateMessage>
                         </div>
                         <div className={cl('content-col')}>
-                            <div className={cl('row-label')}>Promotion type</div>
-                            <Select
+                            <div className={cl('row-label')}>Old price</div>
+                            <InputNumber
+                                ref={oldPriceRef}
                                 className={cl('input')}
-                                value={formFields.content[rowIndex]?.promotionType}
-                                showSearch
-                                placeholder="Select promotion type"
-                                optionFilterProp="children"
-                                onChange={(value) => handleChangeContent(value, 'promotionType', rowIndex)}
-                                // onSearch={onSearch}
-                                filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
-                            >
-                                {allTypes && allTypes.map((item) => (
-                                    <Option key={item._id} value={item.name}>{item.name}</Option>
-                                ))}
-                            </Select>
+                                value={formFields.content?.[rowIndex]?.productId ? allProducts.find(i => i._id === formFields.content?.[rowIndex]?.productId).price : undefined}
+                                disabled
+                            />
                         </div>
                         <div className={cl('content-col')}>
-                            <div className={cl('row-label')}>Promotion value</div>
+                            <div className={cl('row-label')}>New price {`(- ${formFields.content[rowIndex]?.discountValue || 0}%)`}</div>
                             <InputNumber
+                                ref={newPriceRef}
                                 className={cl('input')}
-                                value={formFields.content[rowIndex]?.promotionValue}
+                                value={formFields.content[rowIndex]?.promotionPrice}
                                 min={0}
-                                max={100}
-                                defaultValue='0'
-                                onChange={(value) => handleChangeContent(value, 'promotionValue', rowIndex)}
+                                max={50000000}
+                                step={10000}
+                                onChange={(value) => {
+                                    handleChangeContent(value, 'promotionPrice', rowIndex)
+                                    handleCalculateDiscount(rowIndex)
+                                }}
                             />
                         </div>
                         <div className={cl('content-col')}>
                             <div className={cl('row-label')}>Free product</div>
                             <Select
                                 className={cl('input')}
-                                value={formFields.content[rowIndex]?.relateProductId}
+                                value={formFields.content[rowIndex]?.freeAttachments}
                                 mode="multiple"
                                 allowClear
                                 style={{
                                     width: '100%',
                                 }}
                                 placeholder="Please select"
-                                onChange={(value) => handleChangeContent(value, 'relateProductId', rowIndex)}
+                                onChange={(value) => handleChangeContent(value, 'freeAttachments', rowIndex)}
                             >
                                 {allProducts && allProducts.map((item) => (
                                     <Option key={item._id} value={item._id}>{item.name}</Option>

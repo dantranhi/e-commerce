@@ -44,8 +44,7 @@ class PromotionController {
     // [GET] /promotion/periods
     async getAllPeriods(req, res, next) {
         const promotions = await Promotion.find()
-        // const periods = promotions.map(p => ([p.startDate, p.endDate]))
-        const periods = promotions.map(p => p.startEndDate)
+        const periods = promotions.map(p => ([p.startDate, p.endDate]))
         res.status(200).json(periods)
     }
 
