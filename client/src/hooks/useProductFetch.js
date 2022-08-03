@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-// import httpRequest from '../utils/httpRequest'
 import axios from 'axios'
 
 function useProductFetch(query, pageNumber = 1, queries, priceRange, sort) {
@@ -38,7 +37,7 @@ function useProductFetch(query, pageNumber = 1, queries, priceRange, sort) {
                         return [...prev, ...res.data.data]
                     })
 
-                    setHasMore(res.data.currentPage.page < res.data.pages)
+                    setHasMore(res.data.currentPage< res.data.pages)
                     setLoading(false)
                 })
                 .catch(e => {

@@ -64,18 +64,76 @@
     font-size: 1.4rem;
 }
 
+.prices{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+}
+
 .price{
-    color: #435061;
+    color: #f9495f;
     font-size: 1.3rem;
     font-weight: 500;
 }
-
+.old-price{
+    color: #cacaca;
+    font-size: 1.3rem;
+    font-weight: 400;
+    text-decoration: line-through;
+}
 .desc{
     font-size: 1rem;
 }
 
 .buy{
     margin-inline: 0;
+}
+
+.gift-frame{
+    padding: 12px;
+    border: 1px dashed var(--secondary);
+    position: relative;
+}
+
+.gift-icon{
+    color: #23a1db;
+}
+
+.gift-title{
+    position: absolute;
+    top: 0;
+    left: 20px;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    color: #888;
+    padding-inline: 6px;
+    background-color: var(--white);
+    font-weight: 500;
+}
+
+.gift-wraper{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.gift-image{
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.gift-name{
+    font-weight: bold;
+    color: var(--secondary);
+    margin-right: 10px;
+}
+
+.gift-price{
+    margin-left: 10px;
+    color: #f9495f;
+    font-weight: 600;
 }
 
 

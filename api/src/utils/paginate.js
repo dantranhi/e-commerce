@@ -1,10 +1,10 @@
 function paginate(model, perPage = 12) {
     return async (req, res, next) => {
-        // Paginate
         let page = parseInt(req.query.page);
         let limit = parseInt(req.query.limit);
         let { q } = req.query;
-        let otherSearchProperties = {
+
+        let searchProperties = {
             type: req.query?.type?.split(','),
             brand: req.query?.brand?.split(','),
             minprice: Number(req.query?.minprice),
@@ -15,15 +15,17 @@ function paginate(model, perPage = 12) {
         let queries = {}
         let priceRange = {}
         let sortMethod = {}
-        if (otherSearchProperties.type && otherSearchProperties.type[0] !== '') queries.type = {
-            '$in': otherSearchProperties.type
+
+        if (searchProperties.type && searchProperties.type[0] !== '') queries.type = {
+            '$in': searchProperties.type
         }
-        if (otherSearchProperties.brand && otherSearchProperties.brand[0] !== '') queries.brand = {
-            '$in': otherSearchProperties.brand
+        if (searchProperties.brand && searchProperties.brand[0] !== '') queries.brand = {
+            '$in': searchProperties.brand
         }
-        if (!isNaN(otherSearchProperties.minprice)) priceRange.minprice = otherSearchProperties.minprice
-        if (!isNaN(otherSearchProperties.maxprice)) priceRange.maxprice = otherSearchProperties.maxprice
-        switch (otherSearchProperties.sort) {
+        if (!isNaN(searchProperties.minprice)) priceRange.minprice = searchProperties.minprice
+        if (!isNaN(searchProperties.maxprice)) priceRange.maxprice = searchProperties.maxprice
+
+        switch (searchProperties.sort) {
             case 'price-asc':
                 sortMethod = { price: 'asc' }
                 break
@@ -34,6 +36,7 @@ function paginate(model, perPage = 12) {
                 sortMethod = {}
         }
 
+        // Backup
         if (isNaN(page)) page = 1;
         if (isNaN(limit)) limit = perPage;
 
@@ -43,34 +46,14 @@ function paginate(model, perPage = 12) {
         const result = {}
         const pageCount = await model.countDocuments()
         result.pages = Math.ceil(pageCount / limit)
-        result.offset = 2; // Số trang hiển thị trước và sau trang hiện tại
-        result.currentPage = {
-            page,
-            limit,
-            startOffset: page - result.offset >= 1 ? page - result.offset : 1,
-            endOffset: page + result.offset <= result.pages ? page + result.offset : result.pages
-        }
-
-        // Lưu trữ thông tin cho trang tiếp theo
-        if (endIndex < pageCount) {
-            result.next = {
-                page: page + 1,
-                limit,
-            }
-        }
-
-
-        // Lưu trữ thông tin cho trang trước đó
-        if (startIndex > 0) {
-            result.previous = {
-                page: page - 1,
-                limit,
-            }
-        }
+        result.offset = 2
+        result.limit = limit
+        result.currentPage = page
 
         try {
             //Search
             if (q && q !== '') {
+                // Search name & Query type, brand, price, ...
                 if (Object.keys(queries).length > 0) {
                     result.data = await model.find({
                         name: { $regex: new RegExp(q, 'i') },
@@ -81,6 +64,8 @@ function paginate(model, perPage = 12) {
                         ]
                     }).sort(sortMethod).limit(limit).skip(startIndex)
                 }
+
+                // Only Search name
                 else {
                     result.data = await model.find({
                         name: { $regex: new RegExp(q, 'i') },
@@ -92,6 +77,8 @@ function paginate(model, perPage = 12) {
                 }
                 result.q = q
             }
+
+            // Only Query type, brand, price, ...
             else if (Object.keys(queries).length > 0) {
                 result.data = await model.find({
                     ...queries,
@@ -101,12 +88,15 @@ function paginate(model, perPage = 12) {
                     ]
                 }).sort(sortMethod).limit(limit).skip(startIndex)
             }
+            // Only Query price
             else if (Object.keys(priceRange).length > 0) result.data = await model.find({
                 $and: [
                     { price: { $gte: priceRange.minprice } },
                     { price: { $lte: priceRange.maxprice } },
                 ]
             }).sort(sortMethod).limit(limit).skip(startIndex)
+
+            // No filter
             else result.data = await model.find().limit(limit).skip(startIndex)
 
             if ((q && q !== '') || Object.keys(queries).length > 0) {

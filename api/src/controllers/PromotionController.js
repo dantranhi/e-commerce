@@ -3,9 +3,8 @@ import User from '../models/User.js'
 import Notification from '../models/Notification.js'
 import { validationResult } from 'express-validator'
 
-import PromotionType from '../models/PromotionType.js'
 import { createError } from '../utils/error.js'
-import { promotionCreation } from '../utils/createNotification.js'
+import { promotionCreation, promotionPublication } from '../utils/createNotification.js'
 
 class PromotionController {
     // [GET] /promotion
@@ -28,11 +27,6 @@ class PromotionController {
         }
     }
 
-    // [GET] /promotion/type
-    async getAllTypes(req, res, next) {
-        const types = await PromotionType.find()
-        res.status(200).json(types)
-    }
 
     // [GET] /promotion/periods/:id
     async getAllPeriodsWithoutSelf(req, res, next) {
@@ -71,20 +65,21 @@ class PromotionController {
             await promotion.save()
 
             promotionCreation(promotion)
+            // promotionPublication(promotion)
 
-            const temp = await User.find()
-            const users = temp.map(t => ({
-                for: t._id,
-                isRead: false
-            }))
-            const newNotification = new Notification({
-                content: `A new promotion coming soon. Check out now!`,
-                status: users,
-                type: 'promotion',
-                // photo: buyer.photos?.[0]?.url,
-                link: '/promotion'
-            })
-            await newNotification.save()
+            // const temp = await User.find()
+            // const users = temp.map(t => ({
+            //     for: t._id,
+            //     isRead: false
+            // }))
+            // const newNotification = new Notification({
+            //     content: `A new promotion coming soon. Check out now!`,
+            //     status: users,
+            //     type: 'promotion',
+            //     // photo: buyer.photos?.[0]?.url,
+            //     link: '/promotion'
+            // })
+            // await newNotification.save()
 
             res.status(200).json({ success: true, message: 'Promotion created successfully' })
         } catch (e) {

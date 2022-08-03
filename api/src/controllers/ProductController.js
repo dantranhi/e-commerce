@@ -14,17 +14,41 @@ class ProductController {
         const promotions = await Promotion.find({
             startDate: { $lte: new Date() },
             endDate: { $gte: new Date() }
-        })
+        }).sort({ createdAt: 'asc' })
+
 
         for (let i = 0; i < promotions.length; i++) {
             for (let j = 0; j < promotions[i].content.length; j++) {
                 const thisProduct = await Product.findById(promotions[i].content[j].productId)
-                if (thisProduct.price === thisProduct.oldPrice) {
+                // if (!thisProduct.havePromotion) {
+                if (thisProduct.oldPrice == thisProduct.price) {   
+                    const tempGifts = await Product.find({ _id: { $in: promotions[i].content[j].freeAttachments } })
+                    const gifts = tempGifts.map(g => ({
+                        giftId: g._id,
+                        giftName: g.name,
+                        giftPhoto: g.photos[0].url,
+                        giftPrice: g.oldPrice
+                    }))
                     await Product.findByIdAndUpdate(thisProduct._id, {
-                        oldPrice: thisProduct.price,
-                        price: promotions[i].content[j].promotionPrice
+                        // havePromotion: true,
+                        oldPrice: thisProduct.price===thisProduct.oldPrice ? thisProduct.price : thisProduct.oldPrice,
+                        price: promotions[i].content[j].promotionPrice,
+                        gifts: gifts
                     })
                 }
+                // if (thisProduct.gifts.length==0 && promotions[i].content[j].freeAttachments){
+                //     const tempGifts = await Product.find({_id: {$in: promotions[i].content[j].freeAttachments}})
+                //     const gifts = tempGifts.map(g=>({
+                //         giftId: g._id,
+                //         giftName: g.name,
+                //         giftPhoto: g.photos[0].url,
+                //         giftPrice: g.oldPrice
+                //     }))
+
+                //     await Product.findByIdAndUpdate(thisProduct._id, {
+                //        gifts: gifts
+                //     })
+                // }
             }
         }
 
@@ -39,7 +63,7 @@ class ProductController {
             })
             if (!promotion) {
                 const product = await Product.findById(p._id)
-                await Product.findByIdAndUpdate(p._id, { price: product.oldPrice })
+                await Product.findByIdAndUpdate(p._id, { price: product.oldPrice, gifts: [], havePromotion: false })
             }
         })
 
@@ -171,8 +195,25 @@ class ProductController {
                     })
                 }
             }
-            const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body)
-            res.json({ success: true, message: 'Product updated successfully' })
+            const promotion = await Promotion.findOne({
+                content: {
+                    $elemMatch: { productId: product._id }
+                },
+                startDate: { $lte: new Date() },
+                endDate: { $gte: new Date() }
+            })
+
+            if (promotion) {
+                const { price, ...otherInfo } = req.body
+                const updatedProduct = await Product.findByIdAndUpdate(req.params.id, { ...otherInfo })
+                res.json({ success: true, message: 'Product updated successfully' })
+            }
+            else {
+                const {oldPrice, ...otherInfo} = req.body
+                console.log(otherInfo)
+                const updatedProduct = await Product.findByIdAndUpdate(req.params.id, { ...otherInfo, oldPrice: otherInfo.price })
+                res.json({ success: true, message: 'Product updated successfully', data: updatedProduct })
+            }
         } catch (error) {
             next(error)
         }
@@ -201,6 +242,22 @@ class ProductController {
         try {
             await Product.findByIdAndDelete(req.params.id)
             res.json({ success: true, message: 'Product deleted' })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    // [GET] /product/:id/promotion
+    async getProductPromotion(req, res, next) {
+        try {
+            const promotions = await Promotion.find({
+                content: {
+                    $elemMatch: { productId: req.params.id }
+                },
+                startDate: { $lte: new Date() },
+                endDate: { $gte: new Date() }
+            })
+            res.json({ success: true, data: promotions })
         } catch (error) {
             next(error)
         }

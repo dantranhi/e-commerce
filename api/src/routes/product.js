@@ -9,6 +9,7 @@ const router = express.Router();
 
 router.get('/type', ProductController.getAllTypes)
 router.get('/brand', ProductController.getAllBrands)
+router.get('/:id/promotion', ProductController.getProductPromotion)
 
 router.get('/grid', ProductController.updatePrice, paginate(Product, 12), ProductController.getAllGrid)
 router.get('/:id', ProductController.get)

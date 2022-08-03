@@ -3,6 +3,7 @@ import ProductItem from '../ProductItem'
 
 import classNames from 'classnames/bind';
 import styles from './ProductOfType.module.scss';
+import { Link } from 'react-router-dom';
 const cl = classNames.bind(styles);
 
 function ProductOfType({ data, title }) {
@@ -21,9 +22,9 @@ function ProductOfType({ data, title }) {
                 <div className="row">
                     <Slider className={cl('img-list')} {...settings}>
                         {data && data.map(product => (
-                            <div key={product._id} className={cl('item-wrapper')}>
+                            <Link to={`/product/${product._id}`} key={product._id} className={cl('item-wrapper')}>
                                 <ProductItem data={product}></ProductItem>
-                            </div>
+                            </Link>
                         ))}
                     </Slider>
                 </div>

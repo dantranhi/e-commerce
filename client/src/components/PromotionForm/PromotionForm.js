@@ -223,7 +223,7 @@ function PromotionForm({ edit }) {
                             <InputNumber
                                 ref={oldPriceRef}
                                 className={cl('input')}
-                                value={formFields.content?.[rowIndex]?.productId ? allProducts.find(i => i._id === formFields.content?.[rowIndex]?.productId).price : undefined}
+                                value={formFields.content?.[rowIndex]?.productId ? allProducts.find(i => i._id === formFields.content?.[rowIndex]?.productId).oldPrice : undefined}
                                 disabled
                             />
                         </div>

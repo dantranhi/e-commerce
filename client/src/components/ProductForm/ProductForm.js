@@ -31,6 +31,7 @@ function ProductForm({ edit }) {
         brand: '',
         desc: '',
         price: '',
+        oldPrice: '',
         type: '',
         modelYear: new Date().getFullYear(),
         photos: [],
@@ -163,6 +164,7 @@ function ProductForm({ edit }) {
         }
     }
 
+
     return (
         <>
             <form onSubmit={handleSubmit} className={cl('form')}>
@@ -221,7 +223,7 @@ function ProductForm({ edit }) {
 
                 <div className={cl('group')}>
                     <label className={cl('label')} htmlFor="price">Price: </label>
-                    <Input type="number" min="0" max="999999999" id="price" name="price" placeholder="Price" value={formFields.price} onChange={(e) => handleChange(e.target)} />
+                    <Input type="number" min="0" max="999999999" id="price" name={data.price!==data.oldPrice ? "oldPrice" : "price"} placeholder="Price" value={data.price!==data.oldPrice ? formFields.oldPrice : formFields.price} onChange={(e) => handleChange(e.target)} />
                     <ValidateMessage name='price' errors={errors}></ValidateMessage>
                 </div>
 

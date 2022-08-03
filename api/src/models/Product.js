@@ -21,6 +21,18 @@ const ProductSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
+    havePromotion: {
+        type: Boolean,
+        default: false
+    },
+    gifts: [
+        {
+            giftId: {type: String},
+            giftName: {type: String},
+            giftPhoto: {type: String},
+            giftPrice: {type: Number}
+        }
+    ],
     type: {
         type: String,
         required: true

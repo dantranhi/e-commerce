@@ -10,23 +10,23 @@ function Pagination({ currentPage, data, previous, next, offset, pages, onFetchN
     return (
         <div className={cl('wrapper')}>
             <ul className={cl('list')}>
-                <li onClick={() => onFetchNewData(1)} className={cl('item', { disabled: previous === undefined })}>
+                <li onClick={() => onFetchNewData(1)} className={cl('item', { disabled: currentPage===1 })}>
                     <span className={cl('link')}>
                         <DoubleLeftOutlined />
                     </span>
                 </li>
-                <li onClick={() => onFetchNewData(previous.page || 1)} className={cl('item', { disabled: previous === undefined })}>
+                <li onClick={() => onFetchNewData(previous.page || 1)} className={cl('item', { disabled: currentPage===1 })}>
                     <span className={cl('link')}>
                         <LeftOutlined />
                     </span>
                 </li>
                 {new Array(pages).fill(0).map((item, index) => {
-                    const calOffset = Math.abs(currentPage?.page - index - 1)
+                    const calOffset = Math.abs(currentPage - index - 1)
                     if (calOffset <= offset) return (
                         <li
                             onClick={() => onFetchNewData(index + 1)}
                             key={index}
-                            className={cl('item', { active: currentPage?.page === index + 1 })}>
+                            className={cl('item', { active: currentPage === index + 1 })}>
                             <span className={cl('link')}>{index + 1}</span>
                         </li>
                     )
@@ -36,13 +36,12 @@ function Pagination({ currentPage, data, previous, next, offset, pages, onFetchN
                         <span className={cl('link')}>...</span>
                     </li>)
                 })}
-                <li onClick={() => onFetchNewData(next.page)} className={cl('item', { disabled: next === undefined })}>
+                <li onClick={() => onFetchNewData(next.page)} className={cl('item', { disabled: currentPage===pages })}>
                     <span className={cl('link')}>
                         <RightOutlined />
-
                     </span>
                 </li>
-                <li onClick={() => onFetchNewData(pages)} className={cl('item', { disabled: next === undefined })}>
+                <li onClick={() => onFetchNewData(pages)} className={cl('item', { disabled: currentPage===pages })}>
                     <span className={cl('link')}>
                         <DoubleRightOutlined />
                     </span>
@@ -53,7 +52,7 @@ function Pagination({ currentPage, data, previous, next, offset, pages, onFetchN
 }
 
 Pagination.propTypes = {
-    currentPage: PropTypes.object,
+    currentPage: PropTypes.number,
     data: PropTypes.array,
     previous: PropTypes.object,
     next: PropTypes.object,

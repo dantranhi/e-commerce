@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import Slider from "react-slick";
 import { useParams } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGift } from '@fortawesome/free-solid-svg-icons'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -21,6 +23,9 @@ function Detail() {
     const params = useParams()
 
     const { data: product, loading } = useFetch(`/product/${params.id}`)
+    const { data: promotions, loading: promotionLoading } = useFetch(`/product/${params.id}/promotion`)
+
+
     useEffect(() => {
         let timerId
         if (state.cart.error) {
@@ -69,12 +74,28 @@ function Detail() {
                                         {product.name}
                                     </div>
                                     <div className={cl('brand')}>Brand: {product?.brand}</div>
-                                    <div className={cl('price')}>{formatCurrency(product.price)}</div>
+                                    <div className={cl('prices')}>
+                                        <div className={cl('old-price')}>{formatCurrency(product.oldPrice)}</div>
+                                        <div className={cl('price')}>{formatCurrency(product.price)}</div>
+                                    </div>
                                     <div className={cl('desc')}>
                                         {product?.desc}
                                     </div>
                                     {product.stock > 0 ? (<Button onClick={() => dispatch(addToCart(product))} className={cl('buy')} primary>Add to cart</Button>) : (<Button className={cl('buy')} primary>Out of stock</Button>)}
                                     {state.cart.error ? (<div className={cl('error')}>{state.cart.error}</div>) : <></>}
+                                    {product?.gifts?.length > 0 &&
+                                        (<div className={cl('gift-frame')}>
+                                            <div className={cl('gift-title')}><FontAwesomeIcon className={cl('gift-icon')} icon={faGift} /> Gifts</div>
+                                            {product?.gifts.map(g => (
+                                                <div key={g._id} className={cl('gift-wrapper')}>
+                                                    Get a free
+                                                    <img src={g.giftPhoto} alt="" className={cl('gift-image')} />
+                                                    <span className={cl('gift-name')}>{g.giftName}</span>
+                                                    equivalent to value of
+                                                    <span className={cl('gift-price')}>{formatCurrency(g.giftPrice)}</span>
+                                                </div>
+                                            ))}
+                                        </div>)}
 
                                 </div>
                             </div>
