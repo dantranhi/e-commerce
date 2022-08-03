@@ -3,6 +3,8 @@ import { Typography, Divider, Input, Space, Button, Select } from 'antd'
 import classNames from 'classnames/bind';
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faXmark, faPlus } from '@fortawesome/free-solid-svg-icons'
 
 import useFetch from '../../hooks/useFetch'
 import ValidateMessage from '../../components/ValidateMessage'
@@ -109,9 +111,14 @@ function NewOrder() {
                     brand: item.brand,
                     quantity: item.amount,
                     currentPrice: item.price,
+                    gifts: item.gifts.map(i=>({
+                        ...i,
+                        amount: item.amount
+                    }))
                 })),
                 ...total
             }
+            console.log(allData)
 
             const res = await httpRequest.post(`/order/${profile.details._id}/create`, allData)
             if (res.data.success) {
@@ -171,7 +178,15 @@ function NewOrder() {
                             <Order.List>
                                 {
                                     data.map(item => (
-                                        <Order.Item key={item._id} data={item}></Order.Item>
+                                        <div key={item._id} className={cl('order-item-wrapper')}>
+                                            <Order.Item data={item}></Order.Item>
+                                            {item?.gifts.length > 0 && (<>
+                                                <FontAwesomeIcon icon={faPlus} className={cl('plus')} />
+                                                {item?.gifts.map(g => (
+                                                    <Order.GiftItem key={g._id} data={{ ...g, amount: item.amount }}></Order.GiftItem>
+                                                ))}
+                                            </>)}
+                                        </div>
                                     ))
                                 }
                                 <Divider />

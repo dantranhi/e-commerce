@@ -1,0 +1,20 @@
+.wrapper {
+    width: 100%;
+    margin: 1.5rem 0;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    column-gap: 1.5rem;
+    align-items: center;
+}
+
+.img {
+    width: 75px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 4px;
+}
+
+.price {
+    font-size: 0.9rem;
+    color: #333;
+}

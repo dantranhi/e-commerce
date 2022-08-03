@@ -45,9 +45,32 @@
     text-align: center;
 }
 
+.list{
+    max-height: 640px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.item{
+    padding: 4px 8px 4px 0;
+    background-color: var(--white);
+    border-radius: 4px;
+    border: 1px dashed var(--primary);
+
+    + .item{
+        margin-top: 12px;
+    }
+}
+
+.plus{
+    width: 100%;
+    text-align: center;
+}
+
 .wrapper {
     width: 100%;
-    margin: 1.5rem 0;
+    margin: .5rem 0;
     display: grid;
     grid-template-columns: auto 1fr auto;
     column-gap: 1.5rem;

@@ -15,6 +15,13 @@
     justify-content: space-between;
 }
 
+.order-item-wrapper{
+
+    + .order-item-wrapper{
+        margin-top: 40px;
+    }
+}
+
 .payment-method{
     display: flex;
     align-items: center;

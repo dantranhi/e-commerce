@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faXmark, faPlus } from '@fortawesome/free-solid-svg-icons'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
 import formatCurrency from '../../utils/formatCurrency'
 import { useStore } from '../../store/UserContext'
 import CartItem from './CartItem'
+import GiftCartItem from './GiftCartItem'
 import classNames from 'classnames/bind';
 import styles from './Cart.module.scss';
 const cl = classNames.bind(styles);
@@ -36,8 +37,14 @@ function Cart({ onClose }) {
         <div className={cl('title')}>Your Cart</div>
         <ul className={cl('list')}>
           {Object.keys(state.cart.data).map((key) => (
-            <li key={key} className={'item'}>
+            <li key={key} className={cl('item')}>
               <CartItem data={state.cart.data[key]}></CartItem>
+              {state.cart.data[key]?.gifts.length > 0 && (<>
+                <FontAwesomeIcon icon={faPlus} className={cl('plus')} />
+                {state.cart.data[key]?.gifts.map(g => (
+                  <GiftCartItem key={g._id} data={{...g, amount:state.cart.data[key].amount }}></GiftCartItem>
+                ))}
+              </>)}
             </li>
           ))}
         </ul>

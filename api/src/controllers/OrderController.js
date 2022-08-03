@@ -15,6 +15,13 @@ class OrderController {
         }
         try {
             const order = new Order(req.body)
+            const tgifts = req.body.productList.map(a=>a.gifts).flat()
+            const gifts = tgifts.map(g=>({
+                productId: g.giftId,
+                quantity: g.amount,
+                currentPrice: 0
+            }))
+            order.productList.push(...gifts)
             await order.save()
 
             // Notification
