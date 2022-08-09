@@ -15,8 +15,8 @@ class OrderController {
         }
         try {
             const order = new Order(req.body)
-            const tgifts = req.body.productList.map(a=>a.gifts).flat()
-            const gifts = tgifts.map(g=>({
+            const tgifts = req.body.productList.map(a => a.gifts).flat()
+            const gifts = tgifts.map(g => ({
                 productId: g.giftId,
                 quantity: g.amount,
                 currentPrice: 0
@@ -81,29 +81,59 @@ class OrderController {
     // [PATCH] /order/:id
     async updateStatus(req, res, next) {
         try {
-            await Order.findByIdAndUpdate(req.params.id, req.body)
-            // if (req.body.status === 'Confirmed') {
-            //     const order = await Order.findById(req.params.id)
-            //     order.productList.forEach(async (p) => {
-            //         await Product.updateOne({_id: p.productId}, {stock: })
-                    
-            //     })
-            // }
-            res.json({ success: true, message: 'Order status updated successfully' })
+            const order = await Order.findById(req.params.id)
+            switch (order.status) {
+                case 'Pending':
+                    let isValidOrder = true
+                    for (let i = 0; i < order.productList.length; i++) {
+                        const product = await Product.findById(order.productList[i].productId)
+                        if (product.stock < order.productList[i].quantity) {
+                            isValidOrder = false
+                            break
+                        }
+                    }
+                    if (isValidOrder) {
+                        await Order.findByIdAndUpdate(req.params.id, { status: 'Confirmed' })
+                        for (let i = 0; i < order.productList.length; i++) {
+                            const product = await Product.findById(order.productList[i].productId)
+                            product.stock = product.stock - order.productList[i].quantity
+                            await product.save()
+                        }
+                        return res.json({ success: true, message: 'Order status changed to Confirmed' })
+                    }
+                    return res.json({ success: false, message: 'Some item are out of stock!' })
+                case 'Confirmed':
+                    await Order.findByIdAndUpdate(req.params.id, { status: 'Delivering' })
+                    return res.json({ success: true, message: 'Order status changed to Delivering' })
+                case 'Delivering':
+                    await Order.findByIdAndUpdate(req.params.id, { status: 'Delivered' })
+                    return res.json({ success: true, message: 'Order status changed to Delivered' })
+            }
+
         } catch (error) {
             next(error)
         }
     }
 
-    // [PUT] /order/:id
+    // [PATCH] /order/:id/cancel
     async cancelOrder(req, res, next) {
         try {
-            await Order.findByIdAndUpdate(req.params.orderId, req.body)
-            res.json({ success: true, message: 'Order cancelled successfully' })
+            const order = await Order.findById(req.params.id)
+            if (order.status !== 'Pending') {
+                for (let i = 0; i < order.productList.length; i++) {
+                    const product = await Product.findById(order.productList[i].productId)
+                    product.stock = product.stock + order.productList[i].quantity
+                    await product.save()
+                }
+            }
+            order.status = 'Cancelled'
+            await order.save()
+            res.json({ success: true, message: 'Order cancelled' })
         } catch (error) {
             next(error)
         }
     }
+
 
     // [DELETE] /order/:id
     async delete(req, res, next) {

@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGear, faUser, faArrowRightFromBracket, faArrowRightToBracket, faClipboardList } from '@fortawesome/free-solid-svg-icons'
+import { faGear, faUser, faArrowRightFromBracket, faArrowRightToBracket, faClipboardList, faHeartCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import decode from 'jwt-decode';
 
 import defaultAvatar from '../../assets/img/default-avatar.png'
@@ -51,14 +51,26 @@ function Menu() {
   return (
     <ul className={cl('wrapper')}>
       {profile &&
-        <li className={cl('profile-wrapper')}>
-          <div className={cl('avatar-wrapper')}>
-            <img src={profile.details?.photos?.[0]?.url || profile.details?.image || defaultAvatar} alt="" className={cl('avatar')} />
-          </div>
-          <div className={cl('name')}>
-            Hello {profile.details.username}
-          </div>
-        </li>
+        <>
+          <li className={cl('profile-wrapper')}>
+            <div className={cl('avatar-wrapper')}>
+              <img src={profile.details?.photos?.[0]?.url || profile.details?.image || defaultAvatar} alt="" className={cl('avatar')} />
+            </div>
+            <div className={cl('name')}>
+              Hello {profile.details.username}
+            </div>
+          </li>
+          <li>
+            <Link to={`/profile/${profile?.details._id}`} className={cl('link')}>
+              <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faUser} /></span> Profile
+            </Link>
+          </li>
+          <li>
+            <Link to={`/wishlist/${profile?.details._id}`} className={cl('link')}>
+              <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faHeartCircleCheck} /></span> Wishlist
+            </Link>
+          </li>
+        </>
       }
       {profile && profile.details.isAdmin && <li>
         <Link to='/admin' className={cl('link')}>
@@ -69,11 +81,7 @@ function Menu() {
         <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faClipboardList} /></span> Orders
       </Link>}
 
-      <li>
-        {profile && <Link to={`/profile/${profile?.details._id}`} className={cl('link')}>
-          <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faUser} /></span> Profile
-        </Link>}
-      </li>
+
       {profile ? <li>
         <div onClick={handleLogout} className={cl('link')}>
           <span className={cl('icon-wrapper')}><FontAwesomeIcon className={cl('icon')} icon={faArrowRightFromBracket} /></span> Logout

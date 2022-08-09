@@ -23,6 +23,8 @@ import Profile from '../pages/Profile'
 import { EditProfile, NewProfile } from '../pages/Profile'
 import EditProduct from '../pages/EditProduct'
 
+import Wishlist from '../pages/Wishlist'
+
 import NotFound from '../pages/404'
 
 const routes = [
@@ -37,6 +39,7 @@ const routes = [
     { path: '/profile/:userId', component: Profile },
     { path: '/profile/:userId/create', component: NewProfile },
     { path: '/profile/:userId/:id', component: EditProfile },
+    { path: '/wishlist/:userId', component: Wishlist },
     { path: '/admin/product', component: ProductList, layout: AdminLayout },
     { path: '/admin/promotion', component: PromotionList, layout: AdminLayout },
     { path: '/admin/order', component: OrderList, layout: AdminLayout },

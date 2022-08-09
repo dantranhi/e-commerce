@@ -10,11 +10,16 @@ import cloudinary from 'cloudinary'
 import initializePassport from './configs/passport.js'
 import router from './routes/index.js'
 
+const __dirname = process.cwd();
+
+import path from 'path'
 const port = process.env.PORT || 3006
 
 const app = express()
 
 // Middleware
+// console.log(path.resolve(__dirname, '/files'))
+app.use(express.static(path.resolve('./files')))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cors({

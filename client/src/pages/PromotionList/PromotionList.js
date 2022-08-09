@@ -2,6 +2,7 @@ import React from 'react'
 import { Space, Table, Popconfirm, Typography, Button } from 'antd'
 import { toast } from 'react-toastify'
 import httpRequest from '../../utils/httpRequest'
+import moment from 'moment'
 
 
 import { Link } from 'react-router-dom'
@@ -49,6 +50,17 @@ function PromotionList() {
             dataIndex: 'endDate',
             key: 'endDate',
             render: (date) => formatDate(date, 'DD-MM-YYYY')
+        },
+        {
+            title: 'Status',
+            dataIndex: 'status',
+            key: 'status',
+            render: (_, record) => {
+                if (moment().isBetween(record.startDate, record.endDate))
+                    return 'Activating'
+                if (moment().diff(record.startDate)<0) return 'Upcoming'
+                return 'Expired'
+            }
         },
         {
             title: 'Action',

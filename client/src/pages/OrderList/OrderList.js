@@ -1,4 +1,4 @@
-import {useParams} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { Space, Table, Popconfirm, Typography, Tag, Button, Select } from 'antd'
 import { toast } from 'react-toastify';
 import classNames from 'classnames/bind';
@@ -16,7 +16,7 @@ const { Title } = Typography;
 const { Option } = Select
 
 function ProductList() {
-    const {orderId} = useParams()
+    const { orderId } = useParams()
 
     const { data: orders, loading, reFetch } = useFetch('/order')
     const { data: products, loading: productsLoading } = useFetch('/product')
@@ -35,6 +35,18 @@ function ProductList() {
             toast.error(err?.response?.data?.message || 'Undefined Error!')
         }
     };
+
+    const handleCancelOrder = async (orderId) => {
+        try {
+            const res = await httpRequest.patch(`/order/${orderId}/cancel`)
+            if (res.data.success) {
+                toast.success(res.data.message);
+                reFetch()
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
     const colorPicker = (status) => {
         let color = ''
@@ -60,9 +72,9 @@ function ProductList() {
         return color
     }
 
-    const handleChangeStatus = async (value, orderId) => {
+    const handleNextStage = async (orderId) => {
         try {
-            const res = await httpRequest.patch(`/order/${orderId}`, { status: value })
+            const res = await httpRequest.patch(`/order/${orderId}`)
             if (res.data.success) {
                 toast.success(res.data.message)
                 reFetch()
@@ -125,12 +137,28 @@ function ProductList() {
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <Select defaultValue={record.status} style={{ width: 160 }} onChange={(value) => handleChangeStatus(value, record._id)}>
+                    {/* <Select defaultValue={record.status} style={{ width: 160 }} onChange={(value) => handleChangeStatus(value, record._id)}>
                         {allStatus.map(s => (
                             <Option key={s._id} value={s.name}>{s.name}</Option>
                         ))}
 
-                    </Select>
+                    </Select> */}
+                    <Popconfirm
+                        title="Are you sure to cancel this order? This can not be undone!"
+                        onConfirm={() => handleNextStage(record._id)}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <Button type='primary'>Next stage</Button>
+                    </Popconfirm>
+                    <Popconfirm
+                        title="Are you sure to cancel this order? This can not be undone!"
+                        onConfirm={() => handleCancelOrder(record._id)}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <Button danger type='dashed'>Cancecl Order</Button>
+                    </Popconfirm>
                     <Popconfirm
                         title="Are you sure to delete this order? This can not be undone!"
                         onConfirm={() => confirmDeleteOrder(record._id)}

@@ -29,8 +29,7 @@ function MyOrders() {
                 return newState
             })
 
-            const res = await httpRequest.put(`/order/${profile.details._id}/${orderId}`, { status: 'Cancelled' })
-            console.log(res)
+            const res = await httpRequest.patch(`/order/${orderId}/user-cancel`)
             if (res.data.success) {
                 toast.success(res.data.message)
                 setCancelLoading(prev => {

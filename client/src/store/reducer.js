@@ -1,4 +1,3 @@
-import { toast } from 'react-toastify'
 import { SET_LOADING, LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILED, LOGOUT, TOGGLE_CART, ADD_TO_CART, REMOVE_FROM_CART, ADD_ONE, SUB_ONE, CLEAR_CART_ERROR, DELETE_CART } from './constants'
 
 const INIT_CART = JSON.parse(localStorage.getItem('userCart')) ?? []
