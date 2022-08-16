@@ -111,7 +111,7 @@ function NewOrder() {
                     brand: item.brand,
                     quantity: item.amount,
                     currentPrice: item.price,
-                    gifts: item.gifts.map(i=>({
+                    gifts: item.gifts.map(i => ({
                         ...i,
                         amount: item.amount
                     }))
@@ -120,15 +120,31 @@ function NewOrder() {
             }
             console.log(allData)
 
-            const res = await httpRequest.post(`/order/${profile.details._id}/create`, allData)
-            if (res.data.success) {
-                toast.success(res.data.message)
-                dispatch(deleteCart())
-                navigate('/')
+            if (allData.payMethod === 'E-Wallet') {
+                const res = await httpRequest.post(`/order/create_payment_url`, {
+                    ...allData,
+                    amount: 10000,
+                    bankCode: 'NCB',
+                    orderDescription: 'fdasfasfdasfsafasfdsa',
+                    orderType: 'billpayment',
+                    language: 'vn'
+                })
+                if (res.data.success) {
+                    console.log(res.data)
+                    window.open(res.data.url, '_self')
+                }
             }
-            if (res.data.errors) {
-                setErrors(res.data.errors)
-            }
+            // else {
+            //     const res = await httpRequest.post(`/order/${profile.details._id}/create`, allData)
+            //     if (res.data.success) {
+            //         toast.success(res.data.message)
+            //         dispatch(deleteCart())
+            //         navigate('/')
+            //     }
+            //     if (res.data.errors) {
+            //         setErrors(res.data.errors)
+            //     }
+            // }
         } catch (error) {
 
         }
