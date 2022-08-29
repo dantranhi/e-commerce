@@ -123,9 +123,9 @@ function NewOrder() {
             if (allData.payMethod === 'E-Wallet') {
                 const res = await httpRequest.post(`/order/create_payment_url`, {
                     ...allData,
-                    amount: 10000,
-                    bankCode: 'NCB',
-                    orderDescription: 'fdasfasfdasfsafasfdsa',
+                    amount: allData.totalPrice,
+                    bankCode: '',
+                    orderDescription: 'Thanh toan truc tuyen qua VNPay',
                     orderType: 'billpayment',
                     language: 'vn'
                 })

@@ -11,6 +11,12 @@ import Status from '../models/Status.js'
 import { orderCreation } from '../utils/createNotification.js'
 import sortObject from '../utils/sortObject.js'
 
+
+// Delete an order after a while not being paid
+async function destroyZombieOrder(transactionId){
+    await Order.findOneAndDelete({transactionId: transactionId})
+}
+
 class OrderController {
     // [POST] /order/:id/create
     async create(req, res, next) {
@@ -108,8 +114,19 @@ class OrderController {
                     }
                     return res.json({ success: false, message: 'Some item are out of stock!' })
                 case 'Confirmed':
+                    order.status='Delivering'
+                    await order.save()
+                    // await Order.findByIdAndUpdate(req.params.id, { status: 'Delivering' })
+                    return res.json({ success: true, message: 'Order status changed to Delivering' })
+                case 'Confirmed':
                     await Order.findByIdAndUpdate(req.params.id, { status: 'Delivering' })
                     return res.json({ success: true, message: 'Order status changed to Delivering' })
+                case 'Paid':
+                    await Order.findByIdAndUpdate(req.params.id, { status: 'Paid & Delivering' })
+                    return res.json({ success: true, message: 'Order status changed to Paid & Delivering' })
+                case 'Paid & Delivering':
+                    await Order.findByIdAndUpdate(req.params.id, { status: 'Paid & Delivered' })
+                    return res.json({ success: true, message: 'Order status changed to Paid & Delivered' })
                 case 'Delivering':
                     await Order.findByIdAndUpdate(req.params.id, { status: 'Delivered' })
                     return res.json({ success: true, message: 'Order status changed to Delivered' })
@@ -149,6 +166,8 @@ class OrderController {
             next(error)
         }
     }
+
+    
 
     // [POST] /order/create_payment_url
     async createPaymentUrl(req, res, next) {
@@ -199,6 +218,10 @@ class OrderController {
 
         const newOrder = new Order({ ...req.body, transactionId: orderId })
         await newOrder.save()
+
+        setTimeout(()=>{
+            destroyZombieOrder(orderId)
+        }, 15*60000)
 
 
         res.json({ success: true, url: vnpUrl })

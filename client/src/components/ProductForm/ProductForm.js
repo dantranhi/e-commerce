@@ -116,8 +116,8 @@ function ProductForm({ edit }) {
                         const uploadRes = await axios.post(
                             "https://api.cloudinary.com/v1_1/dauu0vpgc/image/upload",
                             data, {
-                            withCredentials: false
-                        }
+                                withCredentials: false
+                            }
                         );
 
                         const { url, public_id } = uploadRes.data;
@@ -223,7 +223,7 @@ function ProductForm({ edit }) {
 
                 <div className={cl('group')}>
                     <label className={cl('label')} htmlFor="price">Price: </label>
-                    <Input type="number" min="0" max="999999999" id="price" name={data.price!==data.oldPrice ? "oldPrice" : "price"} placeholder="Price" value={data.price!==data.oldPrice ? formFields.oldPrice : formFields.price} onChange={(e) => handleChange(e.target)} />
+                    <Input type="number" min="0" max="999999999" id="price" name={data.price !== data.oldPrice ? "oldPrice" : "price"} placeholder="Price" value={data.price !== data.oldPrice ? formFields.oldPrice : formFields.price} onChange={(e) => handleChange(e.target)} />
                     <ValidateMessage name='price' errors={errors}></ValidateMessage>
                 </div>
 

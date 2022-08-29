@@ -57,12 +57,17 @@ function ProductList() {
             case 'Confirmed':
                 color = 'green'
                 break
+            case 'Paid':
+                color = 'cyan'
+                break
             case 'Cancelled':
                 color = 'gray'
                 break
+            case 'Paid & Delivering':
             case 'Delivering':
                 color = '#57c2c7'
                 break
+            case 'Paid & Delivered':
             case 'Delivered':
                 color = '#e54784'
                 break
