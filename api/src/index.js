@@ -48,9 +48,9 @@ app.use(session({
 initializePassport(passport)
 app.use(passport.session());
 cloudinary.config({
-    cloud_name: 'dauu0vpgc',
-    api_key: '778177312327272',
-    api_secret: 'IG_zmRjj8rJ7xTjo-cF1cAzSd7Q',
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_KEY,
+    api_secret: process.env.CLOUDINARY_SECRET,
     secure: true
 });
 
@@ -60,14 +60,14 @@ mongoose.connect(process.env.MONGO, { useNewUrlParser: true, useUnifiedTopology:
 
 
 router(app)
-    app.use((err, req, res, next) => {
-        const errStatus = err.status || 500
-        const errMessage = err.message
-        res.status(errStatus).json({
-            success: false,
-            status: errStatus,
-            message: errMessage,
-            stack: err.stack,
-        })
+app.use((err, req, res, next) => {
+    const errStatus = err.status || 500
+    const errMessage = err.message
+    res.status(errStatus).json({
+        success: false,
+        status: errStatus,
+        message: errMessage,
+        stack: err.stack,
     })
+})
 app.listen(port, function () { console.log('listening on port ' + port) })
